@@ -1,6 +1,6 @@
 const express = require('express');
-const router = express.Router(),
-const { validate, schemas } = require('../helpers/routes/user'),
+const router = express.Router();
+const { validate, schemas } = require('../helpers/routes/user');
 const userController = require('../controllers/user');
 
 router.get('/', (req, res, next) => {

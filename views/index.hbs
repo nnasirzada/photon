@@ -1,3 +1,54 @@
-<h1>{{title}}</h1>
-<p>Welcome to {{title}}</p>
-<a href="signup">Go to signup</a>
+<!DOCTYPE html>
+<html>
+
+<head>
+	<title>{{title}}</title>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<!-- UIkit CSS -->
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/uikit/3.0.0-beta.40/css/uikit.min.css" />
+	<!-- UIkit JS -->
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/uikit/3.0.0-beta.40/js/uikit.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/uikit/3.0.0-beta.40/js/uikit-icons.min.js"></script>
+</head>
+
+<body>
+	<div class="uk-width-1-1 uk-height-viewport uk-background-primary">
+		<div class="uk-card uk-card-default uk-card-small uk-width-1-1 uk-position-center" style="max-width:450px;">
+
+			<div class="uk-card-header">
+				<img class="uk-align-center" style="margin:7px auto;max-height: 50px;" src="/images/university_logo.png" />
+			</div>
+
+			<div class="uk-card-body">
+				<form class="uk-width-1-1">
+
+					<div class="uk-margin">
+						<div class="uk-inline uk-width-1-1">
+							<span class="uk-form-icon" uk-icon="icon: mail"></span>
+							<input class="uk-input" type="text" placeholder="Email">
+						</div>
+					</div>
+
+					<div class="uk-margin">
+						<div class="uk-inline uk-width-1-1">
+							<span class="uk-form-icon" uk-icon="icon: lock"></span>
+							<input class="uk-input" type="password" placeholder="Password">
+						</div>
+					</div>
+
+					<div class="uk-margin">
+						<button class="uk-button uk-button-primary uk-width-1-1">Sign in</button>
+					</div>
+
+					<div class="uk-margin-top">
+						<button class="uk-button uk-button-default uk-width-1-1">Forgot your password?</button>
+					</div>
+
+				</form>
+			</div>
+		</div>
+	</div>
+</body>
+
+</html>
