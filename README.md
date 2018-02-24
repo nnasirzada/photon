@@ -1,2 +1,2 @@
 # student-management-system
-Senior Design Project - SMS
+Senior Design Project - Photon
