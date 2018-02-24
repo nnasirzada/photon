@@ -13,7 +13,7 @@ router.post('/', (req, res, next) => {
 
   res.locals.sign_in = req.body.sign_in;
 
-  if (req.body.sign_in) return next();
+  if (res.locals.sign_in == "true") return next();
 
   database.query("SELECT id FROM person WHERE email = ?", [req.body.email], (err, res) => {
 
