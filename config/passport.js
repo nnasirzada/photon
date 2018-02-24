@@ -45,3 +45,28 @@ passport.use('local.signup', new LocalStrategy({
 		})
 	})
 }));
+
+passport.use('local.signin', new LocalStrategy({
+	usernameField: 'email',
+	passwordField: 'password',
+	passReqToCallback: true
+}, (req, email, password, done) => {
+	database.getConnection((err, connection) => {
+		if (err) {
+			return done(err);
+		}
+		connection.query("SELECT * FROM person WHERE email = ?", [email], (err, results) => {
+			connection.release();
+			if (err) {
+				return done(err);
+			}
+			if (!results.length) {
+				return done(null, false, { message: 'No user found.' });
+			}
+			if (!bcrypt.compareSync(password, results[0].password)) {
+				return done(null, false, { message: 'Password is wrong.' });
+			}
+			return done(null, results[0]);
+		})
+	})
+}));

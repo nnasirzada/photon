@@ -1,9 +1,10 @@
 const express = require('express');
 const router = express.Router();
 const db = require('../database/');
+const passport = require('passport');
 
 /* GET home page. */
-router.get('/', function (req, res, next) {
+router.get('/', (req, res, next) => {
   // db.getConnection((err, con) => {
   //   if (err) throw err;
   //   con.query('SELECT * FROM person', (err, results, fields) => {
@@ -13,5 +14,10 @@ router.get('/', function (req, res, next) {
   // });
   res.render('index', { title: 'Express', layout: false });
 });
+
+router.post('/', passport.authenticate('local.signin', {
+  successRedirect: '/profile',
+  failureRedirect: '/'
+}));
 
 module.exports = router;
