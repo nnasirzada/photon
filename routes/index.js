@@ -1,9 +1,9 @@
 var crypto = require('crypto');
 const express = require('express');
-const passport = require('passport');
-const database = require('../database');
-const nodemailer = require('nodemailer');
 const router = express.Router();
+const passport = require('passport');
+// const database = require('../database');
+const nodemailer = require('nodemailer');
 
 router.get('/', (req, res, next) => {
   return res.render('index', { check_email: false, layout: false });
@@ -20,7 +20,7 @@ router.post('/', (req, res, next) => {
     if (err || res.length == 0) return next();
 
     const person_id = res[0].id;
-    const token = crypto.randomBytes(32).toString('hex');
+    const token = crypto.randomBytes(8).toString('hex');
 
     database.query("INSERT INTO forgot_password_token (person_id, token, expires_at)"
       + "VALUES (?, ?, NOW() + INTERVAL 1 DAY)", [person_id, token], function (err, res) {
@@ -44,7 +44,7 @@ router.post('/', (req, res, next) => {
           from: '"Photon" <photon@shahinmursalov.com>',
           to: req.body.email,
           subject: 'Reset your password',
-          text: 'Click the following link to set a new password: http://shahinmursalov.com/photon/reset_password?token=' + token,
+          text: 'Click the following link to set a new password: http://shahinmursalov.com/authentication/reset-password/:email/:token' + token,
         };
 
         transporter.sendMail(mailOptions, (err, info) => {
@@ -63,10 +63,5 @@ router.post('/', (req, res, next) => {
     return res.render('index', { check_email: true, layout: false });
   }
 });
-
-router.post('/', passport.authenticate('local.signin', {
-  successRedirect: '/profile',
-  failureRedirect: '/'
-}));
 
 module.exports = router;

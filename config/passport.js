@@ -1,49 +1,50 @@
 const passport = require('passport');
 const LocalStrategy = require('passport-local').Strategy;
 const bcrypt = require('bcrypt');
-const database = require('../database');
+const models = require('../models');
 
 passport.serializeUser((user, done) => {
 	done(null, user.id);
 });
 
 passport.deserializeUser((id, done) => {
-	database.getConnection((err, connection) => {
-		connection.query("SELECT * FROM person WHERE id = ?", [id], (err, results) => {
-			connection.release();
-			done(err, results[0]);
+	models.Person.findOne({
+		where: {
+			id: id
+		}
+	})
+		.then((Person) => {
+			done(null, Person);
+		})
+		.catch((err) => {
+			done(err);
 		});
-	});
 });
 
 passport.use('local.signup', new LocalStrategy({
 	usernameField: 'email',
 	passwordField: 'password',
-	passReqToCallback: true
+	passReqToCallback: true,
+	session: false
 }, (req, email, password, done) => {
-	database.getConnection((err, connection) => {
-		connection.query("SELECT * FROM person WHERE email = ?", [email], (err, results) => {
-			if (err) {
-				return done(err);
-			}
-			if (results.length) {
-				return done(null, false, { message: 'Email is already in use.' });
-			} else {
-				let newUser = {
-					email: email,
-					password: bcrypt.hashSync(password, 5)
-				};
-
-				connection.query("INSERT INTO person (email, password) values (?, ?)", [newUser.email, newUser.password], (err, results) => {
-					if (err) {
-						return done(err);
-					}
-					newUser.id = results.insertId;
-					return done(null, newUser);
-				})
+	models.Person
+		.findOne({
+			where: {
+				email: email
 			}
 		})
-	})
+		.then((Person) => {
+			if (Person) {
+				console.log("user exist");
+				return done(null, false);
+			}
+			let newPerson = models.Person.build(req.body);
+			newPerson.password = bcrypt.hashSync(password, 5);
+			return newPerson.save().then((newPerson) => { return done(null, newPerson) });
+		})
+		.catch((err) => {
+			return done(err);
+		})
 }));
 
 passport.use('local.signin', new LocalStrategy({
@@ -51,22 +52,23 @@ passport.use('local.signin', new LocalStrategy({
 	passwordField: 'password',
 	passReqToCallback: true
 }, (req, email, password, done) => {
-	database.getConnection((err, connection) => {
-		if (err) {
-			return done(err);
+	models.Person.findOne({
+		where: {
+			email: email
 		}
-		connection.query("SELECT * FROM person WHERE email = ?", [email], (err, results) => {
-			connection.release();
-			if (err) {
-				return done(err);
-			}
-			if (!results.length) {
-				return done(null, false, { message: 'No user found.' });
-			}
-			if (!bcrypt.compareSync(password, results[0].password)) {
-				return done(null, false, { message: 'Password is wrong.' });
-			}
-			return done(null, results[0]);
-		})
 	})
+		.then((Person) => {
+			if (!Person) {
+				console.log("No such user");
+				return done(null, false);
+			}
+			if (!bcrypt.compareSync(password, Person.password)) {
+				console.log("Invalid pass");
+				return done(null, false);
+			}
+			return done(null, Person);
+		})
+		.catch((err) => {
+			return done(err);
+		});
 }));
