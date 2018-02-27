@@ -35,8 +35,8 @@ app.use(passport.session());
 app.use(express.static(path.join(__dirname, 'public')));
 
 // uses
-app.use('/auth', auth);
 app.use('/', index);
+app.use('/auth', auth);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {

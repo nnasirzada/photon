@@ -1,4 +1,3 @@
-"use strict";
 require('dotenv').config();
 const crypto = require('crypto');
 const express = require('express');
@@ -23,10 +22,16 @@ router.post('/login', isNotLoggedIn, passport.authenticate('local.login', {
 }));
 
 router.get('/reset-password/:token', isNotLoggedIn, (req, res, next) => {
-	res.render('auth/reset-password', {
-		layout: false,
-		error: req.flash('error'),
-		token: req.params.token
+	models.ResetPasswordToken.findOne({ where: { token: req.params.token, used: false } }).then((ResetPasswordToken) => {
+		if (!ResetPasswordToken) {
+			return res.status(404).send('<h1>Page not found</h1>');
+		} else {
+			return res.render('auth/reset-password', {
+				layout: false,
+				error: req.flash('error'),
+				token: req.params.token
+			});
+		}
 	});
 });
 
@@ -86,54 +91,56 @@ router.post('/request-password-reset', isNotLoggedIn, (req, res, next) => {
 
 	if (req.validationErrors()) return res.redirect('/auth/login/');
 
-	models.User.findOne({ where: { email: req.body.email } }).then((User) => {
+	models.User
+		.findOne({ where: { email: req.body.email } })
+		.then((User) => {
 
-		if (!User) {
-			console.log('Auth [Request Password Reset]: User not found.');
+			if (!User) {
+				return res.redirect('/auth/login/');
+			}
+
+			const token = crypto.randomBytes(16).toString('hex');
+
+			models.ResetPasswordToken
+				.build({
+					person_id: User.id,
+					token: token
+				})
+				.save()
+				.then(savedToken => {
+					let transporter = nodemailer.createTransport({
+						host: process.env.EMAIL_HOST,
+						port: 465,
+						secure: true, // true for 465, false for other ports
+						auth: {
+							user: process.env.EMAIL,
+							pass: process.env.EMAIL_PASSWORD
+						},
+						tls: {
+							rejectUnauthorized: false
+						}
+					});
+
+					let mailOptions = {
+						from: '"Photon" <' + process.env.EMAIL + '>',
+						to: req.body.email,
+						subject: 'Reset your password',
+						text: 'Click the following link to set a new password: http://shahinmursalov.com/auth/reset-password/' + token,
+					};
+
+					transporter.sendMail(mailOptions, (err, info) => {
+						if (err) throw err;
+					});
+				})
+				.catch(err => {
+					return res.redirect('/auth/login/');
+				});
+
 			return res.redirect('/auth/login/');
-		}
-
-		const token = crypto.randomBytes(16).toString('hex');
-
-		let ResetPasswordToken = models.ResetPasswordToken.build({
-			person_id: User.id,
-			token: token
+		})
+		.catch((err) => {
+			return res.redirect('/auth/login/');
 		});
-		ResetPasswordToken.save();
-
-		if (ResetPasswordToken) {
-
-			let transporter = nodemailer.createTransport({
-				host: process.env.EMAIL_HOST,
-				port: 465,
-				secure: true, // true for 465, false for other ports
-				auth: {
-					user: process.env.EMAIL,
-					pass: process.env.EMAIL_PASSWORD
-				},
-				tls: {
-					rejectUnauthorized: false
-				}
-			});
-
-			let mailOptions = {
-				from: '"Photon" <' + process.env.EMAIL + '>',
-				to: req.body.email,
-				subject: 'Reset your password',
-				text: 'Click the following link to set a new password: http://shahinmursalov.com/auth/reset-password/' + token,
-			};
-
-			transporter.sendMail(mailOptions, (err, info) => {
-				if (err) console.log('Auth [Request Password Reset]: ' + err);
-			});
-		}
-
-		return res.redirect('/auth/login/');
-
-	}).catch((err) => {
-		console.log('Auth [Request Password Reset]: ' + err);
-		return res.redirect('/auth/login/');
-	});
 });
 
 router.get('/redirect', isLoggedIn, (req, res, next) => {
