@@ -1,18 +1,19 @@
 require('dotenv').config();
 const path = require('path');
+const flash = require('connect-flash');
 const logger = require('morgan');
 const express = require('express');
 const favicon = require('serve-favicon');
-const bodyParser = require('body-parser');
-const cookieParser = require('cookie-parser');
 const session = require('express-session');
 const passport = require('passport');
+const validator = require('express-validator');
+const bodyParser = require('body-parser');
+const cookieParser = require('cookie-parser');
 require('./config/passport');
 
 // routes
 const index = require('./routes/index');
-const user = require('./routes/user');
-const authentication = require('./routes/authentication');
+const auth = require('./routes/auth');
 const app = express();
 
 // view engine setup
@@ -25,16 +26,17 @@ app.set('x-powered-by', false);
 app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
+app.use(validator());
 app.use(cookieParser());
 app.use(session({ secret: process.env.SESSION_SECRET, resave: true, saveUninitialized: false }));
+app.use(flash());
 app.use(passport.initialize());
 app.use(passport.session());
 app.use(express.static(path.join(__dirname, 'public')));
 
 // uses
+app.use('/auth', auth);
 app.use('/', index);
-app.use('/authentication', authentication);
-app.use('/signup', user);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
@@ -52,7 +54,7 @@ app.use(function (err, req, res, next) {
 
   // render the error page
   res.status(err.status || 500);
-  res.render('error');
+  res.render('error', { title: err.message });
 });
 
 module.exports = app;

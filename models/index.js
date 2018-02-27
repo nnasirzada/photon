@@ -1,8 +1,8 @@
 require('dotenv').config();
-const fs = require('fs');
-const path = require('path');
 const Sequelize = require('sequelize');
+const path = require('path');
 const basename = path.basename(module.filename);
+const fs = require('fs');
 const db = {};
 
 const sequelize = new Sequelize(process.env.DB_NAME, process.env.DB_USER, process.env.DB_PASS, {
@@ -34,7 +34,7 @@ Object.keys(db).forEach(function (modelName) {
 	}
 });
 
-db.sequelize = sequelize;
 db.Sequelize = Sequelize;
+db.sequelize = sequelize;
 
 module.exports = db;
