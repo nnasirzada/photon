@@ -14,6 +14,7 @@ require('./config/passport');
 // routes
 const index = require('./routes/index');
 const auth = require('./routes/auth');
+const admin = require('./routes/admin');
 const app = express();
 
 // view engine setup
@@ -37,6 +38,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 // uses
 app.use('/', index);
 app.use('/auth', auth);
+app.use('/admin', admin);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
@@ -47,12 +49,7 @@ app.use(function (req, res, next) {
 
 // error handler
 app.use(function (err, req, res, next) {
-
-  // set locals, only providing error in development
-  res.locals.message = err.message;
-  res.locals.error = req.app.get('env') === 'development' ? err : {};
-
-  // render the error page
+  res.locals.error = err;
   res.status(err.status || 500);
   res.render('error', { title: err.message });
 });
