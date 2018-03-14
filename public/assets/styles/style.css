@@ -2,6 +2,10 @@ body {
   font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
 }
 
+#offcanvas-nav > div {
+  background: #33393f;
+}
+
 #oncanvas-nav {
   position: fixed;
   width: 300px; 
@@ -18,18 +22,6 @@ body {
   padding-right: 20px;
 }
 
-#offcanvas-nav .uk-nav-parent-icon .uk-parent.uk-open a::after {
-  background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2214%22%20height%3D%2214%22%20viewBox%3D%220%200%2014%2014%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%20%20%20%20%3Cpolyline%20fill%3D%22none%22%20stroke%3D%22%23666%22%20stroke-width%3D%221.1%22%20points%3D%221%204%207%2010%2013%204%22%20%2F%3E%0A%3C%2Fsvg%3E")!important;
-}
-
-#offcanvas-nav .uk-nav-parent-icon a::after {
-  background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2214%22%20height%3D%2214%22%20viewBox%3D%220%200%2014%2014%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%20%20%20%20%3Cpolyline%20fill%3D%22none%22%20stroke%3D%22%23666%22%20stroke-width%3D%221.1%22%20points%3D%2210%201%204%207%2010%2013%22%20%2F%3E%0A%3C%2Fsvg%3E")!important;
-}
-
-#offcanvas-nav .uk-nav-divider {
-  border-top: 1px solid #e5e5e5;
-}
-
 #navbar {
   padding: 0px 20px;
 }
@@ -38,7 +30,7 @@ body {
   max-height: 40px;
 }
 
-@media all and (min-width: 640px) {
+@media all and (min-width: 960px) {
   #body {
     float: left;
     margin-left: 300px;
@@ -46,7 +38,7 @@ body {
   }
 }
 
-@media not all and (min-width: 640px) {
+@media not all and (min-width: 960px) {
   #body {
     float: left;
     margin-left: 0px;
