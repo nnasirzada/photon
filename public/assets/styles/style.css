@@ -1,34 +1,19 @@
 body {
-  /* padding: 48px; */
   font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
 }
 
-a {
-  color: #999999!important;
-}
-
-a:hover {
-  color: #000000!important;
-}
-
 #oncanvas-nav {
-  float: left;
-  width: 300px;
+  position: fixed;
+  width: 300px; 
+  height: 100%;
+  background: #33393f;
 }
 
-#oncanvas-nav > div {
-  z-index: 980;
-}
-
-#oncanvas-nav img, #navbar img {
-  max-height: 40px;
-}
-
-#offcanvas-nav .uk-offcanvas-bar {
+#oncanvas-nav, #offcanvas-nav .uk-offcanvas-bar {
   padding: 20px 0px 20px 0px;
 }
 
-#offcanvas-nav a {
+#oncanvas-nav a, #offcanvas-nav a {
   padding-left: 20px;
   padding-right: 20px;
 }
@@ -47,19 +32,24 @@ a:hover {
 
 #navbar {
   padding: 0px 20px;
-  z-index: 980;
+}
+
+#navbar img {
+  max-height: 40px;
 }
 
 @media all and (min-width: 640px) {
   #body {
-    float: right;
-    width: calc(100% - 380px)!important;
+    float: left;
+    margin-left: 300px;
+    padding: 20px;
   }
 }
 
 @media not all and (min-width: 640px) {
   #body {
-    width: 100%;
-    margin: 0!important;
+    float: left;
+    margin-left: 0px;
+    padding: 20px;
   }
 }

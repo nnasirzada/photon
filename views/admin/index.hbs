@@ -7,6 +7,7 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/uikit/3.0.0-beta.40/css/uikit.min.css" />
 	<link rel="stylesheet" href="/assets/styles/style.css" />
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.0/normalize.min.css"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/uikit/3.0.0-beta.40/js/uikit.min.js"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/uikit/3.0.0-beta.40/js/uikit-icons.min.js"></script>
 </head>
@@ -38,49 +39,43 @@
 		</div>
 	</div>
 
-	<div id="oncanvas-nav" class="uk-visible@s uk-margin-top uk-margin-right uk-margin-bottom uk-margin-left">
-		<div uk-sticky="offset: 0; bottom: #top" class="uk-card uk-card-small uk-card-default uk-card-body">
-			<a href="/">
-				<img src="/assets/images/university_logo.png" class="uk-margin">
-			</a>
-			<ul class="uk-nav uk-nav-default uk-nav-parent-icon" uk-nav>
-				<li>
-					<a href="#">Profile</a>
-				</li>
-				<li>
-					<a href="/auth/logout/">Logout</a>
-				</li>
-				<li class="uk-nav-divider"></li>
-				<li class="uk-active">
-					<a href="#">Active</a>
-				</li>
-				<li class="uk-parent">
-					<a href="#">Parent</a>
-					<ul class="uk-nav-sub">
-						<li>
-							<a href="#">Sub item</a>
-						</li>
-					</ul>
-				</li>
-			</ul>
-		</div>
-	</div>
-
-	<nav id="navbar" class="uk-navbar-container uk-hidden@s" uk-sticky="bottom: #offset" uk-navbar>
+	<nav id="navbar" class="uk-navbar-container" uk-sticky="bottom: #offset" uk-navbar>
 		<div class="uk-navbar-left">
 			<a href="/" class="uk-navbar-item uk-logo">
 				<img src="/assets/images/university_logo.png">
 			</a>
 		</div>
 		<div class="uk-navbar-right">
-			<button class="uk-navbar-toggle" uk-toggle="target: #offcanvas-nav" uk-navbar-toggle-icon></button>
+			<ul class="uk-navbar-nav">
+				<li class="uk-visible@s">
+					<a href="#">Profile</a>
+				</li>
+				<li class="uk-visible@s">
+					<a href="/auth/logout/">Logout</a>
+				</li>
+			</ul>
+			<button class="uk-navbar-toggle uk-hidden@s" uk-toggle="target: #offcanvas-nav" uk-navbar-toggle-icon></button>
 		</div>
 	</nav>
 
-	<div id="body" class="uk-align-right uk-margin-top uk-margin-right uk-margin-bottom uk-margin-left">
-		<div class="uk-card uk-card-small uk-card-default uk-card-body">
-			{{{body}}}
-		</div>
+	<div id="oncanvas-nav" class="uk-visible@s uk-light">
+		<ul class="uk-nav uk-nav-default uk-nav-parent-icon" uk-nav>
+			<li class="uk-active">
+				<a href="#">Active</a>
+			</li>
+			<li class="uk-parent">
+				<a href="#">Parent</a>
+				<ul class="uk-nav-sub">
+					<li>
+						<a href="#">Sub item</a>
+					</li>
+				</ul>
+			</li>
+		</ul>
+	</div>
+
+	<div id="body">
+		{{{body}}}
 	</div>
 
 	<script>
