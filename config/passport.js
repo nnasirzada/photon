@@ -9,7 +9,8 @@ passport.serializeUser((user, done) => {
 
 passport.deserializeUser((id, done) => {
 	models.User.findOne({
-		where: { id: id }
+		where: { id: id },
+		attributes: ['id', 'email', 'type']
 	}).then((User) => {
 		done(null, User);
 	}).catch((err) => {
