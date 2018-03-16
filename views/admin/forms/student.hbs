@@ -1,67 +1,80 @@
-<h2>Create user</h2>
-<form class="uk-form-stacked" action="" method="post">
-	<div class="uk-margin">
-		<label for="firstname" class="uk-form-label">Firstname</label>
-		<div class="uk-form-controls">
-			<input class="uk-input" type="text" name="firstname" id="firstname">
+<script>
+	$(function () {
+		$("#date_of_birth").datepicker();
+	});
+</script>
+<div>
+	<h3 class="uk-heading-line">
+		<span>Add student</span>
+	</h3>
+	<form class="uk-form-stacked" method="post" uk-grid>
+		<div class="uk-width-1-3@m uk-width-1-2@s uk-width-1-1">
+			<label for="firstname" class="uk-form-label">Firstname</label>
+			<div class="uk-form-controls">
+				<input class="uk-input" type="text" name="firstname" id="firstname">
+			</div>
 		</div>
-	</div>
-	<div class="uk-margin">
-		<label for="lastname" class="uk-form-label">Lastname</label>
-		<div class="uk-form-controls">
-			<input class="uk-input" type="text" name="lastname" id="lastname">
+		<div class="uk-width-1-3@m uk-width-1-2@s uk-width-1-1">
+			<label for="lastname" class="uk-form-label">Lastname</label>
+			<div class="uk-form-controls">
+				<input class="uk-input" type="text" name="lastname" id="lastname">
+			</div>
 		</div>
-	</div>
-	<div class="uk-margin">
-		<label for="patronymic" class="uk-form-label">Patronymic</label>
-		<div class="uk-form-controls">
-			<input class="uk-input" type="text" name="patronymic" id="patronymic">
+		<div class="uk-width-1-3@m uk-width-1-2@s uk-width-1-1">
+			<label for="patronymic" class="uk-form-label">Patronymic</label>
+			<div class="uk-form-controls">
+				<input class="uk-input" type="text" name="patronymic" id="patronymic">
+			</div>
 		</div>
-	</div>
-	<div class="uk-margin">
-		<label for="date_of_birth" class="uk-form-label">Date of birth</label>
-		<div class="uk-form-controls">
-			<input class="uk-input" type="date" name="date_of_birth" id="date_of_birth">
+		<div class="uk-width-1-3@m uk-width-1-2@s uk-width-1-1">
+			<label for="date_of_birth" class="uk-form-label">Date of birth</label>
+			<div class="uk-form-controls">
+				<input style="cursor: pointer;" class="uk-input" type="text" name="date_of_birth" id="date_of_birth" readonly="readonly">
+			</div>
 		</div>
-	</div>
-	<div class="uk-margin">
-		<label for="sex" class="uk-form-label">Sex</label>
-		<div class="uk-form-controls">
-			<select class="uk-select" name="sex" id="sex">
-				<option value="male">Male</option>
-				<option value="female">Female</option>
-				<option value="other">Other</option>
-			</select>
+		<div class="uk-width-1-3@m uk-width-1-2@s uk-width-1-1">
+			<label for="sex" class="uk-form-label">Sex</label>
+			<div class="uk-form-controls">
+				<select class="uk-select" name="sex" id="sex">
+					<option value="male">Male</option>
+					<option value="female">Female</option>
+					<option value="other">Other</option>
+				</select>
+			</div>
 		</div>
-	</div>
-	<div class="uk-margin">
-		<label for="address" class="uk-form-label">Address</label>
-		<div class="uk-form-controls">
-			<textarea class="uk-textarea" name="address" id="address"></textarea>
+		<div class="uk-width-1-3@m uk-width-1-2@s uk-width-1-1">
+			<label for="address" class="uk-form-label">Address</label>
+			<div class="uk-form-controls">
+				<input class="uk-input" type="text" name="address" id="address">
+			</div>
 		</div>
-	</div>
-	<div class="uk-margin">
-		<label for="type" class="uk-form-label">Account Type</label>
-		<div class="uk-form-controls">
-			<select class="uk-select" name="type" id="type">
-				<option value="instructor">Instructor</option>
-				<option value="student">Student</option>
-				<option value="parent">Parent</option>
-				<option value="admin">Admin</option>
-			</select>
+		<div class="uk-width-1-3@m uk-width-1-2@s uk-width-1-1">
+			<label for="email" class="uk-form-label">Email</label>
+			<div class="uk-form-controls">
+				<input class="uk-input" type="email" name="email" id="email">
+			</div>
 		</div>
-	</div>
-	<div class="uk-margin">
-		<label for="email" class="uk-form-label">Email</label>
-		<div class="uk-form-controls">
-			<input class="uk-input" type="email" name="email" id="email">
+		<div class="uk-width-1-3@m uk-width-1-2@s uk-width-1-1">
+			<label for="password" class="uk-form-label">Password</label>
+			<div class="uk-form-controls">
+				<input class="uk-input" type="password" name="password" id="password">
+			</div>
 		</div>
-	</div>
-	<div class="uk-margin">
-		<label for="password" class="uk-form-label">Password</label>
-		<div class="uk-form-controls">
-			<input class="uk-input" type="password" name="password" id="password">
+		<div class="uk-width-1-3@m uk-width-1-2@s uk-width-1-1">
+			<label for="image" class="uk-form-label">Image</label>
+			<div uk-form-custom="target: true" class="uk-margin-remove uk-width-1-1">
+				<input type="file">
+				<input class="uk-input" type="text" name="image" disabled>
+			</div>
 		</div>
-	</div>
-	<button class="uk-button uk-button-default" type="submit">Create User</button>
-</form>
+		{{!--
+		<h1 class="uk-heading-line uk-text-center">
+			<span>Heading Line</span>
+		</h1> --}}
+		<button class="uk-form-width-medium uk-align-center uk-margin-medium-top uk-button uk-button-primary" type="submit">Submit</button>
+		{{!--
+		<div class="custom-line uk-width-1-1">
+			<button class="uk-form-width-medium uk-align-center uk-margin-small-top uk-button uk-button-primary" type="submit">Submit</button>
+		</div> --}}
+	</form>
+</div>

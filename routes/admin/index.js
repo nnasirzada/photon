@@ -14,4 +14,12 @@ router.get('/', (req, res, next) => {
 	res.render('admin/index');
 });
 
+router.get('/buildings/', (req, res, next) => {
+	res.render('admin/buildings', { active: { buildings: true } });
+});
+
+router.get('/student', (req, res, next) => {
+	res.render('admin/forms/student', { active: { users: true } })
+});
+
 module.exports = router;

@@ -30,9 +30,41 @@ body {
   max-height: 40px;
 }
 
+.uk-nav-default {
+  font-size: 1rem !important;
+}
+
+.custom-line {
+  overflow: hidden;
+}
+
+.custom-line>* {
+  display: inline-block;
+  position: relative;
+}
+
+.custom-line>::before {
+  right: 100%;
+  margin-right: .6em
+}
+
+.custom-line>::after {
+  left: 100%;
+  margin-left: .6em
+}
+
+.custom-line>::before, .custom-line>:after {
+  content: "";
+  position: absolute;
+  top: calc(50% - (1px / 2));
+  width: 2000px;
+  border-bottom: 1px solid #e5e5e5;
+}
+
 @media all and (min-width: 960px) {
   #body {
     float: left;
+    width: calc(100% - 340px);
     margin-left: 300px;
     padding: 20px;
   }
@@ -41,6 +73,7 @@ body {
 @media not all and (min-width: 960px) {
   #body {
     float: left;
+    width: calc(100% - 40px);
     margin-left: 0px;
     padding: 20px;
   }

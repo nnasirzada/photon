@@ -15,6 +15,9 @@ require('./config/passport');
 const index = require('./routes/index');
 const auth = require('./routes/auth');
 const admin = require('./routes/admin');
+const instructor = require('./routes/instructor');
+const student = require('./routes/student');
+const parent = require('./routes/parent');
 const app = express();
 
 // view engine setup
@@ -39,6 +42,9 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/', index);
 app.use('/auth', auth);
 app.use('/admin', admin);
+app.use('/instructor', instructor);
+app.use('/student', student);
+app.use('/parent', parent);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
