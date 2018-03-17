@@ -1,0 +1,51 @@
+<script>
+	$(document).ready(function () {
+		var table = $('#table').DataTable({
+			dom: 'Bfrtip',
+			buttons: [
+				{
+					text: 'New',
+					action: function (e, dt) {
+					}
+				},
+				{
+					extend: 'selectedSingle',
+					text: 'Edit',
+					action: function (e, dt) {
+						var data = dt.rows({ selected: true }).data();
+						if (data.length <= 0) return;
+						var row_id = data[0].id;
+						alert('Selected row: ' + row_id);
+					}
+				},
+				{
+					extend: 'selectedSingle',
+					text: 'Delete',
+					action: function (e, dt) {
+						var data = dt.rows({ selected: true }).data();
+						if (data.length <= 0) return;
+						var row_id = data[0].id;
+						alert('Selected row: ' + row_id);
+					}
+				},
+				'copyHtml5', 'excelHtml5', 'csvHtml5', 'pdfHtml5', 'colvis'
+			],
+			select: { style: 'single' },
+			ajax: "/admin/buildings/all",
+			rowId: 'id',
+			columns: [
+				{ "data": "code" },
+				{ "data": "name" }
+			]
+		});
+	});
+</script>
+
+<table id="table" class="uk-table uk-table-hover uk-table-striped" style="width: 100%;">
+	<thead>
+		<tr>
+			<th>Code</th>
+			<th>Name</th>
+		</tr>
+	</thead>
+</table>

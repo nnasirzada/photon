@@ -1,5 +1,5 @@
 body {
-  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+  font: 14px Helvetica, Arial, sans-serif;
 }
 
 #offcanvas-nav > div {
@@ -35,6 +35,7 @@ body {
 }
 
 .custom-line {
+  width: 100%;
   overflow: hidden;
 }
 
@@ -77,4 +78,40 @@ body {
     margin-left: 0px;
     padding: 20px;
   }
+}
+
+table.dataTable {
+  border-collapse: collapse !important;
+}
+
+table.dataTable thead th, table.dataTable tfoot th {
+  font-weight: normal !important;
+  border: 0 !important;
+  font-size: 0.8rem !important;
+}
+
+table.dataTable tbody th, table.dataTable tbody td {
+  padding: 16px 12px !important;
+}
+
+table.dataTable thead th, table.dataTable tfoot th {
+  padding: 16px 30px 16px 12px !important;
+}
+
+table.dataTable thead .sorting{
+	background:none !important;
+}
+
+table.dataTable thead .sorting_asc{
+	background:url(data:image/gif;base64,R0lGODlhCwALAJEAAAAAAP///xUVFf///yH5BAEAAAMALAAAAAALAAsAAAIRnC2nKLnT4or00Puy3rx7VQAAOw==) no-repeat right 10px center !important;
+}
+
+table.dataTable thead .sorting_desc{
+	background:url(data:image/gif;base64,R0lGODlhCwALAJEAAAAAAP///xUVFf///yH5BAEAAAMALAAAAAALAAsAAAIPnI+py+0/hJzz0IruwjsVADs=) no-repeat right 10px center !important;
+}
+
+table.dataTable.no-footer {
+  float: left;
+  border-bottom: 1px solid #e5e5e5 !important;
+  margin: 15px 0px !important;
 }
