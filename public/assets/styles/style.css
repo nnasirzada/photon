@@ -98,6 +98,10 @@ table.dataTable thead th, table.dataTable tfoot th {
   padding: 16px 30px 16px 12px !important;
 }
 
+table.dataTable .sorting_disabled {
+  padding: 16px 12px !important;
+}
+
 table.dataTable thead .sorting{
 	background:none !important;
 }
@@ -114,4 +118,32 @@ table.dataTable.no-footer {
   float: left;
   border-bottom: 1px solid #e5e5e5 !important;
   margin: 15px 0px !important;
+}
+
+table.dataTable tbody>tr.selected, table.dataTable tbody>tr>.selected, table.dataTable tbody tr.selected {
+  background-color: #cff0ff!important;
+}
+
+.dataTables_wrapper input[type="search"] {
+  border: 1px solid #f1f1f1;
+  padding: 0.5em 1em;
+  -webkit-appearance: none;
+}
+
+.uk-notification {
+  width: 100% !important;
+  top: 0px !important;
+  right: 0px !important;
+  left: 0px !important;
+  margin: 0px !important;
+  text-align: center !important;
+}
+
+.uk-notification-message {
+  background: #33393f !important;
+  line-height: 1 !important;
+  color: #ffffff !important;
+  -webkit-box-shadow: 0 0 5px black;
+  -moz-box-shadow: 0 0 5px black;
+  box-shadow: 0 0 5px black;
 }

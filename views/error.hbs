@@ -1,9 +1,29 @@
-<div class="uk-width-1-1 uk-margin-bottom">
-	<h1>{{error.message}}</h1>
-</div>
-<div class="uk-width-1-1 uk-margin">
-	<h2>{{error.status}}</h2>
-</div>
-<div class="uk-width-1-1 uk-margin-top">
-	<pre>{{error.stack}}</pre>
-</div>
+<!DOCTYPE html>
+<html>
+
+<head>
+	<title>{{title}}</title>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/uikit/3.0.0-beta.40/css/uikit.min.css" />
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/uikit/3.0.0-beta.40/js/uikit.min.js"></script>
+	<style>
+		body {
+			padding: 40px;
+		}
+	</style>
+</head>
+
+<body>
+	<div class="uk-width-1-1 uk-margin-bottom">
+		<h1>{{error.message}}</h1>
+	</div>
+	<div class="uk-width-1-1 uk-margin">
+		<h2>{{error.status}}</h2>
+	</div>
+	<div class="uk-width-1-1 uk-margin-top">
+		<pre>{{error.stack}}</pre>
+	</div>
+</body>
+
+</html>

@@ -20,34 +20,35 @@
 			<div class="uk-card-body">
 				<form method="post" action="/auth/login/" class="uk-width-1-1">
 					{{# each error}}
-					<div class="uk-alert-danger" uk-alert>
-						<a class="uk-alert-close" uk-close></a>
-						<p>{{this}}</p>
-					</div>
-					{{/each}} {{# each success}}
-					<div class="uk-alert-success" uk-alert>
-						<a class="uk-alert-close" uk-close></a>
-						<p>{{this}}</p>
-					</div>
-					{{/each}}
-					<div class="uk-margin">
-						<div class="uk-inline uk-width-1-1">
-							<span class="uk-form-icon" uk-icon="icon: mail"></span>
-							<input class="uk-input" type="email" name="email" placeholder="Email" required>
+						<div class="uk-alert-danger" uk-alert>
+							<a class="uk-alert-close" uk-close></a>
+							<p>{{this}}</p>
 						</div>
-					</div>
-					<div class="uk-margin">
-						<div class="uk-inline uk-width-1-1">
-							<span class="uk-form-icon" uk-icon="icon: lock"></span>
-							<input class="uk-input" type="password" name="password" placeholder="Password" required>
-						</div>
-					</div>
-					<div class="uk-margin">
-						<input type="submit" class="uk-button uk-button-primary uk-width-1-1" value="Login">
-					</div>
-					<div class="uk-margin-top">
-						<a class="uk-button uk-button-default uk-width-1-1" uk-toggle="target: #modal-reset-password">Forgot your password?</a>
-					</div>
+						{{/each}}
+						{{# each success}}
+							<div class="uk-alert-success" uk-alert>
+								<a class="uk-alert-close" uk-close></a>
+								<p>{{this}}</p>
+							</div>
+							{{/each}}
+							<div class="uk-margin">
+								<div class="uk-inline uk-width-1-1">
+									<span class="uk-form-icon" uk-icon="icon: mail"></span>
+									<input class="uk-input" type="email" name="email" placeholder="Email" required>
+								</div>
+							</div>
+							<div class="uk-margin">
+								<div class="uk-inline uk-width-1-1">
+									<span class="uk-form-icon" uk-icon="icon: lock"></span>
+									<input class="uk-input" type="password" name="password" placeholder="Password" required>
+								</div>
+							</div>
+							<div class="uk-margin">
+								<input type="submit" class="uk-button uk-button-primary uk-width-1-1" value="Login">
+							</div>
+							<div class="uk-margin-top">
+								<a class="uk-button uk-button-default uk-width-1-1" uk-toggle="target: #modal-reset-password">Forgot your password?</a>
+							</div>
 				</form>
 			</div>
 		</div>
@@ -66,7 +67,7 @@
 				<input type="hidden" name="sign_in" value="false">
 				<div class="uk-margin-top uk-text-right">
 					<button class="uk-button uk-button-default uk-modal-close" type="button">Cancel</button>
-					<input type="submit" class="uk-button uk-button-primary" value="Send">
+					<input type="submit" class="uk-margin-left uk-button uk-button-primary" value="Send">
 				</div>
 			</form>
 		</div>
@@ -76,8 +77,7 @@
 	<div id="modal-check-your-email" uk-modal>
 		<div class="uk-modal-dialog uk-modal-body uk-margin-auto-vertical">
 			<h2 class="uk-modal-title">Check your email</h2>
-			<p>We have sent you an email with instructions for resetting your password. If you do not receive this email, please check
-				your spam folder or contact us for further assistance.
+			<p>We have sent you an email with instructions for resetting your password. If you do not receive this email, please check your spam folder or contact us for further assistance.
 			</p>
 			<p class="uk-text-right">
 				<button class="uk-button uk-button-primary uk-modal-close" type="button">Ok</button>
@@ -86,7 +86,8 @@
 	</div>
 
 	{{#if password_reset_requested}}
-	<script>UIkit.modal("#modal-check-your-email").show();</script> {{/if}}
+		<script>UIkit.modal("#modal-check-your-email").show();</script>
+	{{/if}}
 
 </body>
 
