@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<title>{{title}}</title>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" href="/assets/styles/style.css" />
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.css" />
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/uikit/3.0.0-beta.40/css/uikit.min.css" />
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/uikit/3.0.0-beta.40/js/uikit.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/uikit/3.0.0-beta.40/js/uikit-icons.min.js"></script>
+</head>
+
+<body>
+
+	{{!-- Drawer (Sidebar) --}}
+	<div id="offcanvas-nav" uk-offcanvas="overlay: true" class="uk-dark" uk-offcanvas>
+		<div class="uk-offcanvas-bar">
+			<ul class="uk-nav uk-nav-default uk-nav-parent-icon" uk-nav>
+				<li {{#if active.profile}} class="uk-active" {{/if}}>
+					<a href="#">Profile</a>
+				</li>
+				<li class="uk-nav-divider"></li>
+				<li {{#if active.classes}} class="uk-active" {{/if}}>
+					<a href="#">Classes</a>
+				</li>
+				<li class="uk-nav-divider"></li>
+				<li {{#if active.attendance}} class="uk-active" {{/if}}>
+					<a href="#">Attendance</a>
+				</li>
+				<li class="uk-nav-divider"></li>
+				<li {{#if active.grading}} class="uk-active" {{/if}}>
+					<a href="#">Grading</a>
+				</li>
+				<li class="uk-nav-divider"></li>
+				<li>
+					<a href="/auth/logout/">Logout</a>
+				</li>
+			</ul>
+		</div>
+	</div>
+
+	{{!-- Horizontal Navbar --}}
+	<nav id="navbar" class="uk-navbar-container" uk-sticky="bottom: #offset" uk-navbar>
+		<div class="uk-navbar-left">
+			<a href="/" class="uk-navbar-item uk-logo">
+				<img src="/assets/images/university_logo.png">
+			</a>
+		</div>
+		<div class="uk-navbar-right">
+			<ul class="uk-navbar-nav">
+				<li class="uk-visible@m {{#if active.profile}} uk-active {{/if}}">
+					<a href="#">Profile</a>
+				</li>
+				<li class="uk-visible@m">
+					<a href="/auth/logout/">Logout</a>
+				</li>
+			</ul>
+			<button class="uk-navbar-toggle uk-hidden@m" uk-toggle="target: #offcanvas-nav" uk-navbar-toggle-icon></button>
+		</div>
+	</nav>
+
+	{{!-- Sticky Sidebar --}}
+	<div id="oncanvas-nav" class="uk-visible@m uk-light">
+		<ul class="uk-nav uk-nav-default uk-nav-parent-icon" uk-nav>
+			<li {{#if active.profile}} class="uk-active" {{/if}}>
+				<a href="#">Profile</a>
+			</li>
+			<li class="uk-nav-divider"></li>
+			<li {{#if active.classes}} class="uk-active" {{/if}}>
+				<a href="#">Classes</a>
+			</li>
+			<li class="uk-nav-divider"></li>
+			<li {{#if active.attendance}} class="uk-active" {{/if}}>
+				<a href="#">Attendance</a>
+			</li>
+			<li class="uk-nav-divider"></li>
+			<li {{#if active.grading}} class="uk-active" {{/if}}>
+				<a href="#">Grading</a>
+			</li>
+			<li class="uk-nav-divider"></li>
+			<li>
+				<a href="/auth/logout/">Logout</a>
+			</li>
+		</ul>
+	</div>
+
+	<div id="body">
+		{{{body}}}
+	</div>
+
+	<script>
+		function showOffcanvasNav() {
+			UIkit.offcanvas('#offcanvas-nav').show();
+		}
+	</script>
+
+</body>
+
+</html>
