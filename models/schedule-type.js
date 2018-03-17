@@ -1,6 +1,6 @@
 module.exports = (sequelize, DataTypes) => {
 
-	const Building = sequelize.define('Building', {
+	const ScheduleType = sequelize.define('ScheduleType', {
 		id: {
 			type: DataTypes.INTEGER(5).UNSIGNED,
 			primaryKey: true,
@@ -12,7 +12,7 @@ module.exports = (sequelize, DataTypes) => {
 		name: {
 			type: DataTypes.STRING(191)
 		}
-	}, { tableName: 'building', });
+	}, { tableName: 'schedule_type', });
 
-	return Building;
+	return ScheduleType;
 };
