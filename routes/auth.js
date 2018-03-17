@@ -149,8 +149,17 @@ router.get('/redirect', isLoggedIn, (req, res, next) => {
 		case 'admin':
 			res.redirect('/admin/');
 			break;
+		case 'instructor':
+			res.redirect('/instructor/');
+			break;
+		case 'student':
+			res.redirect('/student/');
+			break;
+		case 'parent':
+			res.redirect('/parent/');
+			break;
 		default:
-			res.end();
+			next();
 	}
 })
 
