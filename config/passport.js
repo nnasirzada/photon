@@ -10,7 +10,9 @@ passport.serializeUser((user, done) => {
 passport.deserializeUser((id, done) => {
 	models.User.findOne({
 		where: { id: id },
-		attributes: ['id', 'email', 'type']
+		attributes: {
+			exclude: ['password']
+		}
 	}).then((User) => {
 		done(null, User);
 	}).catch((err) => {
@@ -19,7 +21,7 @@ passport.deserializeUser((id, done) => {
 });
 
 passport.use('local.login', new LocalStrategy({
-	usernameField: 'email',
+	usernameField: 'username',
 	passwordField: 'password',
 	passReqToCallback: true
 }, (req, email, password, done) => {

@@ -11,7 +11,6 @@
 </head>
 
 <body>
-
 	<div class="uk-width-1-1 uk-height-viewport" style="background-color: #000000">
 		<div class="uk-card uk-card-default uk-card-small uk-width-1-1 uk-position-center" style="max-width:450px;">
 			<div class="uk-card-header">
@@ -23,6 +22,21 @@
 						<div class="uk-alert-danger" uk-alert>
 							<a class="uk-alert-close" uk-close></a>
 							<p>{{this}}</p>
+<<<<<<< HEAD
+=======
+						</div>
+					{{/each}}
+					{{# each success}}
+						<div class="uk-alert-success" uk-alert>
+							<a class="uk-alert-close" uk-close></a>
+							<p>{{this}}</p>
+						</div>
+					{{/each}}
+					<div class="uk-margin">
+						<div class="uk-inline uk-width-1-1">
+							<span class="uk-form-icon" uk-icon="icon: mail"></span>
+							<input class="uk-input" type="email" name="username" placeholder="Email" required>
+>>>>>>> eecb8645b2c52360dbbd7f2139898b9ad24b3dde
 						</div>
 						{{/each}}
 						{{# each success}}
@@ -77,8 +91,12 @@
 	<div id="modal-check-your-email" uk-modal>
 		<div class="uk-modal-dialog uk-modal-body uk-margin-auto-vertical">
 			<h2 class="uk-modal-title">Check your email</h2>
+<<<<<<< HEAD
 			<p>We have sent you an email with instructions for resetting your password. If you do not receive this email, please check your spam folder or contact us for further assistance.
 			</p>
+=======
+			<p>We have sent you an email with instructions for resetting your password. If you do not receive this email, please check your spam folder or contact us for further assistance.</p>
+>>>>>>> eecb8645b2c52360dbbd7f2139898b9ad24b3dde
 			<p class="uk-text-right">
 				<button class="uk-button uk-button-primary uk-modal-close" type="button">Ok</button>
 			</p>
@@ -86,9 +104,14 @@
 	</div>
 
 	{{#if password_reset_requested}}
+<<<<<<< HEAD
 		<script>UIkit.modal("#modal-check-your-email").show();</script>
 	{{/if}}
 
+=======
+		<script>UIkit.modal("#modal-check-your-email").show();</script> 
+	{{/if}}
+>>>>>>> eecb8645b2c52360dbbd7f2139898b9ad24b3dde
 </body>
 
 </html>
