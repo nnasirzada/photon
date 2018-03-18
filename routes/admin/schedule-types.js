@@ -4,7 +4,7 @@ const models = require('../../models');
 const router = express.Router();
 
 router.get("/", (req, res, next) => {
-  res.render("admin/schedule_types", {
+  res.render("admin/schedule-types", {
     title: "Schedule Types - Photon",
     active: {
       scheduleTypes: true

@@ -4,7 +4,7 @@ const models = require('../../models');
 const router = express.Router();
 
 router.get("/", (req, res, next) => {
-  res.render("admin/grade_modes", {
+  res.render("admin/grade-modes", {
     title: "Grade Modes - Photon",
     active: {
       gradeModes: true

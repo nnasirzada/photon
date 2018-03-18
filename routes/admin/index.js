@@ -19,8 +19,8 @@ router.get("/", (req, res, next) => {
 });
 
 router.use("/buildings/", require("./buildings.js"));
-router.use("/grade_modes/", require("./grade_modes.js"));
-router.use("/schedule_types/", require("./schedule_types.js"));
+router.use("/grade-modes/", require("./grade-modes.js"));
+router.use("/schedule-types/", require("./schedule-types.js"));
 router.use("/subjects/", require("./subjects.js"));
 
 module.exports = router;
