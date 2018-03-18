@@ -21,7 +21,7 @@ module.exports = (sequelize, DataTypes) => {
 			type: DataTypes.ENUM('male', 'female', 'other')
 		},
 		address: {
-			type: DataTypes.STRING(191)
+			type: DataTypes.TEXT('tiny')
 		},
 		email: {
 			type: DataTypes.STRING(191)
@@ -38,7 +38,7 @@ module.exports = (sequelize, DataTypes) => {
 		type: {
 			type: DataTypes.ENUM('instructor', 'student', 'parent', 'admin')
 		}
-	}, { tableName: 'user', });
+	}, { tableName: 'user' });
 
 	User.hook('beforeUpdate', (user, options) => {
 		user.password = bcrypt.hashSync(user.password, 5);

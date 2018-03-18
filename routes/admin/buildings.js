@@ -27,49 +27,66 @@ router.get('/all', (req, res, next) => {
   }).catch(console.log);
 });
 
-router.post('/:id', (req, res, next) => {
+router.post('/', (req, res, next) => {
+
+  req.checkBody('code', null).notEmpty();
+  req.checkBody('name', null).notEmpty();
+
+  if (req.validationErrors())
+    return res.status(501).send('Form is incomplete.');
+
+  models.Building.build(
+    req.body
+
+  ).save().then((Building) => {
+    if (!Building) throw new Error('Failed to save building.');
+    return res.status(200).json(Building);
+
+  }).catch(err => {
+    return res.status(501).send('Failed to save building.');
+  });
+});
+
+router.put('/:id', (req, res, next) => {
+
+  req.checkBody('code', null).notEmpty();
+  req.checkBody('name', null).notEmpty();
+
+  if (req.validationErrors())
+    return res.status(501).send('Form is incomplete.');
+
   models.Building.findOne({
     where: { id: req.params.id }
+
   }).then((Building) => {
-    if (!Building) {
-      res.status(501).send('Failed to edit.');
-    } else {
-      models.Building.update({ code: req.body.code, name: req.body.name }, {
-        where: { id: Building.id }
-      }).then(result => {
-        models.Building.findOne({
-          where: { id: req.params.id }
-        }).then((Building) => {
-          res.status(200).json(Building);
-        }).catch(err => {
-          res.status(501).send('Failed to edit.');
-        });
-      }).catch(err => {
-        res.status(501).send('Failed to edit.');
-      });
-    }
+    if (!Building) throw new Error('Building not found.');
+    return models.Building.update(
+      { code: req.body.code, name: req.body.name },
+      { where: { id: Building.id } });
+
+  }).then(result => {
+    return models.Building.findOne({ where: { id: req.params.id } });
+
+  }).then((Building) => {
+    if (!Building) throw new Error('Building not found.');
+    return res.status(200).json(Building);
+
   }).catch(err => {
-    res.status(501).send('Failed to edit.');
+    return res.status(501).send('Failed to edit building.');
   });
 });
 
 router.delete('/:id', (req, res, next) => {
 
   models.Building.findOne({ where: { id: req.params.id } }).then((Building) => {
+    if (!Building) throw new Error('Building not found.');
+    return models.Building.destroy({ where: { id: Building.id } })
 
-    if (!Building) {
-      res.status(501).send('Failed to delete.');
-    } else {
-      models.Building.destroy({
-        where: { id: Building.id }
-      }).then(result => {
-        res.status(200).send('Successfully deleted.');
-      }).catch(err => {
-        res.status(501).send('Failed to delete.');
-      });
-    }
+  }).then(result => {
+    return res.status(200).send('Building successfully deleted.');
+
   }).catch(err => {
-    res.status(501).send('Failed to delete.');
+    return res.status(501).send('Failed to delete building.');
   });
 });
 

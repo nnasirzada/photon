@@ -36,7 +36,7 @@ module.exports = (sequelize, DataTypes) => {
 		school_id: {
 			type: DataTypes.SMALLINT(5).UNSIGNED
 		}
-	}, { tableName: 'course', });
+	}, { tableName: 'course' });
 
 	return Course;
 };

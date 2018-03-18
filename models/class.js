@@ -24,7 +24,7 @@ module.exports = (sequelize, DataTypes) => {
 		status: {
 			type: DataTypes.ENUM('open', 'closed')
 		}
-	}, { tableName: 'class', });
+	}, { tableName: 'class' });
 
 	return Class;
 };

@@ -15,7 +15,7 @@ module.exports = (sequelize, DataTypes) => {
 		min_percents: {
 			type: DataTypes.DECIMAL(5, 2)
 		},
-	}, { tableName: 'grade_scale', });
+	}, { tableName: 'grade_scale' });
 
 	return GradeScale;
 };

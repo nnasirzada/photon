@@ -18,7 +18,7 @@ module.exports = (sequelize, DataTypes) => {
 		program_id: {
 			type: DataTypes.SMALLINT(5).UNSIGNED
 		}
-	}, { tableName: 'major', });
+	}, { tableName: 'major' });
 
 	return Major;
 };

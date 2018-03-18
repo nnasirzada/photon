@@ -2,7 +2,7 @@ module.exports = (sequelize, DataTypes) => {
 
 	const Building = sequelize.define('Building', {
 		id: {
-			type: DataTypes.INTEGER(5).UNSIGNED,
+			type: DataTypes.SMALLINT(5).UNSIGNED,
 			primaryKey: true,
 			autoIncrement: true
 		},
@@ -12,7 +12,7 @@ module.exports = (sequelize, DataTypes) => {
 		name: {
 			type: DataTypes.STRING(191)
 		}
-	}, { tableName: 'building', });
+	}, { tableName: 'building' });
 
 	return Building;
 };

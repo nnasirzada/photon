@@ -1,6 +1,6 @@
 module.exports = (sequelize, DataTypes) => {
 
-	const School = sequelize.define('School', {
+	const Term = sequelize.define('Term', {
 		id: {
 			type: DataTypes.INTEGER(5).UNSIGNED,
 			primaryKey: true,
@@ -25,7 +25,7 @@ module.exports = (sequelize, DataTypes) => {
 		status: {
 			type: DataTypes.ENUM('view_only', 'open', 'hidden')
 		}
-	}, { tableName: 'school', });
+	}, { tableName: 'term' });
 
-	return School;
+	return Term;
 };
