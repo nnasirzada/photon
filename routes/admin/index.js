@@ -3,23 +3,19 @@ const passport = require("passport");
 const router = express.Router();
 
 router.all("/*", (req, res, next) => {
-  if (!req.isAuthenticated() || req.user.type != "admin") {
-    //res.redirect("/auth/login/");
-  }
+  //if (!req.isAuthenticated() || req.user.type != "admin")
+  //res.redirect("/auth/login/");
   req.app.locals.layout = "admin/layout";
   next();
 });
 
 router.get("/", (req, res, next) => {
-  res.render("admin", {
-    imports: {
-      uikit: true
-    }
-  });
+  res.redirect('/admin/buildings/');
 });
 
 router.use("/buildings/", require("./buildings.js"));
 router.use("/grade-modes/", require("./grade-modes.js"));
+router.use("/buildings/:building_id/rooms/", require("./rooms.js"));
 router.use("/schedule-types/", require("./schedule-types.js"));
 router.use("/subjects/", require("./subjects.js"));
 

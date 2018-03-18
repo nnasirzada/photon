@@ -28,7 +28,7 @@ router.get('/reset-password/:token', isNotLoggedIn, (req, res, next) => {
 			err.status = 404;
 			res.locals.error = err;
 			res.status(err.status || 500);
-			return res.render('error', { title: err.message });
+			return res.render('error', { layout: false });
 		} else {
 			return res.render('auth/reset-password', {
 				layout: false,
