@@ -1,5 +1,5 @@
 <!-- Header -->
-<h3 class="uk-heading-bullet">Buildings</h3>
+<h3 class="uk-heading-bullet">Schedule Types</h3>
 
 <!-- Table -->
 <table id="table" class="uk-table uk-table-hover uk-table-striped" style="width: 100%;">
@@ -7,7 +7,6 @@
 		<tr>
 			<th>Code</th>
 			<th>Name</th>
-			<th class="dt-right">Options</th>
 		</tr>
 	</thead>
 </table>
@@ -42,7 +41,7 @@
 <div id="modal-delete" uk-modal>
 	<div class="uk-modal-dialog uk-modal-body uk-margin-auto-vertical">
 		<form method="delete" action class="uk-width-1-1">
-			<h2 class="uk-modal-title">Are you sure you want to delete this building?</h2>
+			<h2 class="uk-modal-title">Are you sure you want to delete this schedule type?</h2>
 			<input name="id" type="hidden" value>
 			<div class="uk-margin-top uk-text-right">
 				<button class="uk-button uk-button-default uk-modal-close" type="button">Close</button>
@@ -66,9 +65,9 @@
 					text: 'New',
 					action: function (e, dt) {
 						$('#modal-create-edit form')[0].reset();
-						$("#modal-create-edit form").attr("action", "/admin/buildings/");
+						$("#modal-create-edit form").attr("action", "/admin/schedule_types/");
 						$("#modal-create-edit form").attr("method", "post");
-						$("#modal-create-edit .uk-modal-title").html("New building");
+						$("#modal-create-edit .uk-modal-title").html("New schedule type");
 						$("#modal-create-edit input[type='submit']").show();
 						$("#modal-create-edit .uk-modal-close").show();
 						$("#modal-create-edit .spinner").hide();
@@ -82,12 +81,12 @@
 						var data = dt.rows({ selected: true }).data();
 						if (data.length != 1) return;
 						var row = data[0];
-						$("#modal-create-edit form").attr("action", "/admin/buildings/" + row.id);
+						$("#modal-create-edit form").attr("action", "/admin/schedule_types/" + row.id);
 						$("#modal-create-edit form").attr("method", "put");
 						$("#modal-create-edit input[name='id']").attr("value", row.id);
 						$("#modal-create-edit input[name='code']").attr("value", row.code);
 						$("#modal-create-edit input[name='name']").attr("value", row.name);
-						$("#modal-create-edit .uk-modal-title").html("Edit building");
+						$("#modal-create-edit .uk-modal-title").html("Edit schedule type");
 						$("#modal-create-edit input[type='submit']").show();
 						$("#modal-create-edit .uk-modal-close").show();
 						$("#modal-create-edit .spinner").hide();
@@ -102,7 +101,7 @@
 						if (data.length != 1) return;
 						var row = data[0];
 						$('#modal-delete form')[0].reset();
-						$("#modal-delete form").attr("action", "/admin/buildings/" + row.id);
+						$("#modal-delete form").attr("action", "/admin/schedule_types/" + row.id);
 						$("#modal-delete input[name='id']").attr("value", row.id);
 						$("#modal-delete input[type='submit']").show();
 						$("#modal-delete .uk-modal-close").show();
@@ -113,19 +112,11 @@
 				'copyHtml5', 'excelHtml5', 'csvHtml5', 'pdfHtml5', 'colvis'
 			],
 			select: { style: 'multi' },
-			ajax: "/admin/buildings/all",
+			ajax: "/admin/schedule_types/all",
 			rowId: 'id',
 			columns: [
 				{ "data": "code" },
-				{ "data": "name" },
-				{
-					data: "id",
-					className: "dt-right",
-					sortable: false,
-					render: function (data) {
-						return "<a href=\"/admin/buildings/" + data + "/rooms/\">View rooms</a>";
-					}
-				}
+				{ "data": "name" }
 			]
 		});
 		$("#modal-create-edit form").submit(function (e) {

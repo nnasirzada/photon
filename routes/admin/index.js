@@ -11,21 +11,16 @@ router.all("/*", (req, res, next) => {
 });
 
 router.get("/", (req, res, next) => {
-  res.render("admin/index", {
+  res.render("admin", {
     imports: {
       uikit: true
     }
   });
 });
 
-router.get("/student", (req, res, next) => {
-  res.render("admin/forms/student", {
-    active: {
-      users: true
-    }
-  });
-});
-
 router.use("/buildings/", require("./buildings.js"));
+router.use("/grade_modes/", require("./grade_modes.js"));
+router.use("/schedule_types/", require("./schedule_types.js"));
+router.use("/subjects/", require("./subjects.js"));
 
 module.exports = router;
