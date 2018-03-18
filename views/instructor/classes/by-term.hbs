@@ -1,0 +1,31 @@
+{{#if resultFound}}
+	<h3 class="uk-heading-bullet">
+		List of classes
+	</h3>
+
+	<div class="uk-child-width-1-3@l uk-child-width-1-2@m uk-child-width-1-1@s" uk-grid>
+		{{#each result}}
+			<div>
+				<div class="uk-card uk-card-small uk-card-default uk-card-hover">
+					<div class="uk-card-header">
+						<div class="uk-grid-small uk-flex-middle" uk-grid>
+							<div class="uk-width-expand">
+								<h3 class="uk-card-title uk-margin-remove-bottom">{{this.subject_code}} {{this.course_number}} - {{this.course_name}}</h3>
+								<p class="uk-text-meta">
+									Section: {{this.section}}
+								</p>
+							</div>
+						</div>
+					</div>
+					<div class="uk-card-footer">
+						<a href="{{../termId}}/{{this.class_id}}" class="uk-button uk-button-text uk-align-right">Home Page</a>
+					</div>
+				</div>
+			</div>
+		{{/each}}
+	</div>
+{{else}}
+	<div class="uk-alert-danger" uk-alert>
+		<p>You don't have any assigned classes for this term.</p>
+	</div>
+{{/if}}
