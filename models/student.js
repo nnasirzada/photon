@@ -25,12 +25,5 @@ module.exports = (sequelize, DataTypes) => {
         }
     }, {tableName: 'student'});
 
-    Student.getOpenTerms = user_id => {
-        return sequelize.query('SELECT * FROM term WHERE status="open"', {
-            replacements: [user_id],
-            type: sequelize.QueryTypes.SELECT
-        });
-    };
-
     return Student;
 };
