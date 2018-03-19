@@ -1,0 +1,67 @@
+<div class="uk-width-1-1">
+	<div class="uk-card custom-card-border uk-card-small uk-card-body uk-card-default">
+		<ul class="uk-nav-default uk-nav-parent-icon" uk-nav>
+			<li class="uk-active">
+				<a href="./{{classDetails.class_id}}/students-list">Students List</a>
+			</li>
+			<li class="uk-nav-divider"></li>
+			<li>
+				<a href="./{{classDetails.class_id}}/grade-components">Grade Components</a>
+			</li>
+			<li class="uk-nav-divider"></li>
+			<li>
+				<a href="./{{classDetails.class_id}}/attendance">Attendance</a>
+			</li>
+		</ul>
+	</div>
+</div>
+
+<h3 class="uk-heading-bullet uk-margin-top">
+	List of Enrolled Students
+</h3>
+
+<div uk-grid>
+	{{!-- Class Navigation --}}
+	<div class="uk-width-1-1">
+		<table id="table" class="uk-table uk-table-hover uk-table-striped" style="width: 100%;">
+			<thead>
+				<tr>
+					<th>ID</th>
+					<th>Firstname</th>
+					<th>Lastname</th>
+					<th>Patronymic</th>
+					<th>Email</th>
+					<th>Major</th>
+					<th>Reg. Status</th>
+				</tr>
+			</thead>
+		</table>
+	</div>
+</div>
+
+
+<script>
+	$(document).ready(function () {
+		var table = $('#table').DataTable({
+			dom: 'Bfrtip',
+			responsive: {
+				details: {
+					display: $.fn.dataTable.Responsive.display.childRowImmediate
+				}
+			},
+			buttons: ['excelHtml5', 'csvHtml5', 'pdfHtml5', 'colvis'],
+			select: { style: 'multi', selector: 'td:not(.not-selectable)' },
+			ajax: "./students-list/all",
+			rowId: 'id',
+			columns: [
+				{ "data": "student_id" },
+				{ "data": "firstname" },
+				{ "data": "lastname" },
+				{ "data": "patronymic" },
+				{ "data": "email" },
+				{ "data": "major" },
+				{ "data": "status" }
+			]
+		});
+	});
+</script>
