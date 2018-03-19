@@ -30,6 +30,9 @@ module.exports = (sequelize, DataTypes) => {
 		grade_mode_id: {
 			type: DataTypes.SMALLINT(5).UNSIGNED
 		},
+		program_id: {
+			type: DataTypes.SMALLINT(5).UNSIGNED
+		},
 		subject_id: {
 			type: DataTypes.SMALLINT(5).UNSIGNED
 		},

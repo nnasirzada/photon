@@ -9,7 +9,6 @@ router.get("/", (req, res, next) => {
     models.School.findAll(),
     models.Program.findAll()
   ]).then(results => {
-    console.log(results);
     res.render("admin/majors", {
       title: "Majors - Photon",
       active: {

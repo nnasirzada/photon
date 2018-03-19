@@ -14,6 +14,10 @@ router.get("/", (req, res, next) => {
 });
 
 router.use("/buildings/", require("./buildings.js"));
+router.use("/schools/:school_id/courses/", require("./courses.js"));
+router.use("/subjects/:subject_id/courses/", require("./courses.js"));
+router.use("/programs/:program_id/courses/", require("./courses.js"));
+router.use("/courses/", require("./courses.js"));
 router.use("/grade-modes/", require("./grade-modes.js"));
 router.use("/majors/", require("./majors.js"));
 router.use("/programs/", require("./programs.js"));

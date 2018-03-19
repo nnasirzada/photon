@@ -7,6 +7,7 @@
 		<tr>
 			<th>Code</th>
 			<th>Name</th>
+			<th>Options</th>
 		</tr>
 	</thead>
 </table>
@@ -121,7 +122,16 @@
 			rowId: 'id',
 			columns: [
 				{ "data": "code" },
-				{ "data": "name" }
+				{ "data": "name" },
+				{
+					data: "id",
+					className: "dt-right not-selectable",
+					sortable: false,
+					render: function (data) {
+						return "<a href=\"" + data + "/courses/\">View courses</a><br>"
+							+ "<a href=\"" + data + "/classes/\">View classes</a>";
+					}
+				}
 			]
 		});
 		$("#modal-create-edit form").submit(function (e) {

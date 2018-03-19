@@ -1,12 +1,20 @@
 <!-- Header -->
-<h3 class="uk-heading-bullet">Schools</h3>
+<h3 class="uk-heading-bullet">Courses</h3>
 
 <!-- Table -->
 <table id="table" class="uk-table uk-table-hover uk-table-striped" style="width: 100%;">
 	<thead>
 		<tr>
-			<th>Code</th>
+			<th>#</th>
 			<th>Name</th>
+			<th class="none">Description</th>
+			<th>Credit / GPA Hours</th>
+			<th>School</th>
+			<th>Subject</th>
+			<th>Program</th>
+			<th>Grade Mode</th>
+			<th>Passing Grade</th>
+			<th>Schedule Type</th>
 			<th>Options</th>
 		</tr>
 	</thead>
@@ -19,12 +27,78 @@
 			<h2 class="uk-modal-title"></h2>
 			<input name="id" type="hidden" value>
 			<div class="uk-margin uk-width-1-1">
-				<label class="uk-form-label" for="code">Code</label>
-				<input class="uk-input" type="text" name="code" id="code" placeholder="Code" required>
+				<label class="uk-form-label" for="number">Number</label>
+				<input class="uk-input" type="number" name="number" id="number" placeholder="Number" required>
 			</div>
 			<div class="uk-margin uk-width-1-1">
 				<label class="uk-form-label" for="name">Name</label>
-				<input class="uk-input" type="text" name="name" id="name" placeholder="Name" required>
+				<input class="uk-input" type="name" name="name" id="name" placeholder="Name" required>
+			</div>
+			<div class="uk-margin uk-width-1-1">
+				<label class="uk-form-label" for="description">Description</label>
+				<textarea class="uk-textarea" name="description" id="description" placeholder="Description" rows="5" required></textarea>
+			</div>
+			<div class="uk-margin uk-width-1-1">
+				<label class="uk-form-label" for="number">Credit Hours</label>
+				<input class="uk-input" type="float" name="credit_hours" id="credit_hours" placeholder="Credit Hours" required>
+			</div>
+			<div class="uk-margin uk-width-1-1">
+				<label class="uk-form-label" for="number">GPA Hours</label>
+				<input class="uk-input" type="float" name="gpa_hours" id="gpa_hours" placeholder="GPA Hours" required>
+			</div>
+			{{#unless school_id}}
+				<div class="uk-margin uk-width-1-1">
+					<label class="uk-form-label" for="school_id">School</label>
+					<select class="uk-select" name="school_id" id="school_id">
+						{{#each schools}}
+							<option value="{{this.id}}">{{this.code}} - {{this.name}}</option>
+						{{/each}}
+					</select>
+				</div>
+			{{/unless}}
+			{{#unless subject_id}}
+				<div class="uk-margin uk-width-1-1">
+					<label class="uk-form-label" for="subject_id">Subject</label>
+					<select class="uk-select" name="subject_id" id="subject_id">
+						{{#each subjects}}
+							<option value="{{this.id}}">{{this.code}} - {{this.name}}</option>
+						{{/each}}
+					</select>
+				</div>
+			{{/unless}}
+			{{#unless program_id}}
+				<div class="uk-margin uk-width-1-1">
+					<label class="uk-form-label" for="program_id">Program</label>
+					<select class="uk-select" name="program_id" id="program_id">
+						{{#each programs}}
+							<option value="{{this.id}}">{{this.code}} - {{this.name}}</option>
+						{{/each}}
+					</select>
+				</div>
+			{{/unless}}
+			<div class="uk-margin uk-width-1-1">
+				<label class="uk-form-label" for="grade_mode_id">Grade Mode</label>
+				<select class="uk-select" name="grade_mode_id" id="grade_mode_id">
+					{{#each gradeModes}}
+						<option value="{{this.id}}">{{this.code}} - {{this.name}}</option>
+					{{/each}}
+				</select>
+			</div>
+			<div class="uk-margin uk-width-1-1">
+				<label class="uk-form-label" for="passing_grade_id">Passing Grade</label>
+				<select class="uk-select" name="passing_grade_id" id="passing_grade_id">
+					{{#each gradeScales}}
+						<option value="{{this.id}}">{{this.grade_letter}} = {{this.min_percents}}</option>
+					{{/each}}
+				</select>
+			</div>
+			<div class="uk-margin uk-width-1-1">
+				<label class="uk-form-label" for="schedule_type_id">Schedule Type</label>
+				<select class="uk-select" name="schedule_type_id" id="schedule_type_id">
+					{{#each scheduleTypes}}
+						<option value="{{this.id}}">{{this.code}} - {{this.name}}</option>
+					{{/each}}
+				</select>
 			</div>
 			<div class="uk-margin-top uk-text-right">
 				<button class="uk-button uk-button-default uk-modal-close" type="button">Close</button>
@@ -42,7 +116,7 @@
 <div id="modal-delete" uk-modal>
 	<div class="uk-modal-dialog uk-modal-body uk-margin-auto-vertical">
 		<form method="delete" action class="uk-width-1-1">
-			<h2 class="uk-modal-title">Are you sure you want to delete this school?</h2>
+			<h2 class="uk-modal-title">Are you sure you want to delete this course?</h2>
 			<input name="id" type="hidden" value>
 			<div class="uk-margin-top uk-text-right">
 				<button class="uk-button uk-button-default uk-modal-close" type="button">Close</button>
@@ -73,7 +147,7 @@
 						$('#modal-create-edit form')[0].reset();
 						$("#modal-create-edit form").attr("action", "#");
 						$("#modal-create-edit form").attr("method", "post");
-						$("#modal-create-edit .uk-modal-title").html("New school");
+						$("#modal-create-edit .uk-modal-title").html("New course");
 						$("#modal-create-edit input[type='submit']").show();
 						$("#modal-create-edit .uk-modal-close").show();
 						$("#modal-create-edit .spinner").hide();
@@ -90,9 +164,18 @@
 						$("#modal-create-edit form").attr("action", row.id);
 						$("#modal-create-edit form").attr("method", "put");
 						$("#modal-create-edit input[name='id']").attr("value", row.id);
-						$("#modal-create-edit input[name='code']").attr("value", row.code);
+						$("#modal-create-edit input[name='number']").attr("value", row.number);
 						$("#modal-create-edit input[name='name']").attr("value", row.name);
-						$("#modal-create-edit .uk-modal-title").html("Edit school");
+						$("#modal-create-edit textarea[name='description']").html(row.description);
+						$("#modal-create-edit input[name='credit_hours']").attr("value", row.credit_hours);
+						$("#modal-create-edit input[name='gpa_hours']").attr("value", row.gpa_hours);
+						$("#modal-create-edit select[name='school_id']").val(row.school_id).change();
+						$("#modal-create-edit select[name='subject_id']").val(row.subject_id).change();
+						$("#modal-create-edit select[name='program_id']").val(row.program_id).change();
+						$("#modal-create-edit select[name='grade_mode_id']").val(row.grade_mode_id).change();
+						$("#modal-create-edit select[name='passing_grade_id']").val(row.passing_grade_id).change();
+						$("#modal-create-edit select[name='schedule_type_id']").val(row.schedule_type_id).change();
+						$("#modal-create-edit .uk-modal-title").html("Edit course");
 						$("#modal-create-edit input[type='submit']").show();
 						$("#modal-create-edit .uk-modal-close").show();
 						$("#modal-create-edit .spinner").hide();
@@ -121,15 +204,27 @@
 			ajax: "all",
 			rowId: 'id',
 			columns: [
-				{ "data": "code" },
+				{ "data": "number" },
 				{ "data": "name" },
+				{ "data": "description" },
+				{
+					"data": null,
+					render: function (data, type, row) {
+						return row.credit_hours + " / " + row.gpa_hours;
+					}
+				},
+				{ "data": "School.name" },
+				{ "data": "Subject.name" },
+				{ "data": "Program.name" },
+				{ "data": "GradeMode.name" },
+				{ "data": "GradeScale.grade_letter" },
+				{ "data": "ScheduleType.name" },
 				{
 					data: "id",
 					className: "dt-right not-selectable",
 					sortable: false,
 					render: function (data) {
-						return "<a href=\"" + data + "/courses/\">View courses</a><br>"
-							+ "<a href=\"" + data + "/classes/\">View classes</a>";
+						return "<a href=\"" + data + "/prerequisites/\">View prerequisites</a>";
 					}
 				}
 			]
