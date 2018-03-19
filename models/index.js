@@ -37,4 +37,9 @@ Object.keys(db).forEach(function (modelName) {
 db.Sequelize = Sequelize;
 db.sequelize = sequelize;
 
+db.School.hasMany(db.Major, { foreignKey: 'id' });
+db.Program.hasMany(db.Major, { foreignKey: 'id' });
+db.Major.belongsTo(db.School, { foreignKey: 'school_id' });
+db.Major.belongsTo(db.Program, { foreignKey: 'program_id' });
+
 module.exports = db;

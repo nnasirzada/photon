@@ -147,3 +147,38 @@ table.dataTable tbody>tr.selected, table.dataTable tbody>tr>.selected, table.dat
   -moz-box-shadow: 0 0 5px black;
   box-shadow: 0 0 5px black;
 }
+
+.dtr-title {
+  min-width: 0px!important;
+  width: 30%;
+}
+
+.dtr-data {
+  float: right;
+  width: calc(70% - 10px);
+  margin-left: 10px;
+}
+
+.dtr-title, .dtr-data {
+  /* These are technically the same, but use both */
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+  -ms-word-break: break-all;
+  /* This is the dangerous one in WebKit, as it breaks things wherever */
+  word-break: break-all;
+  /* Instead use this non-standard one: */
+  word-break: break-word;
+  /* Adds a hyphen where the word breaks, if supported (No Blink) */
+  -ms-hyphens: auto;
+  -moz-hyphens: auto;
+  -webkit-hyphens: auto;
+  hyphens: auto;
+}
+
+table.dataTable ul.dtr-details {
+  width: 100%;
+}
+
+table.dataTable.dtr-inline.collapsed>tbody>tr[role="row"]>td:first-child:before, table.dataTable.dtr-inline.collapsed>tbody>tr[role="row"]>th:first-child:before{
+  display: none !important;
+}

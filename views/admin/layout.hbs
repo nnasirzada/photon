@@ -40,8 +40,40 @@
 					<a href="/admin/buildings/">Buildings</a>
 				</li>
 				<li class="uk-nav-divider"></li>
+				<li {{#if active.programs}} class="uk-active" {{/if}}>
+					<a href="/admin/programs/">Programs</a>
+				</li>
+				<li class="uk-nav-divider"></li>
 				<li {{#if active.schools}} class="uk-active" {{/if}}>
-					<a href="#">Schools</a>
+					<a href="/admin/schools/">Schools</a>
+				</li>
+				<li class="uk-nav-divider"></li>
+				<li {{#if active.majors}} class="uk-active" {{/if}}>
+					<a href="/admin/majors/">Majors</a>
+				</li>
+				<li class="uk-nav-divider"></li>
+				<li {{#if active.subjects}} class="uk-active" {{/if}}>
+					<a href="/admin/subjects/">Subjects</a>
+				</li>
+				<li class="uk-nav-divider"></li>
+				<li {{#if active.courses}} class="uk-active" {{/if}}>
+					<a href="#">Courses</a>
+				</li>
+				<li class="uk-nav-divider"></li>
+				<li {{#if active.classes}} class="uk-active" {{/if}}>
+					<a href="#">Classes</a>
+				</li>
+				<li class="uk-nav-divider"></li>
+				<li {{#if active.terms}} class="uk-active" {{/if}}>
+					<a href="#">Terms</a>
+				</li>
+				<li class="uk-nav-divider"></li>
+				<li {{#if active.gradeModes}} class="uk-active" {{/if}}>
+					<a href="/admin/grade-modes/">Grade Modes</a>
+				</li>
+				<li class="uk-nav-divider"></li>
+				<li {{#if active.scheduleTypes}} class="uk-active" {{/if}}>
+					<a href="/admin/schedule-types/">Schedule Types</a>
 				</li>
 				<li class="uk-nav-divider"></li>
 				<li class="uk-parent {{#if active.users}} uk-active {{/if}}">
@@ -60,30 +92,6 @@
 							<a href="#">Parents</a>
 						</li>
 					</ul>
-				</li>
-				<li class="uk-nav-divider"></li>
-				<li {{#if active.programs}} class="uk-active" {{/if}}>
-					<a href="#">Programs</a>
-				</li>
-				<li class="uk-nav-divider"></li>
-				<li {{#if active.scheduleTypes}} class="uk-active" {{/if}}>
-					<a href="/admin/schedule-types/">Schedule Types</a>
-				</li>
-				<li class="uk-nav-divider"></li>
-				<li {{#if active.subjects}} class="uk-active" {{/if}}>
-					<a href="/admin/subjects/">Subjects</a>
-				</li>
-				<li class="uk-nav-divider"></li>
-				<li {{#if active.gradeModes}} class="uk-active" {{/if}}>
-					<a href="/admin/grade-modes/">Grade Modes</a>
-				</li>
-				<li class="uk-nav-divider"></li>
-				<li {{#if active.courses}} class="uk-active" {{/if}}>
-					<a href="#">Courses</a>
-				</li>
-				<li class="uk-nav-divider"></li>
-				<li {{#if active.terms}} class="uk-active" {{/if}}>
-					<a href="#">Terms</a>
 				</li>
 				<li class="uk-nav-divider"></li>
 				<li>
@@ -120,8 +128,40 @@
 				<a href="/admin/buildings/">Buildings</a>
 			</li>
 			<li class="uk-nav-divider"></li>
+			<li {{#if active.programs}} class="uk-active" {{/if}}>
+				<a href="/admin/programs/">Programs</a>
+			</li>
+			<li class="uk-nav-divider"></li>
 			<li {{#if active.schools}} class="uk-active" {{/if}}>
-				<a href="#">Schools</a>
+				<a href="/admin/schools/">Schools</a>
+			</li>
+			<li class="uk-nav-divider"></li>
+			<li {{#if active.majors}} class="uk-active" {{/if}}>
+				<a href="/admin/majors/">Majors</a>
+			</li>
+			<li class="uk-nav-divider"></li>
+			<li {{#if active.subjects}} class="uk-active" {{/if}}>
+				<a href="/admin/subjects/">Subjects</a>
+			</li>
+			<li class="uk-nav-divider"></li>
+			<li {{#if active.courses}} class="uk-active" {{/if}}>
+				<a href="#">Courses</a>
+			</li>
+			<li class="uk-nav-divider"></li>
+			<li {{#if active.classes}} class="uk-active" {{/if}}>
+				<a href="#">Classes</a>
+			</li>
+			<li class="uk-nav-divider"></li>
+			<li {{#if active.terms}} class="uk-active" {{/if}}>
+				<a href="#">Terms</a>
+			</li>
+			<li class="uk-nav-divider"></li>
+			<li {{#if active.gradeModes}} class="uk-active" {{/if}}>
+				<a href="/admin/grade-modes/">Grade Modes</a>
+			</li>
+			<li class="uk-nav-divider"></li>
+			<li {{#if active.scheduleTypes}} class="uk-active" {{/if}}>
+				<a href="/admin/schedule-types/">Schedule Types</a>
 			</li>
 			<li class="uk-nav-divider"></li>
 			<li class="uk-parent {{#if active.users}} uk-active {{/if}}">
@@ -140,30 +180,6 @@
 						<a href="#">Parents</a>
 					</li>
 				</ul>
-			</li>
-			<li class="uk-nav-divider"></li>
-			<li {{#if active.programs}} class="uk-active" {{/if}}>
-				<a href="#">Programs</a>
-			</li>
-			<li class="uk-nav-divider"></li>
-			<li {{#if active.scheduleTypes}} class="uk-active" {{/if}}>
-				<a href="/admin/schedule-types/">Schedule Types</a>
-			</li>
-			<li class="uk-nav-divider"></li>
-			<li {{#if active.subjects}} class="uk-active" {{/if}}>
-				<a href="/admin/subjects/">Subjects</a>
-			</li>
-			<li class="uk-nav-divider"></li>
-			<li {{#if active.gradeModes}} class="uk-active" {{/if}}>
-				<a href="/admin/grade-modes/">Grade Modes</a>
-			</li>
-			<li class="uk-nav-divider"></li>
-			<li {{#if active.courses}} class="uk-active" {{/if}}>
-				<a href="#">Courses</a>
-			</li>
-			<li class="uk-nav-divider"></li>
-			<li {{#if active.terms}} class="uk-active" {{/if}}>
-				<a href="#">Terms</a>
 			</li>
 		</ul>
 	</div>

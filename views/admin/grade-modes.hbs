@@ -60,6 +60,11 @@
 	$(document).ready(function () {
 		var table = $('#table').DataTable({
 			dom: 'Bfrtip',
+			responsive: {
+				details: {
+					display: $.fn.dataTable.Responsive.display.childRowImmediate
+				}
+			},
 			buttons: [
 				{
 					text: 'New',
