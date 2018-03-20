@@ -14,6 +14,13 @@
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
 		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.css" />
 	{{/if}}
+	{{#if imports.fullcalendar}}
+		{{!-- MomentJS dependency --}}
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.21.0/moment.min.js"></script>
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.9.0/fullcalendar.min.css">
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.9.0/fullcalendar.print.css">
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.9.0/fullcalendar.min.js"></script>
+	{{/if}}
 	{{#if imports.uikit}}
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/uikit/3.0.0-beta.40/js/uikit.min.js"></script>
 		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/uikit/3.0.0-beta.40/css/uikit.min.css" />
@@ -49,8 +56,12 @@
 					<a href="/instructor/grading">Grading</a>
 				</li>
 				<li class="uk-nav-divider"></li>
+				<li {{#if active.schedule}} class="uk-active" {{/if}}>
+					<a href="/instructor/schedule">Schedule</a>
+				</li>
+				<li class="uk-nav-divider"></li>
 				<li>
-					<a href="/auth/logout/">Logout</a>
+					<a href="/auth/logout">Logout</a>
 				</li>
 			</ul>
 		</div>
@@ -79,10 +90,6 @@
 	{{!-- Sticky Sidebar --}}
 	<div id="oncanvas-nav" class="uk-visible@m uk-light">
 		<ul class="uk-nav uk-nav-default uk-nav-parent-icon" uk-nav>
-			<li {{#if active.profile}} class="uk-active" {{/if}}>
-				<a href="#">Profile</a>
-			</li>
-			<li class="uk-nav-divider"></li>
 			<li {{#if active.classes}} class="uk-active" {{/if}}>
 				<a href="/instructor/classes">Classes</a>
 			</li>
@@ -95,8 +102,8 @@
 				<a href="/instructor/grading">Grading</a>
 			</li>
 			<li class="uk-nav-divider"></li>
-			<li>
-				<a href="/auth/logout/">Logout</a>
+			<li {{#if active.schedule}} class="uk-active" {{/if}}>
+				<a href="/instructor/schedule">Schedule</a>
 			</li>
 		</ul>
 	</div>

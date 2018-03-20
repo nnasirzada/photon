@@ -17,11 +17,13 @@
     "express-validator": "^5.0.2",
     "hbs": "~4.0.1",
     "joi": "^13.1.2",
+    "moment": "^2.21.0",
     "morgan": "~1.9.0",
     "mysql2": "^1.5.2",
     "nodemailer": "^4.6.0",
     "passport": "^0.4.0",
     "passport-local": "^1.0.0",
+    "rrule": "^2.2.9",
     "sequelize": "^4.33.4",
     "serve-favicon": "~2.4.5"
   }

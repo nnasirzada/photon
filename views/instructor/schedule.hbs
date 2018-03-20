@@ -1,0 +1,28 @@
+<h3 class="uk-heading-bullet uk-margin-remove-bottom">
+	Class Schedule
+</h3>
+<div id='calendar'>
+
+</div>
+<script>
+	$(function () {
+
+		// page is now ready, initialize the calendar...
+
+		let calendar = $('#calendar').fullCalendar({
+			header: {
+				left: '',
+				center: 'title',
+				right: 'month,agendaWeek,agendaDay,listWeek'
+			},
+			defaultView: 'listMonth',
+			events: {
+				url: './schedule/events'
+			},
+			eventAfterAllRender: (view) => {
+				$('table').addClass('uk-table uk-table-small uk-margin-remove');
+				$('td.fc-widget-header').attr('style', 'background-color: #F8F8F8!important');
+			}
+		});
+	});
+</script>
