@@ -20,5 +20,6 @@ router.get('/', (req, res, next) => {
 });
 
 router.use('/classes', require('./classes'));
+router.use('/schedule', require('./schedule'));
 
 module.exports = router;
