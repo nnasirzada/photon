@@ -21,7 +21,9 @@ router.get("/", (req, res, next) => {
 router.get('/all', (req, res, next) => {
   let json = {};
   json['data'] = [];
-  models.Subject.findAll().then((subjects) => {
+  models.Subject.findAll({
+    where: { deleted: false }
+  }).then((subjects) => {
     json['data'] = subjects;
     res.status(200).json(json);
   }).catch(console.log);
@@ -55,16 +57,11 @@ router.put('/:id', (req, res, next) => {
   if (req.validationErrors())
     return res.status(501).send('Form is incomplete.');
 
-  models.Subject.findOne({
-    where: { id: req.params.id }
+  models.Subject.update(
+    { code: req.body.code, name: req.body.name },
+    { where: { id: req.params.id } }
 
-  }).then((Subject) => {
-    if (!Subject) throw new Error('Subject not found.');
-    return models.Subject.update(
-      { code: req.body.code, name: req.body.name },
-      { where: { id: Subject.id } });
-
-  }).then(result => {
+  ).then(result => {
     return models.Subject.findOne({ where: { id: req.params.id } });
 
   }).then((Subject) => {
@@ -78,13 +75,11 @@ router.put('/:id', (req, res, next) => {
 
 router.delete('/:id', (req, res, next) => {
 
-  models.Subject.findOne({ where: { id: req.params.id } }).then((Subject) => {
-    if (!Subject) throw new Error('Subject not found.');
-    return models.Subject.destroy({ where: { id: Subject.id } })
-
-  }).then(result => {
+  models.Subject.update(
+    { deleted: true },
+    { where: { id: req.params.id } }
+  ).then(result => {
     return res.status(200).send('Subject successfully deleted.');
-
   }).catch(err => {
     return res.status(501).send('Failed to delete subject.');
   });

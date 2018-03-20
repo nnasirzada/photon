@@ -22,8 +22,12 @@ module.exports = (sequelize, DataTypes) => {
             type: DataTypes.SMALLINT(6).UNSIGNED,
             allowNull: true,
             defaultValue: null
+        },
+        deleted: {
+            type: DataTypes.BOOLEAN(),
+            defaultValue: false
         }
-    }, {tableName: 'student'});
+    }, { tableName: 'student' });
 
     Student.getOpenTerms = user_id => {
         return sequelize.query('SELECT * FROM term WHERE status="open"', {

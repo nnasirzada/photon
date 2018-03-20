@@ -21,7 +21,9 @@ router.get("/", (req, res, next) => {
 router.get('/all', (req, res, next) => {
   let json = {};
   json['data'] = [];
-  models.Program.findAll().then((programs) => {
+  models.Program.findAll({
+    where: { deleted: false }
+  }).then((programs) => {
     json['data'] = programs;
     res.status(200).json(json);
   }).catch(console.log);
@@ -55,16 +57,11 @@ router.put('/:id', (req, res, next) => {
   if (req.validationErrors())
     return res.status(501).send('Form is incomplete.');
 
-  models.Program.findOne({
-    where: { id: req.params.id }
+  models.Program.update(
+    { code: req.body.code, name: req.body.name },
+    { where: { id: req.params.id } }
 
-  }).then((Program) => {
-    if (!Program) throw new Error('Program not found.');
-    return models.Program.update(
-      { code: req.body.code, name: req.body.name },
-      { where: { id: Program.id } });
-
-  }).then(result => {
+  ).then(result => {
     return models.Program.findOne({ where: { id: req.params.id } });
 
   }).then((Program) => {
@@ -78,13 +75,11 @@ router.put('/:id', (req, res, next) => {
 
 router.delete('/:id', (req, res, next) => {
 
-  models.Program.findOne({ where: { id: req.params.id } }).then((Program) => {
-    if (!Program) throw new Error('Program not found.');
-    return models.Program.destroy({ where: { id: Program.id } })
-
-  }).then(result => {
+  models.Program.update(
+    { deleted: true },
+    { where: { id: req.params.id } }
+  ).then(result => {
     return res.status(200).send('Program successfully deleted.');
-
   }).catch(err => {
     return res.status(501).send('Failed to delete program.');
   });

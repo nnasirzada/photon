@@ -22,32 +22,40 @@
 
 <!-- Create / Edit Modal -->
 <div id="modal-create-edit" uk-modal>
-	<div class="uk-modal-dialog uk-modal-body uk-margin-auto-vertical">
-		<form id="form" method action class="uk-form-stacked uk-width-1-1">
-			<h2 class="uk-modal-title"></h2>
+	<div class="uk-modal-dialog uk-modal-body uk-margin-auto-vertical uk-width-1-1">
+		<form id="form" method action class="uk-form-stacked uk-grid-small uk-width-1-1" uk-grid>
+			<h2 class="uk-modal-title uk-width-1-1"></h2>
 			<input name="id" type="hidden" value>
-			<div class="uk-margin uk-width-1-1">
+			<div class="uk-width-1-1">
+				<label class="uk-form-label" for="description">Description</label>
+				<textarea class="uk-textarea" name="description" id="description" placeholder="Description" rows="3" required></textarea>
+			</div>
+			<div class="uk-width-1-3@m uk-width-1-2@s uk-width-1-1">
 				<label class="uk-form-label" for="number">Number</label>
 				<input class="uk-input" type="number" name="number" id="number" placeholder="Number" required>
 			</div>
-			<div class="uk-margin uk-width-1-1">
+			<div class="uk-width-1-3@m uk-width-1-2@s uk-width-1-1">
 				<label class="uk-form-label" for="name">Name</label>
 				<input class="uk-input" type="name" name="name" id="name" placeholder="Name" required>
 			</div>
-			<div class="uk-margin uk-width-1-1">
-				<label class="uk-form-label" for="description">Description</label>
-				<textarea class="uk-textarea" name="description" id="description" placeholder="Description" rows="5" required></textarea>
+			<div class="uk-width-1-3@m uk-width-1-2@s uk-width-1-1">
+				<label class="uk-form-label" for="schedule_type_id">Schedule Type</label>
+				<select class="uk-select" name="schedule_type_id" id="schedule_type_id">
+					{{#each scheduleTypes}}
+						<option value="{{this.id}}">{{this.code}} - {{this.name}}</option>
+					{{/each}}
+				</select>
 			</div>
-			<div class="uk-margin uk-width-1-1">
+			<div class="uk-width-1-3@m uk-width-1-2@s uk-width-1-1">
 				<label class="uk-form-label" for="number">Credit Hours</label>
 				<input class="uk-input" type="float" name="credit_hours" id="credit_hours" placeholder="Credit Hours" required>
 			</div>
-			<div class="uk-margin uk-width-1-1">
+			<div class="uk-width-1-3@m uk-width-1-2@s uk-width-1-1">
 				<label class="uk-form-label" for="number">GPA Hours</label>
 				<input class="uk-input" type="float" name="gpa_hours" id="gpa_hours" placeholder="GPA Hours" required>
 			</div>
 			{{#unless school_id}}
-				<div class="uk-margin uk-width-1-1">
+				<div class="uk-width-1-3@m uk-width-1-2@s uk-width-1-1">
 					<label class="uk-form-label" for="school_id">School</label>
 					<select class="uk-select" name="school_id" id="school_id">
 						{{#each schools}}
@@ -57,7 +65,7 @@
 				</div>
 			{{/unless}}
 			{{#unless subject_id}}
-				<div class="uk-margin uk-width-1-1">
+				<div class="uk-width-1-3@m uk-width-1-2@s uk-width-1-1">
 					<label class="uk-form-label" for="subject_id">Subject</label>
 					<select class="uk-select" name="subject_id" id="subject_id">
 						{{#each subjects}}
@@ -66,8 +74,24 @@
 					</select>
 				</div>
 			{{/unless}}
+			<div class="uk-width-1-3@m uk-width-1-2@s uk-width-1-1">
+				<label class="uk-form-label" for="grade_mode_id">Grade Mode</label>
+				<select class="uk-select" name="grade_mode_id" id="grade_mode_id">
+					{{#each gradeModes}}
+						<option value="{{this.id}}">{{this.code}} - {{this.name}}</option>
+					{{/each}}
+				</select>
+			</div>
+			<div class="uk-width-1-3@m uk-width-1-2@s uk-width-1-1">
+				<label class="uk-form-label" for="passing_grade_id">Passing Grade</label>
+				<select class="uk-select" name="passing_grade_id" id="passing_grade_id">
+					{{#each gradeScales}}
+						<option value="{{this.id}}">{{this.grade_letter}} = {{this.min_percents}}</option>
+					{{/each}}
+				</select>
+			</div>
 			{{#unless program_id}}
-				<div class="uk-margin uk-width-1-1">
+				<div class="uk-width-1-3@m uk-width-1-2@s uk-width-1-1">
 					<label class="uk-form-label" for="program_id">Program</label>
 					<select class="uk-select" name="program_id" id="program_id">
 						{{#each programs}}
@@ -76,31 +100,7 @@
 					</select>
 				</div>
 			{{/unless}}
-			<div class="uk-margin uk-width-1-1">
-				<label class="uk-form-label" for="grade_mode_id">Grade Mode</label>
-				<select class="uk-select" name="grade_mode_id" id="grade_mode_id">
-					{{#each gradeModes}}
-						<option value="{{this.id}}">{{this.code}} - {{this.name}}</option>
-					{{/each}}
-				</select>
-			</div>
-			<div class="uk-margin uk-width-1-1">
-				<label class="uk-form-label" for="passing_grade_id">Passing Grade</label>
-				<select class="uk-select" name="passing_grade_id" id="passing_grade_id">
-					{{#each gradeScales}}
-						<option value="{{this.id}}">{{this.grade_letter}} = {{this.min_percents}}</option>
-					{{/each}}
-				</select>
-			</div>
-			<div class="uk-margin uk-width-1-1">
-				<label class="uk-form-label" for="schedule_type_id">Schedule Type</label>
-				<select class="uk-select" name="schedule_type_id" id="schedule_type_id">
-					{{#each scheduleTypes}}
-						<option value="{{this.id}}">{{this.code}} - {{this.name}}</option>
-					{{/each}}
-				</select>
-			</div>
-			<div class="uk-margin-top uk-text-right">
+			<div class="uk-width-1-1 uk-margin-top uk-text-right">
 				<button class="uk-button uk-button-default uk-modal-close" type="button">Close</button>
 				<div class="spinner" style="display: none;">
 					<span class="uk-label uk-margin-right">Processing...</span>
@@ -132,6 +132,11 @@
 
 <!-- Scripts -->
 <script>
+	function showSpinner(modal, show) {
+		modal.find(".spinner").toggle(!!show);
+		modal.find(".uk-modal-close").toggle(!show);
+		modal.find("input[type='submit']").toggle(!show);
+	}
 	$(document).ready(function () {
 		var table = $('#table').DataTable({
 			dom: 'Bfrtip',
@@ -145,12 +150,12 @@
 					text: 'New',
 					action: function (e, dt) {
 						$('#modal-create-edit form')[0].reset();
+						$('#modal-create-edit form').find(':input').not(':submit, select').removeAttr('value');
+						$('#modal-create-edit form').find('textarea').html(null);
 						$("#modal-create-edit form").attr("action", "#");
 						$("#modal-create-edit form").attr("method", "post");
 						$("#modal-create-edit .uk-modal-title").html("New course");
-						$("#modal-create-edit input[type='submit']").show();
-						$("#modal-create-edit .uk-modal-close").show();
-						$("#modal-create-edit .spinner").hide();
+						showSpinner($("#modal-create-edit"), false);
 						UIkit.modal("#modal-create-edit").show();
 					}
 				},
@@ -176,9 +181,7 @@
 						$("#modal-create-edit select[name='passing_grade_id']").val(row.passing_grade_id).change();
 						$("#modal-create-edit select[name='schedule_type_id']").val(row.schedule_type_id).change();
 						$("#modal-create-edit .uk-modal-title").html("Edit course");
-						$("#modal-create-edit input[type='submit']").show();
-						$("#modal-create-edit .uk-modal-close").show();
-						$("#modal-create-edit .spinner").hide();
+						showSpinner($("#modal-create-edit"), false);
 						UIkit.modal("#modal-create-edit").show();
 					}
 				},
@@ -192,9 +195,7 @@
 						$('#modal-delete form')[0].reset();
 						$("#modal-delete form").attr("action", row.id);
 						$("#modal-delete input[name='id']").attr("value", row.id);
-						$("#modal-delete input[type='submit']").show();
-						$("#modal-delete .uk-modal-close").show();
-						$("#modal-delete .spinner").hide();
+						showSpinner($("#modal-delete"), false);
 						UIkit.modal("#modal-delete").show();
 					}
 				},
@@ -231,9 +232,7 @@
 		});
 		$("#modal-create-edit form").submit(function (e) {
 			e.preventDefault();
-			$("#modal-create-edit .spinner").show();
-			$("#modal-create-edit .uk-modal-close").hide();
-			$("#modal-create-edit input[type='submit']").hide();
+			showSpinner($("#modal-create-edit"), true);
 			$.ajax({
 				type: $(this).attr('method'),
 				url: $(this).attr('action'),
@@ -255,15 +254,13 @@
 						status: 'danger',
 						timeout: 1000
 					});
-					UIkit.modal("#modal-create-edit").hide();
+					showSpinner($("#modal-create-edit"), false);
 				}
 			});
 		});
 		$("#modal-delete form").submit(function (e) {
 			e.preventDefault();
-			$("#modal-delete .spinner").show();
-			$("#modal-delete .uk-modal-close").hide();
-			$("#modal-delete input[type='submit']").hide();
+			showSpinner($("#modal-delete"), true);
 			$.ajax({
 				type: $(this).attr('method'),
 				url: $(this).attr('action'),
@@ -279,9 +276,21 @@
 						status: 'danger',
 						timeout: 1000
 					});
-					UIkit.modal("#modal-delete").hide();
+					showSpinner($("#modal-delete"), false);
 				}
 			});
 		});
+		$('#grade_mode_id').change(function () {
+			let gradeModeId = $(this).val();
+			let gradeScales = jQuery.parseJSON('{{{jGradeScales}}}');
+			$('#passing_grade_id').find('option').remove();
+			$.each(gradeScales, function (key, value) {
+				if (value.grade_mode_id == gradeModeId)
+					$('#passing_grade_id').append($('<option>', {
+						value: value.id,
+						text: value.grade_letter + " = " + value.min_percents
+					}));
+			});
+		})
 	});
 </script>

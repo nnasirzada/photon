@@ -11,6 +11,10 @@ module.exports = (sequelize, DataTypes) => {
 		},
 		name: {
 			type: DataTypes.STRING(191)
+		},
+		deleted: {
+			type: DataTypes.BOOLEAN(),
+			defaultValue: false
 		}
 	}, { tableName: 'grade_mode' });
 

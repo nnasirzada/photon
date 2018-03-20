@@ -24,6 +24,10 @@ module.exports = (sequelize, DataTypes) => {
 		},
 		status: {
 			type: DataTypes.ENUM('view_only', 'open', 'hidden')
+		},
+		deleted: {
+			type: DataTypes.BOOLEAN(),
+			defaultValue: false
 		}
 	}, { tableName: 'term' });
 

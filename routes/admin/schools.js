@@ -21,7 +21,9 @@ router.get("/", (req, res, next) => {
 router.get('/all', (req, res, next) => {
   let json = {};
   json['data'] = [];
-  models.School.findAll().then((schools) => {
+  models.School.findAll({
+    where: { deleted: false }
+  }).then((schools) => {
     json['data'] = schools;
     res.status(200).json(json);
   }).catch(console.log);
@@ -55,16 +57,11 @@ router.put('/:id', (req, res, next) => {
   if (req.validationErrors())
     return res.status(501).send('Form is incomplete.');
 
-  models.School.findOne({
-    where: { id: req.params.id }
+  models.School.update(
+    { code: req.body.code, name: req.body.name },
+    { where: { id: req.params.id } }
 
-  }).then((School) => {
-    if (!School) throw new Error('School not found.');
-    return models.School.update(
-      { code: req.body.code, name: req.body.name },
-      { where: { id: School.id } });
-
-  }).then(result => {
+  ).then(result => {
     return models.School.findOne({ where: { id: req.params.id } });
 
   }).then((School) => {
@@ -78,13 +75,11 @@ router.put('/:id', (req, res, next) => {
 
 router.delete('/:id', (req, res, next) => {
 
-  models.School.findOne({ where: { id: req.params.id } }).then((School) => {
-    if (!School) throw new Error('School not found.');
-    return models.School.destroy({ where: { id: School.id } })
-
-  }).then(result => {
+  models.School.update(
+    { deleted: true },
+    { where: { id: req.params.id } }
+  ).then(result => {
     return res.status(200).send('School successfully deleted.');
-
   }).catch(err => {
     return res.status(501).send('Failed to delete school.');
   });

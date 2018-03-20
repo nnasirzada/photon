@@ -6,8 +6,12 @@ const router = express.Router();
 router.get("/", (req, res, next) => {
 
   Promise.all([
-    models.School.findAll(),
-    models.Program.findAll()
+    models.School.findAll({
+      where: { deleted: false }
+    }),
+    models.Program.findAll({
+      where: { deleted: false }
+    })
   ]).then(results => {
     res.render("admin/majors", {
       title: "Majors - Photon",
@@ -36,7 +40,8 @@ router.get('/all', (req, res, next) => {
     }, {
       model: models.Program,
       required: true
-    }]
+    }],
+    where: { deleted: false }
   }).then((majors) => {
     json['data'] = majors;
     res.status(200).json(json);
@@ -85,14 +90,10 @@ router.put('/:id', (req, res, next) => {
   if (req.validationErrors())
     return res.status(501).send('Form is incomplete.');
 
-  models.Major.findOne({
-    where: { id: req.params.id }
+  models.Major.update(
+    req.body, { where: { id: req.params.id } }
 
-  }).then((Major) => {
-    if (!Major) throw new Error('Major not found.');
-    return models.Major.update(req.body, { where: { id: Major.id } });
-
-  }).then(result => {
+  ).then(result => {
     return models.Major.findOne({
       include: [{
         model: models.School,
@@ -113,13 +114,11 @@ router.put('/:id', (req, res, next) => {
 
 router.delete('/:id', (req, res, next) => {
 
-  models.Major.findOne({ where: { id: req.params.id } }).then((Major) => {
-    if (!Major) throw new Error('Major not found.');
-    return models.Major.destroy({ where: { id: Major.id } })
-
-  }).then(result => {
+  models.Major.update(
+    { deleted: true },
+    { where: { id: req.params.id } }
+  ).then(result => {
     return res.status(200).send('Major successfully deleted.');
-
   }).catch(err => {
     return res.status(501).send('Failed to delete major.');
   });

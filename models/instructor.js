@@ -9,6 +9,10 @@ module.exports = (sequelize, DataTypes) => {
 		},
 		status: {
 			type: DataTypes.ENUM('active', 'deactive')
+		},
+		deleted: {
+			type: DataTypes.BOOLEAN(),
+			defaultValue: false
 		}
 	}, { tableName: 'instructor' });
 

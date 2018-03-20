@@ -6,8 +6,10 @@ const router = express.Router({ mergeParams: true });
 router.get("/", (req, res, next) => {
 
   models.Building.findOne({
-    where: { id: req.params.building_id }
-
+    where: {
+      id: req.params.building_id,
+      deleted: false
+    }
   }).then((Building) => {
     if (!Building) throw new Error('Building not found.');
 
@@ -36,7 +38,10 @@ router.get('/all', (req, res, next) => {
   let json = {};
   json['data'] = [];
   models.Room.findAll({
-    where: { building_id: req.params.building_id }
+    where: {
+      building_id: req.params.building_id,
+      deleted: false
+    }
   }).then((rooms) => {
     json['data'] = rooms;
     res.status(200).json(json);
@@ -73,16 +78,11 @@ router.put('/:id', (req, res, next) => {
   if (req.validationErrors())
     return res.status(501).send('Form is incomplete.');
 
-  models.Room.findOne({
-    where: { id: req.params.id }
+  models.Room.update(
+    { code: req.body.code, name: req.body.name },
+    { where: { id: req.params.id } }
 
-  }).then((Room) => {
-    if (!Room) throw new Error('Room not found.');
-    return models.Room.update(
-      { code: req.body.code, name: req.body.name },
-      { where: { id: Room.id } });
-
-  }).then(result => {
+  ).then(result => {
     return models.Room.findOne({ where: { id: req.params.id } });
 
   }).then((Room) => {
@@ -96,13 +96,11 @@ router.put('/:id', (req, res, next) => {
 
 router.delete('/:id', (req, res, next) => {
 
-  models.Room.findOne({ where: { id: req.params.id } }).then((Room) => {
-    if (!Room) throw new Error('Room not found.');
-    return models.Room.destroy({ where: { id: Room.id } })
-
-  }).then(result => {
+  models.Room.update(
+    { deleted: true },
+    { where: { id: req.params.id } }
+  ).then(result => {
     return res.status(200).send('Room successfully deleted.');
-
   }).catch(err => {
     return res.status(501).send('Failed to delete room.');
   });

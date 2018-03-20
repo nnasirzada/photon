@@ -20,6 +20,10 @@ module.exports = (sequelize, DataTypes) => {
 		},
 		status: {
 			type: DataTypes.ENUM('ongoing', 'dropped', 'withdrawn', 'passed', 'failed')
+		},
+		deleted: {
+			type: DataTypes.BOOLEAN(),
+			defaultValue: false
 		}
 	}, { tableName: 'class_enrollment' });
 

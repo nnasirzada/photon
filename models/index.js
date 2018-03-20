@@ -38,21 +38,22 @@ db.Sequelize = Sequelize;
 db.sequelize = sequelize;
 
 db.School.hasMany(db.Major, { foreignKey: 'id' });
-db.School.hasMany(db.Course, { foreignKey: 'id' });
-db.Program.hasMany(db.Major, { foreignKey: 'id' });
+db.Program.hasMany(db.Major, { foreignKey: 'id' })
+db.School.hasMany(db.Course, { foreignKey: 'id' });;
 db.Program.hasMany(db.Course, { foreignKey: 'id' });
 db.GradeMode.hasMany(db.Course, { foreignKey: 'id' });
 db.GradeScale.hasMany(db.Course, { foreignKey: 'id' });
 db.ScheduleType.hasMany(db.Course, { foreignKey: 'id' });
-
+db.Course.hasMany(db.CoursePrerequisite, { foreignKey: 'id' });
 db.Major.belongsTo(db.School, { foreignKey: 'school_id' });
 db.Major.belongsTo(db.Program, { foreignKey: 'program_id' });
-
 db.Course.belongsTo(db.School, { foreignKey: 'school_id' });
 db.Course.belongsTo(db.Program, { foreignKey: 'program_id' });
 db.Course.belongsTo(db.Subject, { foreignKey: 'subject_id' });
 db.Course.belongsTo(db.GradeMode, { foreignKey: 'grade_mode_id' });
 db.Course.belongsTo(db.GradeScale, { foreignKey: 'passing_grade_id' });
 db.Course.belongsTo(db.ScheduleType, { foreignKey: 'schedule_type_id' });
+db.CoursePrerequisite.belongsTo(db.Course, { foreignKey: 'course_id' });
+db.CoursePrerequisite.belongsTo(db.Course, { foreignKey: 'prerequisite_id' });
 
 module.exports = db;

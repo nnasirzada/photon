@@ -38,6 +38,10 @@ module.exports = (sequelize, DataTypes) => {
 		},
 		school_id: {
 			type: DataTypes.SMALLINT(5).UNSIGNED
+		},
+		deleted: {
+			type: DataTypes.BOOLEAN(),
+			defaultValue: false
 		}
 	}, { tableName: 'course' });
 

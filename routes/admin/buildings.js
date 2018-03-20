@@ -21,7 +21,9 @@ router.get("/", (req, res, next) => {
 router.get('/all', (req, res, next) => {
   let json = {};
   json['data'] = [];
-  models.Building.findAll().then((buildings) => {
+  models.Building.findAll({
+    where: { deleted: false }
+  }).then((buildings) => {
     json['data'] = buildings;
     res.status(200).json(json);
   }).catch(console.log);
@@ -55,16 +57,11 @@ router.put('/:id', (req, res, next) => {
   if (req.validationErrors())
     return res.status(501).send('Form is incomplete.');
 
-  models.Building.findOne({
-    where: { id: req.params.id }
+  models.Building.update(
+    { code: req.body.code, name: req.body.name },
+    { where: { id: req.params.id } }
 
-  }).then((Building) => {
-    if (!Building) throw new Error('Building not found.');
-    return models.Building.update(
-      { code: req.body.code, name: req.body.name },
-      { where: { id: Building.id } });
-
-  }).then(result => {
+  ).then(result => {
     return models.Building.findOne({ where: { id: req.params.id } });
 
   }).then((Building) => {
@@ -78,13 +75,11 @@ router.put('/:id', (req, res, next) => {
 
 router.delete('/:id', (req, res, next) => {
 
-  models.Building.findOne({ where: { id: req.params.id } }).then((Building) => {
-    if (!Building) throw new Error('Building not found.');
-    return models.Building.destroy({ where: { id: Building.id } })
-
-  }).then(result => {
+  models.Building.update(
+    { deleted: true },
+    { where: { id: req.params.id } }
+  ).then(result => {
     return res.status(200).send('Building successfully deleted.');
-
   }).catch(err => {
     return res.status(501).send('Failed to delete building.');
   });

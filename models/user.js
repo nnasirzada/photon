@@ -37,6 +37,10 @@ module.exports = (sequelize, DataTypes) => {
 		},
 		type: {
 			type: DataTypes.ENUM('instructor', 'student', 'parent', 'admin')
+		},
+		deleted: {
+			type: DataTypes.BOOLEAN(),
+			defaultValue: false
 		}
 	}, { tableName: 'user' });
 

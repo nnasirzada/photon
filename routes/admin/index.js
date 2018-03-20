@@ -14,6 +14,7 @@ router.get("/", (req, res, next) => {
 });
 
 router.use("/buildings/", require("./buildings.js"));
+router.use("*/courses/:course_id/prerequisites/", require("./prerequisites.js"));
 router.use("/schools/:school_id/courses/", require("./courses.js"));
 router.use("/subjects/:subject_id/courses/", require("./courses.js"));
 router.use("/programs/:program_id/courses/", require("./courses.js"));

@@ -14,6 +14,10 @@ module.exports = (sequelize, DataTypes) => {
 		},
 		building_id: {
 			type: DataTypes.SMALLINT(5).UNSIGNED
+		},
+		deleted: {
+			type: DataTypes.BOOLEAN(),
+			defaultValue: false
 		}
 	}, { tableName: 'room' });
 

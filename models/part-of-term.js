@@ -17,6 +17,10 @@ module.exports = (sequelize, DataTypes) => {
 		},
 		term_id: {
 			type: DataTypes.SMALLINT(5).UNSIGNED
+		},
+		deleted: {
+			type: DataTypes.BOOLEAN(),
+			defaultValue: false
 		}
 	}, { tableName: 'part_of_term' });
 

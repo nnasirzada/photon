@@ -21,7 +21,9 @@ router.get("/", (req, res, next) => {
 router.get('/all', (req, res, next) => {
   let json = {};
   json['data'] = [];
-  models.ScheduleType.findAll().then((scheduleTypes) => {
+  models.ScheduleType.findAll({
+    where: { deleted: false }
+  }).then((scheduleTypes) => {
     json['data'] = scheduleTypes;
     res.status(200).json(json);
   }).catch(console.log);
@@ -55,16 +57,11 @@ router.put('/:id', (req, res, next) => {
   if (req.validationErrors())
     return res.status(501).send('Form is incomplete.');
 
-  models.ScheduleType.findOne({
-    where: { id: req.params.id }
+  models.ScheduleType.update(
+    { code: req.body.code, name: req.body.name },
+    { where: { id: req.params.id } }
 
-  }).then((ScheduleType) => {
-    if (!ScheduleType) throw new Error('Schedule type not found.');
-    return models.ScheduleType.update(
-      { code: req.body.code, name: req.body.name },
-      { where: { id: ScheduleType.id } });
-
-  }).then(result => {
+  ).then(result => {
     return models.ScheduleType.findOne({ where: { id: req.params.id } });
 
   }).then((ScheduleType) => {
@@ -78,13 +75,11 @@ router.put('/:id', (req, res, next) => {
 
 router.delete('/:id', (req, res, next) => {
 
-  models.ScheduleType.findOne({ where: { id: req.params.id } }).then((ScheduleType) => {
-    if (!ScheduleType) throw new Error('Schedule type not found.');
-    return models.ScheduleType.destroy({ where: { id: ScheduleType.id } })
-
-  }).then(result => {
+  models.ScheduleType.update(
+    { deleted: true },
+    { where: { id: req.params.id } }
+  ).then(result => {
     return res.status(200).send('Schedule type successfully deleted.');
-
   }).catch(err => {
     return res.status(501).send('Failed to delete schedule type.');
   });

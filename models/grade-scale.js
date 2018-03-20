@@ -6,6 +6,9 @@ module.exports = (sequelize, DataTypes) => {
 			primaryKey: true,
 			autoIncrement: true
 		},
+		grade_mode_id: {
+			type: DataTypes.SMALLINT(5)
+		},
 		grade_letter: {
 			type: DataTypes.STRING(191)
 		},
@@ -15,6 +18,10 @@ module.exports = (sequelize, DataTypes) => {
 		min_percents: {
 			type: DataTypes.DECIMAL(5, 2)
 		},
+		deleted: {
+			type: DataTypes.BOOLEAN(),
+			defaultValue: false
+		}
 	}, { tableName: 'grade_scale' });
 
 	return GradeScale;
