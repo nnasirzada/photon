@@ -105,7 +105,7 @@ router.put('/:id', (req, res, next) => {
   }));
 
   Object.assign(params, req.body);
-  console.log(params);
+
   models.PartOfTerm.update(
     params,
     { where: { id: req.params.id } }

@@ -14,13 +14,14 @@ router.get("/", (req, res, next) => {
 });
 
 router.use("/buildings/", require("./buildings.js"));
-router.use("*/courses/:course_id/prerequisites/", require("./prerequisites.js"));
 router.use("/schools/:school_id/courses/", require("./courses.js"));
 router.use("/subjects/:subject_id/courses/", require("./courses.js"));
 router.use("/programs/:program_id/courses/", require("./courses.js"));
 router.use("/courses/", require("./courses.js"));
 router.use("/grade-modes/", require("./grade-modes.js"));
+router.use("/grade-modes/:grade_mode_id/scale/", require("./grade-scale.js"));
 router.use("/majors/", require("./majors.js"));
+router.use("*/courses/:course_id/prerequisites/", require("./prerequisites.js"));
 router.use("/programs/", require("./programs.js"));
 router.use("/buildings/:building_id/rooms/", require("./rooms.js"));
 router.use("/schedule-types/", require("./schedule-types.js"));
