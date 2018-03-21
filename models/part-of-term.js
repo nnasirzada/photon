@@ -18,6 +18,9 @@ module.exports = (sequelize, DataTypes) => {
 		term_id: {
 			type: DataTypes.SMALLINT(5).UNSIGNED
 		},
+		open_to_edits: {
+			type: DataTypes.BOOLEAN()
+		},
 		deleted: {
 			type: DataTypes.BOOLEAN(),
 			defaultValue: false

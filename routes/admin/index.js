@@ -26,5 +26,7 @@ router.use("/buildings/:building_id/rooms/", require("./rooms.js"));
 router.use("/schedule-types/", require("./schedule-types.js"));
 router.use("/schools/", require("./schools.js"));
 router.use("/subjects/", require("./subjects.js"));
+router.use("/terms/:term_id/parts/", require("./term-parts.js"));
+router.use("/terms/", require("./terms.js"));
 
 module.exports = router;
