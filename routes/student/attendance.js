@@ -110,8 +110,10 @@ router.get('/term/:termId/all', (req, res, next) => {
                     schedule += ", Sunday"
             }
 
-            attendances[i].percentage = ((attendances[i].total_classes - attendances[i].missed) * 100 / attendances[i].total_classes) + "%";
+            attendances[i].percentage = ((attendances[i].total_classes - attendances[i].missed) * 100 / attendances[i].total_classes).toFixed(2) + "%";
             attendances[i].schedule = schedule;
+            attendances[i].time = attendances[i].start_time + " - " + attendances[i].end_time;
+            attendances[i].title = attendances[i].subject + " " + attendances[i].crn + " - " + attendances[i].name;
         }
 
         json['data'] = attendances;
