@@ -11,12 +11,7 @@ router.all('/*', (req, res, next) => {
 });
 
 router.get('/', (req, res, next) => {
-	res.render('instructor/index', {
-		title: 'Home - Instructor Dashboard',
-		imports: {
-			uikit: true
-		}
-	});
+	res.redirect('./schedule');
 });
 
 router.use('/classes', require('./classes'));
