@@ -5,7 +5,8 @@
 <table id="table" class="uk-table uk-table-hover uk-table-striped" style="width: 100%;">
 	<thead>
 		<tr>
-			<th>Name</th>
+			<th>Term Name</th>
+			<th>Part Name</th>
 			<th>Start Date</th>
 			<th>End Date</th>
 			<th>Open to Edits</th>
@@ -20,6 +21,10 @@
 			<h2 class="uk-modal-title"></h2>
 			<input name="id" type="hidden" value>
 			<div class="uk-margin uk-width-1-1">
+				<label class="uk-form-label" for="name">Name</label>
+				<input class="uk-input" type="text" name="name" id="name" placeholder="Name" required>
+			</div>
+			<div class="uk-margin uk-width-1-1">
 				<label class="uk-form-label" for="start_date">Start Date</label>
 				<div class="uk-form-controls">
 					<input style="cursor: pointer;" class="uk-input" type="text" name="start_date" id="start_date" placeholder="Start Date" readonly="readonly">
@@ -32,12 +37,8 @@
 				</div>
 			</div>
 			<div class="uk-margin uk-width-1-1">
-				<label class="uk-form-label" for="name">Name</label>
-				<input class="uk-input" type="text" name="name" id="name" placeholder="Name" required>
-			</div>
-			<div class="uk-margin uk-width-1-1">
 				<label>
-					<input class="uk-checkbox" type="checkbox" name="open_to_edits" id="open_to_edits" checked> Instructors can edit attendance and grades of this part of term.
+					<input class="uk-checkbox" type="checkbox" name="can_edit" id="can_edit" value="true" checked> Instructors can edit attendance and grades of this part of term.
 				</label>
 			</div>
 			<div class="uk-margin-top uk-text-right">
@@ -79,13 +80,16 @@
 	}
 	$(document).ready(function () {
 		$("#start_date").datepicker({
-			container: '#form',
+			minDate: '{{term.start_date}}',
+			maxDate: '{{term.end_date}}',
 			dateFormat: 'yy-mm-dd',
 			onClose: function (selectedDate) {
 				if (selectedDate) $("#end_date").datepicker("option", "minDate", selectedDate);
 			}
 		});
 		$("#end_date").datepicker({
+			minDate: '{{term.start_date}}',
+			maxDate: '{{term.end_date}}',
 			dateFormat: 'yy-mm-dd',
 			onClose: function (selectedDate) {
 				if (selectedDate) $("#start_date").datepicker("option", "maxDate", selectedDate);
@@ -103,7 +107,8 @@
 					text: 'New',
 					action: function (e, dt) {
 						$('#modal-create-edit form')[0].reset();
-						$('#modal-create-edit form').find(':input').not(':submit, select').removeAttr('value');
+						$('#modal-create-edit form').find(':input').not(':submit, :checkbox, select').removeAttr('value');
+						$("#modal-create-edit input[name='can_edit']").prop('checked', true);
 						$('#modal-create-edit form').find('textarea').html(null);
 						$("#modal-create-edit form").attr("action", "#");
 						$("#modal-create-edit form").attr("method", "post");
@@ -124,10 +129,10 @@
 						$("#modal-create-edit form").attr("action", row.id);
 						$("#modal-create-edit form").attr("method", "put");
 						$("#modal-create-edit input[name='id']").attr("value", row.id);
+						$("#modal-create-edit input[name='name']").attr("value", row.name);
 						$("#modal-create-edit input[name='start_date']").attr("value", row.start_date);
 						$("#modal-create-edit input[name='end_date']").attr("value", row.end_date);
-						$("#modal-create-edit input[name='name']").attr("value", row.name);
-						$("#modal-create-edit input[name='open_to_edits']").attr("value", row.open_to_edits);
+						$("#modal-create-edit input[name='can_edit']").prop('checked', row.open_to_edits == 1);
 						$("#modal-create-edit .uk-modal-title").html("Edit part of term");
 						$("#modal-create-edit input[type='submit']").show();
 						$("#modal-create-edit .uk-modal-close").show();
@@ -157,10 +162,11 @@
 			ajax: "all",
 			rowId: 'id',
 			columns: [
-				{ "data": "term" },
+				{ "data": "Term.name" },
+				{ "data": "name" },
 				{ "data": "start_date" },
 				{ "data": "end_date" },
-				{ "data": "name" }
+				{ "data": "open_to_edits" }
 			]
 		});
 		$("#modal-create-edit form").submit(function (e) {

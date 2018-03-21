@@ -39,13 +39,15 @@ db.sequelize = sequelize;
 
 db.School.hasMany(db.Major, { foreignKey: 'id' });
 db.Program.hasMany(db.Major, { foreignKey: 'id' })
-db.School.hasMany(db.Course, { foreignKey: 'id' });;
+db.School.hasMany(db.Course, { foreignKey: 'id' });
 db.Program.hasMany(db.Course, { foreignKey: 'id' });
+db.Term.hasMany(db.PartOfTerm, { foreignKey: 'id' });
 db.GradeMode.hasMany(db.Course, { foreignKey: 'id' });
 db.GradeScale.hasMany(db.Course, { foreignKey: 'id' });
 db.ScheduleType.hasMany(db.Course, { foreignKey: 'id' });
 db.Course.hasMany(db.CoursePrerequisite, { foreignKey: 'id' });
 db.Major.belongsTo(db.School, { foreignKey: 'school_id' });
+db.PartOfTerm.belongsTo(db.Term, { foreignKey: 'term_id' });
 db.Major.belongsTo(db.Program, { foreignKey: 'program_id' });
 db.Course.belongsTo(db.School, { foreignKey: 'school_id' });
 db.Course.belongsTo(db.Program, { foreignKey: 'program_id' });

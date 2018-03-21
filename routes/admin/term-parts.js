@@ -39,9 +39,15 @@ router.get('/all', (req, res, next) => {
   json['data'] = [];
   models.PartOfTerm.findAll({
     where: {
-      term_id: req.body.term_id,
+      term_id: req.params.term_id,
       deleted: false
-    }
+    },
+    include: [
+      {
+        model: models.Term,
+        required: true
+      }
+    ]
   }).then((termParts) => {
     json['data'] = termParts;
     res.status(200).json(json);
@@ -58,18 +64,28 @@ router.post('/', (req, res, next) => {
     return res.status(501).send(req.validationErrors()[0].msg);
 
   let params = JSON.parse(JSON.stringify({
-    term_id: req.params.term_id
+    term_id: req.params.term_id,
+    open_to_edits: (typeof req.body.can_edit !== 'undefined' && req.body.can_edit) ? req.body.can_edit : 0
   }));
 
   Object.assign(params, req.body);
 
   models.PartOfTerm.build(
     params
-
-  ).save().then((PartOfTerm) => {
+  ).save().then(PartOfTerm => {
     if (!PartOfTerm) throw new Error('Failed to save part of term.');
+    return models.PartOfTerm.findOne({
+      where: { id: PartOfTerm.id },
+      include: [
+        {
+          model: models.Term,
+          required: true
+        }
+      ]
+    })
+  }).then(PartOfTerm => {
+    if (!PartOfTerm) throw new Error('Part of term not found.');
     return res.status(200).json(PartOfTerm);
-
   }).catch(err => {
     return res.status(501).send('Failed to save part of term.');
   });
@@ -85,17 +101,25 @@ router.put('/:id', (req, res, next) => {
     return res.status(501).send(req.validationErrors()[0].msg);
 
   let params = JSON.parse(JSON.stringify({
-    term_id: req.params.term_id
+    open_to_edits: (typeof req.body.can_edit !== 'undefined' && req.body.can_edit) ? req.body.can_edit : 0
   }));
 
   Object.assign(params, req.body);
-
+  console.log(params);
   models.PartOfTerm.update(
     params,
     { where: { id: req.params.id } }
 
   ).then(result => {
-    return models.Term.findOne({ where: { id: req.params.id } });
+    return models.PartOfTerm.findOne({
+      where: { id: req.params.id },
+      include: [
+        {
+          model: models.Term,
+          required: true
+        }
+      ]
+    })
 
   }).then((PartOfTerm) => {
     if (!PartOfTerm) throw new Error('Part of term not found.');
