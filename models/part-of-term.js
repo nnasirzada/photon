@@ -27,5 +27,12 @@ module.exports = (sequelize, DataTypes) => {
 		}
 	}, { tableName: 'part_of_term' });
 
+	PartOfTerm.isOpenToEdits = (classId, instructor_id) => {
+		return sequelize.query("SELECT pot.open_to_edits FROM part_of_term pot INNER JOIN class c ON pot.id = c.part_of_term_id WHERE c.id = ? AND c.instructor_id = ? AND c.deleted = 0 AND pot.deleted = 0 LIMIT 1", {
+			replacements: [classId, instructor_id],
+			type: sequelize.QueryTypes.SELECT
+		});
+	}
+
 	return PartOfTerm;
 };
