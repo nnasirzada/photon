@@ -10,6 +10,7 @@
 			<th>Start Date</th>
 			<th>End Date</th>
 			<th>Open to Edits</th>
+			<th>Options</th>
 		</tr>
 	</thead>
 </table>
@@ -166,7 +167,15 @@
 				{ "data": "name" },
 				{ "data": "start_date" },
 				{ "data": "end_date" },
-				{ "data": "open_to_edits" }
+				{ "data": "open_to_edits" },
+				{
+					data: "id",
+					className: "dt-right not-selectable",
+					sortable: false,
+					render: function (data) {
+						return "<a href=\"" + data + "/classes/\">View classes</a>";
+					}
+				}
 			]
 		});
 		$("#modal-create-edit form").submit(function (e) {

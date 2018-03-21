@@ -54,6 +54,40 @@ router.get('/all', (req, res, next) => {
   }).catch(console.log);
 });
 
+router.get('/search/:keyword', (req, res, next) => {
+  let json = {};
+  json['data'] = [];
+  models.PartOfTerm.findAll({
+    include: [{
+      model: models.Term,
+      required: true
+    }],
+    where: {
+      deleted: false,
+      [models.Sequelize.Op.or]: [
+        {
+          '$Term.year$': {
+            [models.Sequelize.Op.like]: '%' + req.params.keyword + '%',
+          }
+        },
+        {
+          '$Term.name$': {
+            [models.Sequelize.Op.like]: '%' + req.params.keyword + '%',
+          }
+        },
+        {
+          name: {
+            [models.Sequelize.Op.like]: '%' + req.params.keyword + '%',
+          }
+        }
+      ]
+    }
+  }).then((parts) => {
+    json['data'] = parts;
+    res.status(200).json(json);
+  }).catch(console.log);
+});
+
 router.post('/', (req, res, next) => {
 
   req.checkBody('start_date', 'Please select a start date.').notEmpty();
