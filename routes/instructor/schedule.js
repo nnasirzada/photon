@@ -20,7 +20,7 @@ router.get('/', (req, res, next) => {
 
 router.get('/events', (req, res, next) => {
 	if (req.query.start && req.query.end && moment(req.query.start, 'YYYY-M-DD', true).isValid() && moment(req.query.end, 'YYYY-M-DD', true).isValid()) {
-		models.sequelize.query("SELECT cm.*, c.name AS `course_name` FROM(SELECT id, course_id FROM class WHERE instructor_id = ? AND part_of_term_id IN ( SELECT id FROM part_of_term WHERE term_id = (SELECT id FROM term WHERE (? BETWEEN start_date AND end_date) ORDER BY start_date DESC LIMIT 1)) ) a LEFT JOIN class_meeting cm ON a.id = cm.class_id LEFT JOIN course c ON a.course_id = c.id WHERE cm.monday IS NOT NULL", {
+		models.sequelize.query("SELECT cm.*, c.name AS `course_name` FROM(SELECT id, course_id FROM class WHERE deleted = 0 AND instructor_id = ? AND part_of_term_id IN (SELECT id FROM part_of_term WHERE deleted = 0 AND term_id = (SELECT id FROM term WHERE ( ? BETWEEN start_date AND end_date) AND deleted = 0 ORDER BY start_date DESC LIMIT 1))) a INNER JOIN class_meeting cm ON a.id = cm.class_id LEFT JOIN course c ON a.course_id = c.id", {
 			replacements: [req.user.id, req.query.start],
 			type: models.sequelize.QueryTypes.SELECT
 		}).then(values => {
@@ -80,6 +80,6 @@ router.get('/events', (req, res, next) => {
 	} else {
 		throw new Error('Missing query params: start & end');
 	}
-})
+});
 
 module.exports = router;

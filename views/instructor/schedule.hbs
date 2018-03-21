@@ -5,15 +5,24 @@
 
 </div>
 <script>
+	let calendarPrev = function () {
+		$('#calendar').fullCalendar('prev');
+		return false;
+	};
+
+	let calendarNext = function () {
+		$('#calendar').fullCalendar('next');
+		return false;
+	};
+
 	$(function () {
 
 		// page is now ready, initialize the calendar...
-
 		let calendar = $('#calendar').fullCalendar({
 			header: {
 				left: '',
 				center: 'title',
-				right: 'month,agendaWeek,agendaDay,listWeek'
+				right: ''
 			},
 			defaultView: 'listMonth',
 			events: {
@@ -22,6 +31,7 @@
 			eventAfterAllRender: (view) => {
 				$('table').addClass('uk-table uk-table-small uk-margin-remove');
 				$('td.fc-widget-header').attr('style', 'background-color: #F8F8F8!important');
+				$('div.fc-right').html("<a href='#' onclick='return calendarPrev();' uk-slidenav-previous></a> <a href='#' onclick='return calendarNext();' uk-slidenav-next></a>");
 			}
 		});
 	});
