@@ -1,12 +1,11 @@
 const express = require('express');
-const passport = require('passport');
 const models = require('../../models');
 const router = express.Router();
 
 router.get('/', (req, res, next) => {
-    models.Term.findAll({where: {status: 'open'}}).then(terms => {
+    models.Term.findAll({where: {deleted: false, status: 'open'}}).then(terms => {
         res.render("student/registration", {
-            title: "Select a term - Student Dashboard",
+            title: "Select a Term",
             active: {
                 registration: true
             },
@@ -20,10 +19,10 @@ router.get('/', (req, res, next) => {
 });
 
 router.get('/term/:termId', (req, res, next) => {
-    models.Term.findOne({where: {id: req.params.termId}}).then(Term => {
+    models.Term.findOne({where: {deleted: false, id: req.params.termId}}).then(Term => {
         if (Term.status === 'open') {
             res.render("student/registration/search", {
-                title: "Search for Classes - Student Dashboard",
+                title: "Search for Classes",
                 active: {
                     registration: true
                 },

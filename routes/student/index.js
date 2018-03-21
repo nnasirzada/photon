@@ -1,5 +1,4 @@
 const express = require('express');
-const passport = require('passport');
 const router = express.Router();
 
 router.all('/*', (req, res, next) => {
@@ -12,7 +11,7 @@ router.all('/*', (req, res, next) => {
 
 router.get('/', (req, res, next) => {
     res.render('student/index', {
-        title: 'Home - Student Dashboard',
+        title: 'Home',
         imports: {
             uikit: true
         }
@@ -20,5 +19,6 @@ router.get('/', (req, res, next) => {
 });
 
 router.use('/registration', require('./registration'));
+router.use('/attendance', require('./attendance'));
 
 module.exports = router;
