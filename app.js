@@ -32,7 +32,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(validator());
 app.use(cookieParser());
-app.use(session({ secret: process.env.SESSION_SECRET, resave: true, saveUninitialized: false }));
+app.use(session({ secret: process.env.SESSION_SECRET, name: 'SESSIONID', resave: false, saveUninitialized: false }));
 app.use(flash());
 app.use(passport.initialize());
 app.use(passport.session());
