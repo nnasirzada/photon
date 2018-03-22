@@ -193,3 +193,7 @@ table.dataTable.dtr-inline.collapsed>tbody>tr[role="row"]>td:first-child:before,
   padding-top: 10px !important;
   padding-bottom: 10px !important;
 }
+
+.ui-timepicker-container {
+  z-index: 1024 !important;
+}

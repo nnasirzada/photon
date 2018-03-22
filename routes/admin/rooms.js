@@ -48,6 +48,31 @@ router.get('/all', (req, res, next) => {
   }).catch(console.log);
 });
 
+router.get('/search/:keyword', (req, res, next) => {
+  let json = {};
+  json['data'] = [];
+  models.Room.findAll({
+    where: {
+      deleted: false,
+      [models.Sequelize.Op.or]: [
+        {
+          code: {
+            [models.Sequelize.Op.like]: '%' + req.params.keyword + '%',
+          }
+        },
+        {
+          name: {
+            [models.Sequelize.Op.like]: '%' + req.params.keyword + '%',
+          }
+        }
+      ]
+    }
+  }).then((rooms) => {
+    json['data'] = rooms;
+    res.status(200).json(json);
+  }).catch(console.log);
+});
+
 router.post('/', (req, res, next) => {
 
   req.checkBody('code', null).notEmpty();

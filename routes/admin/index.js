@@ -26,6 +26,7 @@ router.use("/grade-modes/", require("./grade-modes.js"));
 router.use("/grade-modes/:grade_mode_id/scale/", require("./grade-scale.js"));
 router.use("/instructors/", require("./instructors.js"));
 router.use("/majors/", require("./majors.js"));
+router.use("*/classes/:class_id/meetings/", require("./meetings.js"));
 router.use("*/courses/:course_id/prerequisites/", require("./prerequisites.js"));
 router.use("/programs/", require("./programs.js"));
 router.use("/buildings/:building_id/rooms/", require("./rooms.js"));
