@@ -1,0 +1,49 @@
+<h3 class="uk-heading-bullet">
+    Enter Your Search Criteria
+</h3>
+
+<form>
+    <fieldset class="uk-fieldset">
+        <input id="subject_id" name="subject_id" type="hidden" value required>
+        <div class="uk-margin uk-width-1-1">
+            <input class="uk-input" id="subject_search" placeholder="Subject">
+        </div>
+        <div class="uk-margin">
+            <input class="uk-input" type="text" placeholder="Course Number">
+        </div>
+        <div class="uk-margin">
+            <input class="uk-input" type="text" placeholder="Keyword">
+        </div>
+        <div style="float:right">
+            <button class="uk-button uk-button-primary uk-button-small">Submit</button>
+            <button class="uk-button uk-button-default uk-button-small">Clear</button>
+        </div>
+    </fieldset>
+</form>
+
+<!-- Scripts -->
+<script>
+    $(document).ready(function () {
+        $("#subject_search").autocomplete({
+            source: function (request, response) {
+                $.ajax({
+                    url: "/student/registration/search/" + request.term,
+                    dataType: "json",
+                    success: function (result) {
+                        response($.map(result.data, function (item, ignore) {
+                            return {
+                                id: item.id,
+                                label: item.code + ' - ' + item.name,
+                                value: item.code + ' - ' + item.name
+                            };
+                        }));
+                    }
+                });
+            },
+            minLength: 3,
+            select: function (event, ui) {
+                $('#subject_id').val(ui.item.id);
+            }
+        });
+    });
+</script>
