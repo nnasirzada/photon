@@ -43,12 +43,11 @@ router.get('/class/:classId', (req, res, next) => {
 			replacements: [req.params.classId, req.user.id],
 			type: models.sequelize.QueryTypes.SELECT
 		}),
-		models.sequelize.query("SELECT cm.monday, cm.tuesday, cm.wednesday, cm.thursday, cm.friday, cm.saturday, cm.sunday, cm.start_time, cm.end_time, r.code AS `room_code`, r.name AS `room_name`, b.code AS `building_code`, b.name AS `building_name` FROM(SELECT cm.* FROM class_meeting cm LEFT JOIN class c ON cm.class_id = c.id WHERE c.id = ? AND c.instructor_id = ? AND deleted = 0) cm LEFT JOIN room r ON cm.room_id = r.id LEFT JOIN building b ON r.building_id = b.id", {
+		models.sequelize.query("SELECT cm.monday, cm.tuesday, cm.wednesday, cm.thursday, cm.friday, cm.saturday, cm.sunday, cm.start_time, cm.end_time, r.code AS `room_code`, r.name AS `room_name`, b.code AS `building_code`, b.name AS `building_name` FROM(SELECT cm.* FROM class_meeting cm LEFT JOIN class c ON cm.class_id = c.id WHERE c.id = ? AND c.instructor_id = ? AND cm.deleted = 0) cm LEFT JOIN room r ON cm.room_id = r.id LEFT JOIN building b ON r.building_id = b.id", {
 			replacements: [req.params.classId, req.user.id],
 			type: models.sequelize.QueryTypes.SELECT
 		})
 	]).then(values => {
-		console.log(values);
 		res.render('instructor/classes/homepage', {
 			title: values[0][0] ? values[0][0].course_name : 'No class information',
 			active: {
