@@ -197,3 +197,9 @@ table.dataTable.dtr-inline.collapsed>tbody>tr[role="row"]>td:first-child:before,
 .ui-timepicker-container {
   z-index: 1024 !important;
 }
+
+.user-thumb {
+  object-fit: cover;
+  width: 90px !important;
+  height: 90px !important;
+}

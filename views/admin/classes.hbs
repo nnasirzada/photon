@@ -274,7 +274,7 @@
 		$("#instructor_search").autocomplete({
 			source: function (request, response) {
 				$.ajax({
-					url: "/admin/instructors/search/" + request.term,
+					url: "/admin/users/instructors/search/" + request.term,
 					dataType: "json",
 					success: function (result) {
 						response($.map(result.data, function (item, ignore) {
