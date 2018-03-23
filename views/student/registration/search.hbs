@@ -48,9 +48,12 @@
             },
             minLength: 3,
             select: function (event, ui) {
-                $('#subject_id').val(ui.item.id);
+                $("#subject_id").val(ui.item.id);
+            },
+            change: function (event, ui) {
+                if (ui.item == null)
+                    $("#subject_id").val('');
             }
-
         });
         $("#course_number_search").on('keypress', function (e) {
             if (e.which == 32)
