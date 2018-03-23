@@ -15,7 +15,6 @@
                 <th>Schedule</th>
                 <th>Time</th>
                 <th>Status</th>
-                <th>Action</th>
             </tr>
             </thead>
         </table>
@@ -33,17 +32,44 @@
             },
             buttons: [],
             select: {},
-            /*ajax: "/student/registration/term/registration_classes_term_id_ajax/all",*/
+            {{#if subject_id_s}}
+                {{#if course_number_s}}
+                    {{#if keyword_s}}
+                        ajax: "/student/registration/term/{{reg_class_t_id_ajax}}/su/{{subject_id_s}}/co/{{course_number_s}}/ke/{{keyword_s}}",
+                    {{else}}
+                        ajax: "/student/registration/term/{{reg_class_t_id_ajax}}/su/{{subject_id_s}}/co/{{course_number_s}}",
+                    {{/if}}
+                {{else}}
+                    {{#if keyword_s}}
+                        ajax: "/student/registration/term/{{reg_class_t_id_ajax}}/su/{{subject_id_s}}/ke/{{keyword_s}}",
+                    {{else}}
+                        ajax: "/student/registration/term/{{reg_class_t_id_ajax}}/su/{{subject_id_s}}",
+                    {{/if}}
+                {{/if}}
+            {{else}}
+                {{#if course_number_s}}
+                    {{#if keyword_s}}
+                        ajax: "/student/registration/term/{{reg_class_t_id_ajax}}/co/{{course_number_s}}/ke/{{keyword_s}}",
+                    {{else}}
+                        ajax: "/student/registration/term/{{reg_class_t_id_ajax}}/co/{{course_number_s}}",
+                    {{/if}}
+                {{else}}
+                    {{#if keyword_s}}
+                        ajax: "/student/registration/term/{{reg_class_t_id_ajax}}/ke/{{keyword_s}}",
+                    {{else}}
+                        ajax: "/student/registration/term/{{reg_class_t_id_ajax}}/te",
+                    {{/if}}
+                {{/if}}
+            {{/if}}
             rowId: 'id',
             columns: [
                 {"data": "title", responsivePriority: 1},
                 {"data": "section", responsivePriority: 2},
-                {"data": "hours", responsivePriority: 8},
-                {"data": "instructor", responsivePriority: 7},
-                {"data": "schedule", responsivePriority: 5},
-                {"data": "time", responsivePriority: 6},
+                {"data": "hours", responsivePriority: 7},
+                {"data": "instructor", responsivePriority: 6},
+                {"data": "schedule", responsivePriority: 4},
+                {"data": "time", responsivePriority: 5},
                 {"data": "status", responsivePriority: 3},
-                {"data": "action", responsivePriority: 4}
             ]
         });
     });
