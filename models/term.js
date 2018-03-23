@@ -38,5 +38,9 @@ module.exports = (sequelize, DataTypes) => {
         });
     };
 
+    /*Term.getRegistrationClassesByTerm = (student_id, term_id, subject_id, course_number, subject_id)=>{
+
+    };*/
+
     return Term;
 };

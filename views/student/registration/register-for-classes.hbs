@@ -1,0 +1,50 @@
+<h3 class="uk-heading-bullet uk-margin-top">
+    {{title}}
+</h3>
+
+<div uk-grid>
+    {{!-- Class Navigation --}}
+    <div class="uk-width-1-1">
+        <table id="table" class="uk-table uk-table-hover uk-table-striped" style="width: 100%;">
+            <thead>
+            <tr>
+                <th>Title</th>
+                <th>Section</th>
+                <th>Hours</th>
+                <th>Instructor</th>
+                <th>Schedule</th>
+                <th>Time</th>
+                <th>Status</th>
+                <th>Action</th>
+            </tr>
+            </thead>
+        </table>
+    </div>
+</div>
+
+<script>
+    $(document).ready(function () {
+        var table = $('#table').DataTable({
+            dom: 'Bfrtip',
+            responsive: {
+                details: {
+                    display: $.fn.dataTable.Responsive.display.childRowImmediate
+                }
+            },
+            buttons: [],
+            select: {},
+            /*ajax: "/student/registration/term/registration_classes_term_id_ajax/all",*/
+            rowId: 'id',
+            columns: [
+                {"data": "title", responsivePriority: 1},
+                {"data": "section", responsivePriority: 2},
+                {"data": "hours", responsivePriority: 8},
+                {"data": "instructor", responsivePriority: 7},
+                {"data": "schedule", responsivePriority: 5},
+                {"data": "time", responsivePriority: 6},
+                {"data": "status", responsivePriority: 3},
+                {"data": "action", responsivePriority: 4}
+            ]
+        });
+    });
+</script>

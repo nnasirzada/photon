@@ -3,7 +3,7 @@ const models = require('../../models');
 const router = express.Router();
 
 router.get('/', (req, res, next) => {
-    models.Term.findAll({ where: { deleted: false, status: 'open' } }).then(terms => {
+    models.Term.findAll({where: {deleted: false, status: 'open'}}).then(terms => {
         res.render("student/registration", {
             title: "Select a Term",
             active: {
@@ -18,11 +18,13 @@ router.get('/', (req, res, next) => {
     }).catch(console.error);
 });
 
-router.get('/term/:termId/search', (req, res, next) => {
-    models.Term.findOne({ where: { deleted: false, id: req.params.termId } }).then(Term => {
+router.get('/term/:termId', (req, res, next) => {
+    models.Term.findOne({where: {deleted: false, id: req.params.termId}}).then(Term => {
         if (Term.status === 'open') {
             res.render("student/registration/search", {
                 title: "Search for Classes",
+                term_id_search: req.params.termId,
+                term_name_search: Term.name,
                 active: {
                     registration: true
                 },
@@ -30,7 +32,6 @@ router.get('/term/:termId/search', (req, res, next) => {
                     uikit: true,
                     jquery: true,
                     jquery_ui: true,
-                    data_tables: true
                 },
             });
         } else {
@@ -38,12 +39,12 @@ router.get('/term/:termId/search', (req, res, next) => {
             err.status = 404;
             res.locals.error = err;
             res.status(err.status);
-            return res.render('error', { layout: false });
+            return res.render('error', {layout: false});
         }
     }).catch(console.error);
 });
 
-router.get('/search/:keyword', (req, res, next) => {
+router.get('/search_subjects/:keyword', (req, res, next) => {
     let json = {};
     json['data'] = [];
     models.Subject.findAll({
@@ -66,6 +67,31 @@ router.get('/search/:keyword', (req, res, next) => {
         json['data'] = subjects;
         res.status(200).json(json);
     }).catch(console.log);
+});
+
+router.get('/term/:termId/search', (req, res, next) => {
+    models.Term.findOne({where: {deleted: false, id: req.params.termId}}).then(Term => {
+        if (Term.status === 'open') {
+            res.render("student/registration/register-for-classes", {
+                title: "Register for Classes",
+                active: {
+                    registration: true
+                },
+                imports: {
+                    uikit: true,
+                    jquery: true,
+                    jquery_ui: true,
+                    data_tables: true
+                },
+            });
+        } else {
+            let err = new Error('Not Found');
+            err.status = 404;
+            res.locals.error = err;
+            res.status(err.status);
+            return res.render('error', {layout: false});
+        }
+    }).catch(console.error);
 });
 
 module.exports = router;
