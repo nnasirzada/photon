@@ -34,8 +34,8 @@
 <div id="offcanvas-nav" uk-offcanvas="overlay: true" class="uk-dark" uk-offcanvas>
     <div class="uk-offcanvas-bar">
         <ul class="uk-nav uk-nav-default uk-nav-parent-icon" uk-nav>
-            <li {{#if active.profile}} class="uk-active" {{/if}}>
-                <a href="#">Profile</a>
+            <li {{#if active.home}} class="uk-active" {{/if}}>
+                <a href="/student">Home</a>
             </li>
             <li class="uk-nav-divider"></li>
             <li {{#if active.registration}} class="uk-active" {{/if}}>
@@ -76,8 +76,8 @@
 {{!-- Sticky Sidebar --}}
 <div id="oncanvas-nav" class="uk-visible@m uk-light">
     <ul class="uk-nav uk-nav-default uk-nav-parent-icon" uk-nav>
-        <li {{#if active.profile}} class="uk-active" {{/if}}>
-            <a href="#">Profile</a>
+        <li {{#if active.home}} class="uk-active" {{/if}}>
+            <a href="/student">Home</a>
         </li>
         <li class="uk-nav-divider"></li>
         <li {{#if active.registration}} class="uk-active" {{/if}}>
