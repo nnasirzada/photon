@@ -1,0 +1,43 @@
+<div class="uk-width-1-1">
+	<div class="uk-card custom-card-border uk-card-small uk-card-body uk-card-default">
+		<ul class="uk-nav-default uk-nav-parent-icon" uk-nav>
+			<li>
+				<a href="../students-list/">Students List</a>
+			</li>
+			<li class="uk-nav-divider"></li>
+			<li>
+				<a href="../grade-components/">Grade Components</a>
+			</li>
+			<li class="uk-nav-divider"></li>
+			<li class="uk-active">
+				<a href="../grading/">Grading</a>
+			</li>
+			<li class="uk-nav-divider"></li>
+			<li>
+				<a href="../attendance/">Attendance</a>
+			</li>
+		</ul>
+	</div>
+</div>
+
+<h3 class="uk-heading-bullet uk-margin-top">
+	Enter Grades
+</h3>
+
+<form action="./entry/" class="uk-form-stacked">
+	<div class="uk-margin">
+		<label class="uk-form-label uk-text-bold" for="component">Select Grading Component</label>
+		<div class="uk-form-controls">
+			<select class="uk-select uk-margin" id="component" name="component">
+				<option selected disabled class="uk-hidden"></option>
+				{{#each gradeComponents}}
+					<option value="{{this.id}}">{{this.name}} - {{this.weight}}</option>
+				{{/each}}
+			</select>
+		</div>
+	</div>
+
+	<div class="uk-margin uk-text-right">
+		<input type="submit" class="uk-button uk-button-primary" value="Next">
+	</div>
+</form>

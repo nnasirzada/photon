@@ -9,11 +9,11 @@
 				<a href="../../grade-components/">Grade Components</a>
 			</li>
 			<li class="uk-nav-divider"></li>
-			<li>
+			<li class="uk-active">
 				<a href="../../grading/">Grading</a>
 			</li>
 			<li class="uk-nav-divider"></li>
-			<li class="uk-active">
+			<li>
 				<a href="../../attendance/">Attendance</a>
 			</li>
 		</ul>
@@ -21,7 +21,7 @@
 </div>
 
 <h3 class="uk-heading-bullet uk-margin-top">
-	Track Attendance - {{ meetingDate }}
+	Enter Grades - {{ componentName }}
 </h3>
 
 <form id="form" action="" method="post" class="uk-form uk-width-1-1">
@@ -30,8 +30,9 @@
 			<tr>
 				<th>ID</th>
 				<th>Student</th>
-				<th>Status</th>
-				<th>Note</th>
+				<th>Percentage</th>
+				<th>Submitted At</th>
+				<th>Updated At</th>
 			</tr>
 		</thead>
 		<tbody>
@@ -45,18 +46,13 @@
 						{{this.student}}
 					</td>
 					<td>
-						<select class="uk-select" name="student[{{this.student_id}}][status]">
-							{{#if this.status}}
-							{{else}}
-								<option selected disabled class="uk-hidden"></option>
-							{{/if}}
-							<option {{#if absent}} selected {{/if}} value="absent">Absent</option>
-							<option {{#if present}} selected {{/if}} value="present">Present</option>
-							<option {{#if excused}} selected {{/if}} value="excused">Excused</option>
-						</select>
+						<input class="uk-input" type="number" name="student[{{this.student_id}}][percentage]" placeholder="0" {{#if this.percentage}} value="{{this.percentage}}" {{/if}}>
 					</td>
 					<td>
-						<input class="uk-input" type="text" name="student[{{this.student_id}}][note]" placeholder="Note" {{#if this.note}} value="{{this.note}}" {{/if}}>
+						{{#if this.submitted_at}} {{this.submitted_at}} {{else}}- {{/if}}
+					</td>
+					<td>
+						{{#if this.updated_at}} {{this.updated_at}} {{else}}- {{/if}}
 					</td>
 				</tr>
 			{{/each}}
