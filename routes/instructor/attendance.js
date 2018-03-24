@@ -169,6 +169,6 @@ router.post('/entry', (req, res, next) => {
 	}).catch(err => {
 		return res.status(501).send('Error happened');
 	});
-})
+});
 
 module.exports = router;
