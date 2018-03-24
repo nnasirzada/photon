@@ -71,5 +71,8 @@ router.use('/class/:classId/students-list/', require('./students-list'));
 router.use('/class/:classId/grade-components/', require('./grade-components'));
 
 // Attendance
+router.use('/class/:classId/grading/', require('./grading'));
+
+// Attendance
 router.use('/class/:classId/attendance/', require('./attendance'));
 module.exports = router;
