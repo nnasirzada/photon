@@ -78,6 +78,7 @@ router.get('/term/:termId/search', (req, res, next) => {
                 subject_id_s: req.query.subject_id,
                 course_number_s: req.query.course_number,
                 keyword_s: req.query.keyword,
+                current_student_id_r: req.user.id,
                 active: {
                     registration: true
                 },
@@ -219,6 +220,7 @@ function configureJson(classes) {
                 schedule += ", Sunday"
         }
 
+        classes[i].status = classes[i].rem_enrollment + " of " + classes[i].max_enrollment;
         classes[i].schedule = schedule;
         classes[i].title = classes[i].code + " " + classes[i].number + " - " + classes[i].name;
     }
