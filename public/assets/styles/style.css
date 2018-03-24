@@ -9,7 +9,7 @@ body {
 #oncanvas-nav {
   position: fixed;
   width: 300px; 
-  height: calc(100% - 120px);
+  height: calc(100% - 110px);
   overflow: auto;
   background: #33393f;
 }
@@ -25,11 +25,15 @@ body {
 
 #navbar {
   padding: 0px 20px;
-  box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.07);
+  box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.1);
 }
 
 #navbar img {
   max-height: 40px;
+}
+
+#navbar a {
+  height: 70px !important;
 }
 
 .uk-nav-default {
