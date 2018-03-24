@@ -1,25 +1,31 @@
 <h3 class="uk-heading-bullet">
-    Enter Your Search Criteria
+    Enter Your Search Criteria - {{term_name_search}}
 </h3>
 
-<form>
-    <fieldset class="uk-fieldset">
+<div class="uk-margin-auto-vertical uk-width-1-1">
+    <form class="uk-form-stacked uk-grid-small uk-width-1-1"
+          action="/student/registration/term/{{term_id_search}}/search">
         <input id="subject_id" name="subject_id" type="hidden" value required>
         <div class="uk-margin uk-width-1-1">
-            <input class="uk-input" id="subject_search" placeholder="Subject">
+            <label class="uk-form-label" for="subject_search">Subject</label>
+            <input class="uk-input" id="subject_search" placeholder="Search by Subject...">
         </div>
-        <div class="uk-margin">
-            <input class="uk-input" type="text" placeholder="Course Number">
+        <input id="course_number" name="course_number" type="hidden" value required>
+        <div class="uk-margin uk-width-1-1">
+            <label class="uk-form-label" for="course_number_search">Course Number</label>
+            <input class="uk-input" id="course_number_search" type="number" placeholder="Search by Course Number...">
         </div>
-        <div class="uk-margin">
-            <input class="uk-input" type="text" placeholder="Keyword">
+        <input id="keyword" name="keyword" type="hidden" value required>
+        <div class="uk-margin uk-width-1-1">
+            <label class="uk-form-label" for="keyword_search">Keyword</label>
+            <input class="uk-input" id="keyword_search" type="text" placeholder="Search by Keyword...">
         </div>
-        <div style="float:right">
-            <button class="uk-button uk-button-primary uk-button-small">Submit</button>
-            <button class="uk-button uk-button-default uk-button-small">Clear</button>
+        <div class="uk-width-1-1 uk-margin-top uk-text-right">
+            <button class="uk-button uk-button-primary" type="submit">Search</button>
+            <button class="uk-button uk-button-default" type="reset">Clear</button>
         </div>
-    </fieldset>
-</form>
+    </form>
+</div>
 
 <!-- Scripts -->
 <script>
@@ -27,7 +33,7 @@
         $("#subject_search").autocomplete({
             source: function (request, response) {
                 $.ajax({
-                    url: "/student/registration/search/" + request.term,
+                    url: "/student/registration/search_subjects/" + request.term,
                     dataType: "json",
                     success: function (result) {
                         response($.map(result.data, function (item, ignore) {
@@ -42,8 +48,24 @@
             },
             minLength: 3,
             select: function (event, ui) {
-                $('#subject_id').val(ui.item.id);
+                $("#subject_id").val(ui.item.id);
+            },
+            change: function (event, ui) {
+                if (ui.item == null)
+                    $("#subject_id").val('');
             }
+        });
+        $("#course_number_search").on('keypress', function (e) {
+            if (e.which == 32)
+                return false;
+        }).keyup(function () {
+            let value = $(this).val();
+            $('#course_number').val(value);
+        });
+        $("#keyword_search").keyup(function () {
+            let value = $(this).val();
+            value = value.replace(/\s\s+/g, ' ');
+            $('#keyword').val(value);
         });
     });
 </script>

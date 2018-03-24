@@ -2,15 +2,19 @@
 	<div class="uk-card custom-card-border uk-card-small uk-card-body uk-card-default">
 		<ul class="uk-nav-default uk-nav-parent-icon" uk-nav>
 			<li>
-				<a href="./students-list">Students List</a>
+				<a href="../students-list/">Students List</a>
 			</li>
 			<li class="uk-nav-divider"></li>
 			<li class="uk-active">
-				<a href="./grade-components">Grade Components</a>
+				<a href="../grade-components/">Grade Components</a>
 			</li>
 			<li class="uk-nav-divider"></li>
 			<li>
-				<a href="./attendance">Attendance</a>
+				<a href="../grading/">Grading</a>
+			</li>
+			<li class="uk-nav-divider"></li>
+			<li>
+				<a href="../attendance/">Attendance</a>
 			</li>
 		</ul>
 	</div>
@@ -87,7 +91,7 @@
 				}
 			},
 			select: { style: 'multi', selector: 'td:not(.not-selectable)' },
-			ajax: "./grade-components/all",
+			ajax: "./all/",
 			buttons: [
 				{
 					text: 'New',
@@ -111,7 +115,7 @@
 						var data = dt.rows({ selected: true }).data();
 						if (data.length != 1) return;
 						var row = data[0];
-						$("#modal-create-edit form").attr("action", './grade-components/' + row.id);
+						$("#modal-create-edit form").attr("action", row.id);
 						$("#modal-create-edit form").attr("method", "put");
 						$("#modal-create-edit input[name='id']").attr("value", row.id);
 						$("#modal-create-edit input[name='name']").attr("value", row.name);
@@ -131,7 +135,7 @@
 						if (data.length != 1) return;
 						var row = data[0];
 						$('#modal-delete form')[0].reset();
-						$("#modal-delete form").attr("action", './grade-components/' + row.id);
+						$("#modal-delete form").attr("action", row.id);
 						$("#modal-delete input[name='id']").attr("value", row.id);
 						$("#modal-delete input[type='submit']").show();
 						$("#modal-delete .uk-modal-close").show();

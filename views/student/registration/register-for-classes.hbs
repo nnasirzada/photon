@@ -1,0 +1,76 @@
+<h3 class="uk-heading-bullet uk-margin-top">
+    {{title}}
+</h3>
+
+<div uk-grid>
+    {{!-- Class Navigation --}}
+    <div class="uk-width-1-1">
+        <table id="table" class="uk-table uk-table-hover uk-table-striped" style="width: 100%;">
+            <thead>
+            <tr>
+                <th>Title</th>
+                <th>Section</th>
+                <th>Hours</th>
+                <th>Instructor</th>
+                <th>Schedule</th>
+                <th>Time</th>
+                <th>Status</th>
+            </tr>
+            </thead>
+        </table>
+    </div>
+</div>
+
+<script>
+    $(document).ready(function () {
+        var table = $('#table').DataTable({
+            dom: 'Bfrtip',
+            responsive: {
+                details: {
+                    display: $.fn.dataTable.Responsive.display.childRowImmediate
+                }
+            },
+            buttons: [],
+            select: {},
+            {{#if subject_id_s}}
+                {{#if course_number_s}}
+                    {{#if keyword_s}}
+                        ajax: "/student/registration/term/{{reg_class_t_id_ajax}}/su/{{subject_id_s}}/co/{{course_number_s}}/ke/{{keyword_s}}",
+                    {{else}}
+                        ajax: "/student/registration/term/{{reg_class_t_id_ajax}}/su/{{subject_id_s}}/co/{{course_number_s}}",
+                    {{/if}}
+                {{else}}
+                    {{#if keyword_s}}
+                        ajax: "/student/registration/term/{{reg_class_t_id_ajax}}/su/{{subject_id_s}}/ke/{{keyword_s}}",
+                    {{else}}
+                        ajax: "/student/registration/term/{{reg_class_t_id_ajax}}/su/{{subject_id_s}}",
+                    {{/if}}
+                {{/if}}
+            {{else}}
+                {{#if course_number_s}}
+                    {{#if keyword_s}}
+                        ajax: "/student/registration/term/{{reg_class_t_id_ajax}}/co/{{course_number_s}}/ke/{{keyword_s}}",
+                    {{else}}
+                        ajax: "/student/registration/term/{{reg_class_t_id_ajax}}/co/{{course_number_s}}",
+                    {{/if}}
+                {{else}}
+                    {{#if keyword_s}}
+                        ajax: "/student/registration/term/{{reg_class_t_id_ajax}}/ke/{{keyword_s}}",
+                    {{else}}
+                        ajax: "/student/registration/term/{{reg_class_t_id_ajax}}/te",
+                    {{/if}}
+                {{/if}}
+            {{/if}}
+            rowId: 'id',
+            columns: [
+                {"data": "title", responsivePriority: 1},
+                {"data": "section", responsivePriority: 2},
+                {"data": "hours", responsivePriority: 7},
+                {"data": "instructor", responsivePriority: 6},
+                {"data": "schedule", responsivePriority: 4},
+                {"data": "time", responsivePriority: 5},
+                {"data": "status", responsivePriority: 3},
+            ]
+        });
+    });
+</script>

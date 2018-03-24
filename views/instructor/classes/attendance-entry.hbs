@@ -1,0 +1,103 @@
+<div class="uk-width-1-1">
+	<div class="uk-card custom-card-border uk-card-small uk-card-body uk-card-default">
+		<ul class="uk-nav-default uk-nav-parent-icon" uk-nav>
+			<li>
+				<a href="../students-list/">Students List</a>
+			</li>
+			<li class="uk-nav-divider"></li>
+			<li>
+				<a href="../grade-components/">Grade Components</a>
+			</li>
+			<li class="uk-nav-divider"></li>
+			<li>
+				<a href="../grading/">Grading</a>
+			</li>
+			<li class="uk-nav-divider"></li>
+			<li class="uk-active">
+				<a href="../attendance/">Attendance</a>
+			</li>
+		</ul>
+	</div>
+</div>
+
+<h3 class="uk-heading-bullet uk-margin-top">
+	Track Attendance - {{ meetingDate }}
+</h3>
+
+<form id="form" action="" method="post" class="uk-form uk-width-1-1">
+	<table class="uk-table uk-table-small uk-table-middle uk-table-divider uk-table-striped uk-table-hover">
+		<thead>
+			<tr>
+				<th>ID</th>
+				<th>Student</th>
+				<th>Status</th>
+				<th>Note</th>
+			</tr>
+		</thead>
+		<tbody>
+			{{#each result}}
+				<tr>
+					<td>
+						{{this.student_id}}
+						<input type="hidden" name="student[{{this.student_id}}][id]" value="{{this.student_id}}">
+					</td>
+					<td>
+						{{this.student}}
+					</td>
+					<td>
+						<select class="uk-select" name="student[{{this.student_id}}][status]">
+							{{#if this.status}}
+							{{else}}
+								<option selected disabled class="uk-hidden"></option>
+							{{/if}}
+							<option {{#if absent}} selected {{/if}} value="absent">Absent</option>
+							<option {{#if present}} selected {{/if}} value="present">Present</option>
+							<option {{#if excused}} selected {{/if}} value="excused">Excused</option>
+						</select>
+					</td>
+					<td>
+						<input class="uk-input" type="text" name="student[{{this.student_id}}][note]" placeholder="Note" {{#if this.note}} value="{{this.note}}" {{/if}}>
+					</td>
+				</tr>
+			{{/each}}
+		</tbody>
+	</table>
+
+	<div class="uk-margin uk-text-center">
+		<div id="spinner" style="display: none" uk-spinner></div>
+		<input type="submit" class="uk-button uk-button-primary" value="Save">
+	</div>
+</form>
+
+<script>
+	function showSpinner(show) {
+		$("#spinner").toggle(!!show);
+		$("input[type='submit']").toggle(!show);
+	}
+
+	$("#form").submit(function (e) {
+		e.preventDefault();
+		showSpinner(true);
+		$.ajax({
+			type: $(this).attr('method'),
+			url: $(this).attr('action'),
+			data: $(this).serialize(),
+			success: function (data) {
+				UIkit.notification({
+					message: data,
+					status: 'success',
+					timeout: 2000
+				});
+				showSpinner(false);
+			},
+			error: function (data) {
+				UIkit.notification({
+					message: data,
+					status: 'danger',
+					timeout: 2000
+				});
+				showSpinner(false);
+			}
+		});
+	});
+</script>

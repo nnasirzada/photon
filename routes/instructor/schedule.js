@@ -13,6 +13,7 @@ router.get('/', (req, res, next) => {
 		imports: {
 			jquery: true,
 			uikit: true,
+			moment: true,
 			fullcalendar: true
 		}
 	});
