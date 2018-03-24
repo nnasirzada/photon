@@ -140,7 +140,7 @@ router.post('/entry', (req, res, next) => {
 	req.checkBody('student', null).notEmpty();
 
 	models.PartOfTerm.isOpenToEdits(req.params.classId, req.user.id).then(result => {
-		if (!result[0] && !result[0].open_to_edits) {
+		if (result[0] && !result[0].open_to_edits) {
 			throw new Error('Term is not open to edits');
 		}
 
@@ -164,9 +164,11 @@ router.post('/entry', (req, res, next) => {
 		Promise.all(data).then(values => {
 			return res.status(200).send('Saved successfully.');
 		}).catch(err => {
-			return res.status(501).send('Error happened: ' + err.msg);
+			return res.status(501).send('Error happened');
 		});
-	})
+	}).catch(err => {
+		return res.status(501).send('Error happened');
+	});
 })
 
 module.exports = router;
