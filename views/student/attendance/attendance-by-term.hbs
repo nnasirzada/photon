@@ -42,5 +42,11 @@
                 {"data": "percentage", responsivePriority: 3}
             ]
         });
+
+        $('#table tbody').on('click', 'tr', function () {
+            var row = table.row($(this));
+            alert("Nice modal:" + row.data().time);
+        } );
+
     });
 </script>
