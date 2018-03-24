@@ -22,9 +22,17 @@
 
 
 <div id="attendance-details" class="uk-flex-top" uk-modal>
-    <div id="attendance-modal" class="uk-modal-dialog uk-modal-body uk-margin-auto-vertical">
+    <div id="attendance-modal" class="uk-modal-dialog uk-modal-body uk-margin-auto-vertical uk-width-auto">
         <button class="uk-modal-close-default" type="button" uk-close></button>
-        <p>asdasdasd</p>
+        <div class="uk-modal-header"><h6 id="course_name" class="uk-modal-title">Course Name:</h6></div>
+        <div class="uk-modal-body">
+            <p id="total_classes">Total classes: </p>
+            <p id="present">Present: </p>
+            <p id="absent">Absent: </p>
+        </div>
+        <div class="uk-modal-footer">
+
+        </div>
     </div>
 </div>
 
@@ -51,11 +59,16 @@
             ]
         });
 
+        // table row onclick
         $('#table tbody').css("cursor", "pointer");
         $('#table tbody').on('click', 'tr', function () {
             var row = table.row($(this));
-            $('#attendance-modal p').empty();
-            $('#attendance-modal').append('<p>Total classes: ' + row.data().total_classes + '</p>');
+            $('#course_name').text(row.data().name);
+            $('#total_classes').text('Total classes: ' + row.data().total_classes);
+            $('#present').text('Present: ' + (parseInt(row.data().total_classes)-parseInt(row.data().missed)).toString());
+            $('#absent').text('Absent: ' + row.data().missed);
+            
+            
             UIkit.modal("#attendance-details").show();
         });
 
