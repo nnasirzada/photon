@@ -3,15 +3,19 @@
 	<div class="uk-card custom-card-border uk-card-small uk-card-body uk-card-default">
 		<ul class="uk-nav-default uk-nav-parent-icon" uk-nav>
 			<li class="uk-active">
-				<a href="./students-list">Students List</a>
+				<a href="../students-list/">Students List</a>
 			</li>
 			<li class="uk-nav-divider"></li>
 			<li>
-				<a href="./grade-components">Grade Components</a>
+				<a href="../grade-components/">Grade Components</a>
 			</li>
 			<li class="uk-nav-divider"></li>
 			<li>
-				<a href="./attendance">Attendance</a>
+				<a href="../grading/">Grading</a>
+			</li>
+			<li class="uk-nav-divider"></li>
+			<li>
+				<a href="../attendance/">Attendance</a>
 			</li>
 		</ul>
 	</div>
@@ -51,7 +55,7 @@
 			},
 			buttons: ['excelHtml5', 'csvHtml5', 'pdfHtml5', 'colvis'],
 			select: { style: 'multi', selector: 'td:not(.not-selectable)' },
-			ajax: "./students-list/all",
+			ajax: "./all/",
 			rowId: 'id',
 			columns: [
 				{ "data": "student_id" },
