@@ -15,9 +15,36 @@
                 <th>Schedule</th>
                 <th>Time</th>
                 <th>Status</th>
+                <th>Option</th>
             </tr>
             </thead>
         </table>
+    </div>
+</div>
+
+<!-- Create / Edit Modal -->
+<div id="modal-create-edit" bg-close="false" uk-modal>
+    <div class="uk-modal-dialog uk-modal-body uk-margin-auto-vertical">
+        <form id="form" method action class="uk-form-stacked uk-width-1-1">
+            <h2 class="uk-modal-title"></h2>
+            <input name="id" type="hidden" value>
+            <div class="uk-margin uk-width-1-1">
+                <label class="uk-form-label" for="code">Code</label>
+                <input class="uk-input" type="text" name="code" id="code" placeholder="Code" required>
+            </div>
+            <div class="uk-margin uk-width-1-1">
+                <label class="uk-form-label" for="name">Name</label>
+                <input class="uk-input" type="text" name="name" id="name" placeholder="Name" required>
+            </div>
+            <div class="uk-margin-top uk-text-right">
+                <button class="uk-button uk-button-default uk-modal-close" type="button">Close</button>
+                <div class="spinner" style="display: none;">
+                    <span class="uk-label uk-margin-right">Processing...</span>
+                    <div uk-spinner></div>
+                </div>
+                <input type="submit" class="uk-margin-left uk-button uk-button-primary" value="Save">
+            </div>
+        </form>
     </div>
 </div>
 
@@ -65,12 +92,31 @@
             columns: [
                 {"data": "title", responsivePriority: 1},
                 {"data": "section", responsivePriority: 2},
-                {"data": "hours", responsivePriority: 7},
-                {"data": "instructor", responsivePriority: 6},
+                {"data": "hours", responsivePriority: 8},
+                {"data": "instructor", responsivePriority: 7},
                 {"data": "schedule", responsivePriority: 4},
                 {"data": "time", responsivePriority: 5},
                 {"data": "status", responsivePriority: 3},
+                {
+                    data: null,
+                    responsivePriority: 6,
+                    render: function (data, type, row) {
+                        if (row.student_id == {{current_student_id_r}}) {
+                            return "<a href='/student/drop' class=\"uk-button-link\">Drop</a>";
+                        } else if ((row.student_id != {{current_student_id_r}}) && row.rem_enrollment > 0) {
+                            return "<a href='#' class=\"btnShow uk-button-link\">Register</a>";
+                        } else if ((row.student_id != {{current_student_id_r}}) && row.rem_enrollment == 0) {
+                            return "Not Available Seat";
+                        }
+                    }
+                }
             ]
         });
+
+
+    });
+    $(".btnShow").click(function (e, dt) {
+        console.log("fuck you");
+        UIkit.modal("#modal-create-edit").show();
     });
 </script>
