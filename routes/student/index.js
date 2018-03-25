@@ -24,5 +24,6 @@ router.get('/', (req, res, next) => {
 router.use('/registration', require('./registration'));
 router.use('/attendance', require('./attendance'));
 router.use('/profile', require('./profile'));
+router.use('/schedule', require('./schedule'));
 
 module.exports = router;
