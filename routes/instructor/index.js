@@ -1,5 +1,4 @@
 const express = require('express');
-const passport = require('passport');
 const router = express.Router();
 
 router.all('/*', (req, res, next) => {
@@ -16,5 +15,6 @@ router.get('/', (req, res, next) => {
 
 router.use('/classes', require('./classes'));
 router.use('/schedule', require('./schedule'));
+router.use('/profile', require('./profile'));
 
 module.exports = router;
