@@ -63,7 +63,7 @@
     <div class="uk-navbar-right">
         <ul class="uk-navbar-nav">
             <li class="uk-visible@m {{#if active.profile}} uk-active {{/if}}">
-                <a href="#">Profile</a>
+                <a href="/student/profile">Profile</a>
             </li>
             <li class="uk-visible@m">
                 <a href="/auth/logout/">Logout</a>
@@ -82,6 +82,14 @@
         <li class="uk-nav-divider"></li>
         <li {{#if active.registration}} class="uk-active" {{/if}}>
             <a href="/student/registration">Registration</a>
+        </li>
+        <li class="uk-nav-divider"></li>
+        <li {{#if active.attendance}} class="uk-active" {{/if}}>
+            <a href="/student/schedule">Schedule</a>
+        </li>
+        <li class="uk-nav-divider"></li>
+        <li {{#if active.grades}} class="uk-active" {{/if}}>
+            <a href="/student/grades">Grades</a>
         </li>
         <li class="uk-nav-divider"></li>
         <li {{#if active.attendance}} class="uk-active" {{/if}}>
