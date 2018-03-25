@@ -23,12 +23,6 @@
 			<form id="form" method action class="uk-form-stacked uk-grid-small" enctype="multipart/form-data" uk-grid>
 				<h2 class="uk-modal-title uk-width-1-1"></h2>
 				<input name="hidden_id" type="hidden" value>
-				<div class="hide-when-editing uk-width-1-3@m uk-width-1-2@s uk-width-1-1">
-					<label for="id" class="uk-form-label">ID</label>
-					<div class="uk-form-controls">
-						<input class="uk-input" type="number" name="id" id="id">
-					</div>
-				</div>
 				<div class="uk-width-1-3@m uk-width-1-2@s uk-width-1-1">
 					<label for="firstname" class="uk-form-label">Firstname</label>
 					<div class="uk-form-controls">
@@ -151,7 +145,6 @@
 						$('#modal-create-edit form').find('textarea').html(null);
 						$("#modal-create-edit form").attr("action", "#");
 						$("#modal-create-edit form").attr("method", "post");
-						$("#modal-create-edit .hide-when-editing").show();
 						$("#modal-create-edit .uk-modal-title").html("New admin");
 						showSpinner($("#modal-create-edit"), false);
 						UIkit.modal("#modal-create-edit").show();
@@ -169,7 +162,6 @@
 						$('#modal-create-edit form').find('textarea').html(null);
 						$("#modal-create-edit form").attr("action", row.id);
 						$("#modal-create-edit form").attr("method", "put");
-						$("#modal-create-edit .hide-when-editing").hide();
 						$("#modal-create-edit input[name='hidden_id']").attr("value", row.id);
 						$("#modal-create-edit input[name='firstname']").attr("value", row.firstname);
 						$("#modal-create-edit input[name='lastname']").attr("value", row.lastname);

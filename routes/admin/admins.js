@@ -59,9 +59,6 @@ router.post('/', (req, res, next) => {
 
     if (!req.file) return res.status(501).send('Please upload an image.');
 
-    if (!validator.isEmpty(req.body.id) && (req.body.id < 0 || req.body.id > 18446744073709551615))
-      return res.status(501).send('Please enter a positive number as ID.');
-
     req.checkBody('firstname', 'Please enter a firstname.').notEmpty();
     req.checkBody('lastname', 'Please enter a lastname.').notEmpty();
     req.checkBody('patronymic', 'Please enter a patronymic.').notEmpty();
@@ -109,8 +106,6 @@ router.put('/:id', (req, res, next) => {
 
     if (req.validationErrors())
       return res.status(501).send(req.validationErrors()[0].msg);
-
-    delete req.body.id;
 
     let params = JSON.parse(JSON.stringify({
       image_path: !req.file ? undefined : req.file.filename
