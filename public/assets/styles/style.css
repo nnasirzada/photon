@@ -201,6 +201,6 @@ table.dataTable.dtr-inline.collapsed>tbody>tr[role="row"]>td:first-child:before,
 
 .user-thumb {
   object-fit: cover;
-  width: 90px !important;
-  height: 90px !important;
+  width: 70px !important;
+  height: 70px !important;
 }
