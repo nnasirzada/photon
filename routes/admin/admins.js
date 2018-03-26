@@ -64,6 +64,7 @@ router.post('/', (req, res, next) => {
     req.checkBody('patronymic', 'Please enter a patronymic.').notEmpty();
     req.checkBody('date_of_birth', 'Please enter a date of birth.').notEmpty();
     req.checkBody('sex', 'Please select a sex.').notEmpty().isIn(['male', 'female', 'other']);
+    req.checkBody('status_login', 'Please select a login status.').notEmpty().isIn(['active', 'deactive']);
     req.checkBody('address', 'Please select an address.').notEmpty();
     req.checkBody('email', 'Please enter an email.').notEmpty().isEmail();
     req.checkBody('password', 'Please enter a password.').notEmpty();
@@ -84,7 +85,7 @@ router.post('/', (req, res, next) => {
       if (!User) throw new Error(null);
       return res.status(200).json(User);
     }).catch(err => {
-      return res.status(501).send('Failed to save user. Make sure user has unique ID.');
+      return res.status(501).send('Failed to save user. Make sure user has unique ID and email.');
     });
   });
 });
@@ -100,12 +101,15 @@ router.put('/:id', (req, res, next) => {
     req.checkBody('patronymic', 'Please enter a patronymic.').notEmpty();
     req.checkBody('date_of_birth', 'Please enter a date of birth.').notEmpty();
     req.checkBody('sex', 'Please select a sex.').notEmpty().isIn(['male', 'female', 'other']);
+    req.checkBody('status_login', 'Please select a login status.').notEmpty().isIn(['active', 'deactive']);
     req.checkBody('address', 'Please select an address.').notEmpty();
     req.checkBody('email', 'Please enter an email.').notEmpty().isEmail();
     //req.checkBody('password', 'Please enter a password.').notEmpty();
 
     if (req.validationErrors())
       return res.status(501).send(req.validationErrors()[0].msg);
+
+    if (validator.isEmpty(req.body.password)) delete req.body.password;
 
     let params = JSON.parse(JSON.stringify({
       image_path: !req.file ? undefined : req.file.filename
@@ -127,7 +131,7 @@ router.put('/:id', (req, res, next) => {
       if (!User) throw new Error(null);
       return res.status(200).json(User);
     }).catch(err => {
-      return res.status(501).send('Failed to update user. Make sure user has unique ID.');
+      return res.status(501).send('Failed to update user. Make sure user has unique ID email.');
     });
   });
 })
@@ -138,9 +142,9 @@ router.delete('/:id', (req, res, next) => {
     { deleted: true },
     { where: { id: req.params.id } }
   ).then(result => {
-    return res.status(200).send('Admin successfully deleted.');
+    return res.status(200).send('User successfully deleted.');
   }).catch(err => {
-    return res.status(501).send('Failed to delete admin.');
+    return res.status(501).send('Failed to delete user.');
   });
 });
 

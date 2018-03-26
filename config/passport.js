@@ -27,7 +27,7 @@ passport.use('local.login', new LocalStrategy({
 }, (req, email, password, done) => {
 
 	models.User.findOne({
-		where: { deleted: false, email: email }
+		where: { status_login: 'active', deleted: false, email: email }
 	}).then((User) => {
 		if (!User) {
 			console.log("User not found.");

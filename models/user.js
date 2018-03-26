@@ -38,6 +38,10 @@ module.exports = (sequelize, DataTypes) => {
 		type: {
 			type: DataTypes.ENUM('instructor', 'student', 'parent', 'admin')
 		},
+		status_login: {
+			type: DataTypes.ENUM('active', 'deactive'),
+			defaultValue: 'active'
+		},
 		deleted: {
 			type: DataTypes.BOOLEAN(),
 			defaultValue: false
@@ -49,7 +53,8 @@ module.exports = (sequelize, DataTypes) => {
 	});
 
 	User.hook('beforeUpdate', (user, options) => {
-		user.password = bcrypt.hashSync(user.password, 5);
+		if (!user.password.startsWith('$2a$05$'))
+			user.password = bcrypt.hashSync(user.password, 5);
 	});
 
 	return User;

@@ -1,85 +1,52 @@
+const path = require('path');
+const multer = require('multer');
+const uuidv1 = require('uuid/v1');
 const express = require("express");
 const passport = require("passport");
+const validator = require('validator');
 const models = require('../../models');
-const router = express.Router({ mergeParams: true });
+const router = express.Router();
+const upload = multer({
+  fileFilter: function (req, file, cb) {
+    if (!file.mimetype.startsWith('image'))
+      return cb(new Error('Please upload an image.'))
+    cb(null, true)
+  },
+  storage: multer.diskStorage({
+    destination: function (req, file, cb) {
+      cb(null, 'uploads/images/')
+    },
+    filename: function (req, file, cb) {
+      cb(null, uuidv1() + path.extname(file.originalname))
+    }
+  })
+}).single('image');
 
 router.get("/", (req, res, next) => {
-
-  res.locals = req.params;
-
-  Promise.all([
-    models.School.findAll({
-      where: { deleted: false }
-    }),
-    models.Subject.findAll({
-      where: { deleted: false }
-    }),
-    models.Program.findAll({
-      where: { deleted: false }
-    }),
-    models.GradeMode.findAll({
-      where: { deleted: false }
-    }),
-    models.GradeScale.findAll({
-      where: { deleted: false }
-    }),
-    models.ScheduleType.findAll({
-      where: { deleted: false }
-    })
-  ]).then(results => {
-    res.render("admin/courses", {
-      title: "Courses - Photon",
-      active: {
-        courses: true
-      },
-      imports: {
-        uikit: true,
-        jquery: true,
-        jquery_ui: true,
-        data_tables: true
-      },
-      schools: results[0],
-      subjects: results[1],
-      programs: results[2],
-      gradeModes: results[3],
-      gradeScales: results[4],
-      jGradeScales: JSON.stringify(results[4]),
-      scheduleTypes: results[5]
-    });
-  }).catch(console.error);
+  res.render("admin/instructors", {
+    title: "Instructors - Photon",
+    active: {
+      users: true
+    },
+    imports: {
+      uikit: true,
+      jquery: true,
+      jquery_ui: true,
+      data_tables: true
+    }
+  });
 });
 
 router.get('/all', (req, res, next) => {
   let json = {};
   json['data'] = [];
-  models.Course.findAll({
-    include: [{
-      model: models.School,
-      required: true
-    }, {
-      model: models.Subject,
-      required: true
-    }, {
-      model: models.Program,
-      required: true
-    }, {
-      model: models.GradeScale,
-      required: true
-    }, {
-      model: models.GradeMode,
-      required: true
-    }, {
-      model: models.ScheduleType,
-      required: true
-    }],
-    where: JSON.parse(JSON.stringify({
-      school_id: req.params.school_id,
-      subject_id: req.params.subject_id,
-      program_id: req.params.program_id,
+  models.User.findAll({
+    where: {
+      type: 'instructor',
       deleted: false
-    }))
-  }).then((courses) => {
-    json['data'] = courses;
+    }
+  }).then((users) => {
+    json['data'] = users;
     res.status(200).json(json);
   }).catch(console.log);
 });
@@ -102,133 +69,107 @@ router.get('/search/:keyword', (req, res, next) => {
         })
       ]
     }
-  }).then((instructors) => {
-    json['data'] = instructors;
+  }).then((users) => {
+    json['data'] = users;
     res.status(200).json(json);
   }).catch(console.log);
 });
 
 router.post('/', (req, res, next) => {
 
-  req.checkBody('number', 'Number should be a positive number.').notEmpty().isInt({ min: 0 });
-  req.checkBody('name', 'Name cannot be empty.').notEmpty();
-  req.checkBody('description', 'Description cannot be empty.').notEmpty();
-  req.checkBody('credit_hours', 'Credit hours should be a positive decimal.').notEmpty().isDecimal({ min: 0 });
-  req.checkBody('gpa_hours', 'GPA hours should be a positive decimal.').notEmpty().isDecimal({ min: 0 });
-  if (!req.params.school_id) req.checkBody('school_id', 'Select a correct school.').notEmpty().isInt({ min: 0 });
-  if (!req.params.subject_id) req.checkBody('subject_id', 'Select a correct subject.').notEmpty().isInt({ min: 0 });
-  if (!req.params.program_id) req.checkBody('program_id', 'Select a correct program.').notEmpty().isInt({ min: 0 });
-  req.checkBody('grade_mode_id', 'Select a correct grade mode.').notEmpty().isInt({ min: 0 });
-  req.checkBody('passing_grade_id', 'Select a correct passing grade.').notEmpty().isInt({ min: 0 });
-  req.checkBody('schedule_type_id', 'Select a correct schedule type.').notEmpty().isInt({ min: 0 });
+  upload(req, res, function (err) {
 
-  if (req.validationErrors())
-    return res.status(501).send(req.validationErrors()[0].msg);
+    if (err) return res.status(501).send(err.message);
 
-  let params = JSON.parse(JSON.stringify({
-    school_id: req.params.school_id,
-    subject_id: req.params.subject_id,
-    program_id: req.params.program_id
-  }));
+    if (!req.file) return res.status(501).send('Please upload an image.');
 
-  Object.assign(params, req.body);
+    req.checkBody('firstname', 'Please enter a firstname.').notEmpty();
+    req.checkBody('lastname', 'Please enter a lastname.').notEmpty();
+    req.checkBody('patronymic', 'Please enter a patronymic.').notEmpty();
+    req.checkBody('date_of_birth', 'Please enter a date of birth.').notEmpty();
+    req.checkBody('sex', 'Please select a sex.').notEmpty().isIn(['male', 'female', 'other']);
+    req.checkBody('status_login', 'Please select a login status.').notEmpty().isIn(['active', 'deactive']);
+    req.checkBody('address', 'Please select an address.').notEmpty();
+    req.checkBody('email', 'Please enter an email.').notEmpty().isEmail();
+    req.checkBody('password', 'Please enter a password.').notEmpty();
 
-  models.Course.build(
-    params
+    if (req.validationErrors())
+      return res.status(501).send(req.validationErrors()[0].msg);
 
-  ).save().then((Course) => {
-    return models.Course.findOne({
-      include: [{
-        model: models.School,
-        required: true
-      }, {
-        model: models.Subject,
-        required: true
-      }, {
-        model: models.Program,
-        required: true
-      }, {
-        model: models.GradeScale,
-        required: true
-      }, {
-        model: models.GradeMode,
-        required: true
-      }, {
-        model: models.ScheduleType,
-        required: true
-      }]
-      , where: {
-        id: Course.id
-      }
+    let params = JSON.parse(JSON.stringify({
+      image_path: req.file.filename,
+      type: 'instructor'
+    }));
+
+    Object.assign(params, req.body);
+
+    models.User.build(
+      JSON.parse(JSON.stringify(params))
+    ).save().then((User) => {
+      if (!User) throw new Error(null);
+      return res.status(200).json(User);
+    }).catch(err => {
+      console.log(err);
+      return res.status(501).send('Failed to save user. Make sure user has unique ID and email.');
     });
-  }).then(Course => {
-    if (!Course) throw new Error('Failed to save course.');
-    return res.status(200).json(Course);
-  }).catch(err => {
-    return res.status(501).send('Failed to save course.');
   });
 });
 
 router.put('/:id', (req, res, next) => {
 
-  req.checkBody('number', 'Number should be a positive number.').notEmpty().isInt({ min: 0 });
-  req.checkBody('name', 'Name cannot be empty.').notEmpty();
-  req.checkBody('description', 'Description cannot be empty.').notEmpty();
-  req.checkBody('credit_hours', 'Credit hours should be a positive decimal.').notEmpty().isDecimal({ min: 0 });
-  req.checkBody('gpa_hours', 'GPA hours should be a positive decimal.').notEmpty().isDecimal({ min: 0 });
-  if (!req.params.school_id) req.checkBody('school_id', 'Select a correct school.').notEmpty().isInt({ min: 0 });
-  if (!req.params.subject_id) req.checkBody('subject_id', 'Select a correct subject.').notEmpty().isInt({ min: 0 });
-  if (!req.params.program_id) req.checkBody('program_id', 'Select a correct program.').notEmpty().isInt({ min: 0 });
-  req.checkBody('grade_mode_id', 'Select a correct grade mode.').notEmpty().isInt({ min: 0 });
-  req.checkBody('passing_grade_id', 'Select a correct passing grade.').notEmpty().isInt({ min: 0 });
-  req.checkBody('schedule_type_id', 'Select a correct schedule type.').notEmpty().isInt({ min: 0 });
+  upload(req, res, function (err) {
 
-  if (req.validationErrors())
-    return res.status(501).send(req.validationErrors()[0].msg);
+    if (err) return res.status(501).send(err.message);
 
-  models.Course.update(
-    req.body, { where: { id: req.params.id } }
+    req.checkBody('firstname', 'Please enter a firstname.').notEmpty();
+    req.checkBody('lastname', 'Please enter a lastname.').notEmpty();
+    req.checkBody('patronymic', 'Please enter a patronymic.').notEmpty();
+    req.checkBody('date_of_birth', 'Please enter a date of birth.').notEmpty();
+    req.checkBody('sex', 'Please select a sex.').notEmpty().isIn(['male', 'female', 'other']);
+    req.checkBody('status_login', 'Please select a login status.').notEmpty().isIn(['active', 'deactive']);
+    req.checkBody('address', 'Please select an address.').notEmpty();
+    req.checkBody('email', 'Please enter an email.').notEmpty().isEmail();
+    //req.checkBody('password', 'Please enter a password.').notEmpty();
 
-  ).then(result => {
-    return models.Course.findOne({
-      include: [{
-        model: models.School,
-        required: true
-      }, {
-        model: models.Subject,
-        required: true
-      }, {
-        model: models.Program,
-        required: true
-      }, {
-        model: models.GradeScale,
-        required: true
-      }, {
-        model: models.GradeMode,
-        required: true
-      }, {
-        model: models.ScheduleType,
-        required: true
-      }]
-      , where: { id: req.params.id }
+    if (req.validationErrors())
+      return res.status(501).send(req.validationErrors()[0].msg);
+
+    if (validator.isEmpty(req.body.password)) delete req.body.password;
+
+    let params = JSON.parse(JSON.stringify({
+      image_path: !req.file ? undefined : req.file.filename
+    }));
+
+    Object.assign(params, req.body);
+
+    models.User.update(
+      JSON.parse(JSON.stringify(params)),
+      {
+        where: {
+          id: req.params.id
+        },
+        individualHooks: true
+      }
+    ).then(result => {
+      return models.User.findOne({ where: { id: req.params.id } });
+    }).then(User => {
+      if (!User) throw new Error(null);
+      return res.status(200).json(User);
+    }).catch(err => {
+      return res.status(501).send('Failed to update user. Make sure user has unique ID and email.');
     });
-  }).then((Course) => {
-    if (!Course) throw new Error('Course not found.');
-    return res.status(200).json(Course);
-  }).catch(err => {
-    return res.status(501).send('Failed to edit course.');
   });
-});
+})
 
 router.delete('/:id', (req, res, next) => {
 
-  models.Course.update(
+  models.User.update(
     { deleted: true },
     { where: { id: req.params.id } }
   ).then(result => {
-    return res.status(200).send('Course successfully deleted.');
+    return res.status(200).send('User successfully deleted.');
   }).catch(err => {
-    return res.status(501).send('Failed to delete course.');
+    return res.status(501).send('Failed to delete user.');
   });
 });
 
