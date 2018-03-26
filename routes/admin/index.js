@@ -29,6 +29,7 @@ router.use("/users/instructors/", require("./instructors.js"));
 router.use("/majors/", require("./majors.js"));
 router.use("*/classes/:class_id/meetings/", require("./meetings.js"));
 router.use("*/courses/:course_id/prerequisites/", require("./prerequisites.js"));
+router.use("/profile/", require("./profile.js"));
 router.use("/programs/", require("./programs.js"));
 router.use("/buildings/:building_id/rooms/", require("./rooms.js"));
 router.use("/schedule-types/", require("./schedule-types.js"));

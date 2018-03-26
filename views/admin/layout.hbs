@@ -40,6 +40,7 @@
 					<a href="/admin/profile/">Profile</a>
 				</li>
 				<li class="uk-nav-divider"></li>
+
 				<li {{#if active.buildings}} class="uk-active" {{/if}}>
 					<a href="/admin/buildings/">Buildings</a>
 				</li>
@@ -84,7 +85,7 @@
 					<a href="#">Users</a>
 					<ul class="uk-nav-sub">
 						<li>
-							<a href="/admin/users/admin/">Admins</a>
+							<a href="/admin/users/admins/">Admins</a>
 						</li>
 						<li>
 							<a href="/admin/users/instructors/">Instructors</a>
@@ -115,7 +116,7 @@
 		<div class="uk-navbar-right">
 			<ul class="uk-navbar-nav">
 				<li class="uk-visible@m {{#if active.profile}} uk-active {{/if}}">
-					<a href="#">Profile</a>
+					<a href="/admin/profile/">Profile</a>
 				</li>
 				<li class="uk-visible@m">
 					<a href="/auth/logout/">Logout</a>

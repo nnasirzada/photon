@@ -1,0 +1,64 @@
+<div class="uk-width-5-6@l uk-align-center">
+	<div class="uk-card uk-card-default uk-box-shadow-medium">
+		<div class="uk-card-header">
+			<div class="uk-grid-small uk-flex-middle" uk-grid>
+				<div class="uk-width-auto">
+					<img class="uk-border-circle" width="80" height="80" src="/uploads/images/{{user.image_path}}">
+				</div>
+				<div class="uk-width-expand">
+					<h3 class="uk-card-title uk-margin-remove-bottom">{{user.lastname}} {{user.firstname}} {{user.patronymic}}</h3>
+					<p class="uk-text-meta uk-margin-remove-top">{{user.type}}</p>
+				</div>
+			</div>
+		</div>
+		<div class="uk-card-body">
+			<h3 class="uk-heading-bullet">About</h3>
+			<p>
+				<span class="uk-text-bold">Email: </span>{{user.email}}
+			</p>
+			<p>
+				<span class="uk-text-bold">Address: </span>{{user.address}}
+			</p>
+			<p>
+				<span class="uk-text-bold">Date of birth: </span>{{user.date_of_birth}}
+			</p>
+		</div>
+		<div class="uk-card-footer">
+			<h3 class="uk-heading-bullet">Change Password</h3>
+			{{#if success}}
+				<div class="uk-alert-success" uk-alert>
+					<a class="uk-alert-close" uk-close></a>
+					<p>{{success}}</p>
+				</div>
+				{{else if error}}
+				<div class="uk-alert-danger" uk-alert>
+					<a class="uk-alert-close" uk-close></a>
+					<p>{{error}}</p>
+				</div>
+			{{/if}}
+			<form class="uk-form-stacked" action="#" method="post">
+				<div class="uk-margin">
+					<label class="uk-form-label uk-text-bold" for="oldpassword">Old password</label>
+					<div class="uk-form-controls">
+						<input class="uk-input" id="old_password" name="old_password" type="password" placeholder="Old Password">
+					</div>
+				</div>
+				<div class="uk-margin">
+					<label class="uk-form-label uk-text-bold" for="new_password">New password</label>
+					<div class="uk-form-controls">
+						<input class="uk-input" id="new_password" name="new_password" type="password" placeholder="New Password">
+					</div>
+				</div>
+				<div class="uk-margin">
+					<label class="uk-form-label uk-text-bold" for="confirm_new_password">Confirm new password</label>
+					<div class="uk-form-controls">
+						<input class="uk-input" id="confirm_new_password" name="confirm_new_password" type="password" placeholder="Confirm new password">
+					</div>
+				</div>
+				<div class="uk-margin uk-text-right">
+					<input type="submit" class="uk-button uk-button-primary" value="Save">
+				</div>
+			</form>
+		</div>
+	</div>
+</div>
