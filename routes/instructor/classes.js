@@ -3,7 +3,7 @@ const models = require('../../models');
 const router = express.Router();
 
 router.get('/', (req, res, next) => {
-	models.Instructor.getTeachingTerms(req.user.id).then(terms => {
+	models.User.getTeachingTerms(req.user.id).then(terms => {
 		res.render('instructor/classes', {
 			title: 'Select a term',
 			active: {
@@ -20,7 +20,7 @@ router.get('/', (req, res, next) => {
 
 // Select a term page
 router.get('/term/:termId', (req, res, next) => {
-	models.Instructor.getTeachingClasses(req.user.id, req.params.termId).then(classes => {
+	models.User.getTeachingClasses(req.user.id, req.params.termId).then(classes => {
 		res.render('instructor/classes/by-term', {
 			title: 'Select a class',
 			active: {
