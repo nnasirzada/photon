@@ -69,5 +69,9 @@ db.Course.belongsTo(db.GradeScale, { foreignKey: 'passing_grade_id' });
 db.Course.belongsTo(db.ScheduleType, { foreignKey: 'schedule_type_id' });
 db.CoursePrerequisite.belongsTo(db.Course, { foreignKey: 'course_id' });
 db.CoursePrerequisite.belongsTo(db.Course, { foreignKey: 'prerequisite_id' });
+db.Student.belongsTo(db.Term, { foreignKey: 'graduation_term_id', as: 'GraduationTerm' });
+db.Student.belongsTo(db.Term, { foreignKey: 'admit_term_id', as: 'AdmitTerm' });
+db.Student.belongsTo(db.Major, { foreignKey: 'major_id' });
+db.Student.belongsTo(db.User, { foreignKey: 'user_id' });
 
 module.exports = db;

@@ -29,6 +29,30 @@ router.get('/all', (req, res, next) => {
   }).catch(console.log);
 });
 
+router.get('/search/:keyword', (req, res, next) => {
+  let json = {};
+  json['data'] = [];
+  models.Term.findAll({
+    where: {
+      deleted: false,
+      [models.Sequelize.Op.or]: [
+        {
+          year: {
+            [models.Sequelize.Op.like]: '%' + req.params.keyword + '%',
+          }
+        }, {
+          name: {
+            [models.Sequelize.Op.like]: '%' + req.params.keyword + '%',
+          }
+        }
+      ]
+    }
+  }).then((terms) => {
+    json['data'] = terms;
+    res.status(200).json(json);
+  }).catch(console.log);
+});
+
 router.post('/', (req, res, next) => {
 
   req.checkBody('year', 'Please select a correct year.').notEmpty().isNumeric({ min: 2010, max: 2100 }).isLength({ min: 4, max: 4 });

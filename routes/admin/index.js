@@ -34,6 +34,7 @@ router.use("/programs/", require("./programs.js"));
 router.use("/buildings/:building_id/rooms/", require("./rooms.js"));
 router.use("/schedule-types/", require("./schedule-types.js"));
 router.use("/schools/", require("./schools.js"));
+router.use("/users/students/", require("./students.js"));
 router.use("/subjects/", require("./subjects.js"));
 router.use("/terms/:term_id/parts/", require("./term-parts.js"));
 router.use("/terms/", require("./terms.js"));

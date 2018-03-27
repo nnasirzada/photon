@@ -1,7 +1,7 @@
 const express = require('express');
-const router = express.Router();
 const models = require('../../models');
 const bcrypt = require('bcrypt');
+const router = express.Router();
 
 router.get('/', (req, res, next) => {
 

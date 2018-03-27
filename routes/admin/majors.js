@@ -48,6 +48,30 @@ router.get('/all', (req, res, next) => {
   }).catch(console.log);
 });
 
+router.get('/search/:keyword', (req, res, next) => {
+  let json = {};
+  json['data'] = [];
+  models.Major.findAll({
+    where: {
+      deleted: false,
+      [models.Sequelize.Op.or]: [
+        {
+          code: {
+            [models.Sequelize.Op.like]: '%' + req.params.keyword + '%',
+          }
+        }, {
+          name: {
+            [models.Sequelize.Op.like]: '%' + req.params.keyword + '%',
+          }
+        }
+      ]
+    }
+  }).then((majors) => {
+    json['data'] = majors;
+    res.status(200).json(json);
+  }).catch(console.log);
+});
+
 router.post('/', (req, res, next) => {
 
   req.checkBody('school_id', null).notEmpty();
