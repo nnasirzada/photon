@@ -102,7 +102,7 @@ router.get('/term/:termId/search', (req, res, next) => {
 router.get('/term/:termId/te', (req, res, next) => {
     let json = {};
     json['data'] = [];
-    models.Term.getRegClassesByTerm(req.params.termId).then(classes => {
+    models.Class.getRegClassesByTerm(req.params.termId, req.user.id).then(classes => {
         json['data'] = configureJson(classes);
         res.status(200).json(json);
     }).catch(console.log);
@@ -111,7 +111,7 @@ router.get('/term/:termId/te', (req, res, next) => {
 router.get('/term/:termId/su/:subjectId/co/:courseNum', (req, res, next) => {
     let json = {};
     json['data'] = [];
-    models.Term.getRegClassesByTeSuCo(req.params.termId, req.params.subjectId, req.params.courseNum).then(classes => {
+    models.Class.getRegClassesByTeSuCo(req.params.termId, req.params.subjectId, req.params.courseNum, req.user.id).then(classes => {
         json['data'] = configureJson(classes);
         res.status(200).json(json);
     }).catch(console.log);
@@ -120,7 +120,7 @@ router.get('/term/:termId/su/:subjectId/co/:courseNum', (req, res, next) => {
 router.get('/term/:termId/su/:subjectId', (req, res, next) => {
     let json = {};
     json['data'] = [];
-    models.Term.getRegClassesByTeSu(req.params.termId, req.params.subjectId).then(classes => {
+    models.Class.getRegClassesByTeSu(req.params.termId, req.params.subjectId, req.user.id).then(classes => {
         json['data'] = configureJson(classes);
         res.status(200).json(json);
     }).catch(console.log);
@@ -129,7 +129,7 @@ router.get('/term/:termId/su/:subjectId', (req, res, next) => {
 router.get('/term/:termId/co/:courseNum', (req, res, next) => {
     let json = {};
     json['data'] = [];
-    models.Term.getRegClassesByTeCo(req.params.termId, req.params.courseNum).then(classes => {
+    models.Class.getRegClassesByTeCo(req.params.termId, req.params.courseNum, req.user.id).then(classes => {
         json['data'] = configureJson(classes);
         res.status(200).json(json);
     }).catch(console.log);
@@ -138,7 +138,7 @@ router.get('/term/:termId/co/:courseNum', (req, res, next) => {
 router.get('/term/:termId/ke/:keyword', (req, res, next) => {
     let json = {};
     json['data'] = [];
-    models.Term.getRegClassesByTeKe(req.params.termId, req.params.keyword).then(classes => {
+    models.Class.getRegClassesByTeKe(req.params.termId, req.params.keyword, req.user.id).then(classes => {
         json['data'] = configureJson(classes);
         res.status(200).json(json);
     }).catch(console.log);
@@ -147,7 +147,7 @@ router.get('/term/:termId/ke/:keyword', (req, res, next) => {
 router.get('/term/:termId/su/:subjectId/ke/:keyword', (req, res, next) => {
     let json = {};
     json['data'] = [];
-    models.Term.getRegClassesByTeSuKe(req.params.termId, req.params.subjectId, req.params.keyword).then(classes => {
+    models.Class.getRegClassesByTeSuKe(req.params.termId, req.params.subjectId, req.params.keyword, req.user.id).then(classes => {
         json['data'] = configureJson(classes);
         res.status(200).json(json);
     }).catch(console.log);
@@ -156,7 +156,7 @@ router.get('/term/:termId/su/:subjectId/ke/:keyword', (req, res, next) => {
 router.get('/term/:termId/co/:courseNum/ke/:keyword', (req, res, next) => {
     let json = {};
     json['data'] = [];
-    models.Term.getRegClassesByTeCoKe(req.params.termId, req.params.courseNum, req.params.keyword).then(classes => {
+    models.Class.getRegClassesByTeCoKe(req.params.termId, req.params.courseNum, req.params.keyword, req.user.id).then(classes => {
         json['data'] = configureJson(classes);
         res.status(200).json(json);
     }).catch(console.log);
@@ -165,10 +165,127 @@ router.get('/term/:termId/co/:courseNum/ke/:keyword', (req, res, next) => {
 router.get('/term/:termId/su/:subjectId/co/:courseNum/ke/:keyword', (req, res, next) => {
     let json = {};
     json['data'] = [];
-    models.Term.getRegClassesByAll(req.params.termId, req.params.subjectId, req.params.courseNum, req.params.keyword).then(classes => {
+    models.Class.getRegClassesByAll(req.params.termId, req.params.subjectId, req.params.courseNum, req.params.keyword, req.user.id).then(classes => {
         json['data'] = configureJson(classes);
         res.status(200).json(json);
     }).catch(console.log);
+});
+
+router.post('/term/:termId/search', (req, res, next) => {
+    models.Student.getCreditHoursByTerm(req.user.id, req.body.id, req.params.termId).then(total_hours => {
+        let max_credit_hours = 38;
+        if (!total_hours[0] || parseInt(total_hours[0].tch) + parseInt(req.body.ch) <= max_credit_hours) {
+            models.CoursePrerequisite.getPreCoByStu(req.user.id, req.body.id).then(stuPres => {
+                models.CoursePrerequisite.getPreCoByClass(req.body.id).then(totalPres => {
+                    if (stuPres.length == totalPres.length) {
+                        models.ClassMeeting.getScheduleByStu(req.user.id, req.params.termId).then(stuSchedules => {
+                            models.ClassMeeting.getScheduleByCid(req.body.id).then(classSchedule => {
+                                let canRegister = true;
+
+                                if (stuSchedules[0]) {
+                                    let i = 0;
+                                    mainLoop:
+                                        for (i; i < stuSchedules.length; i++) {
+                                            let j = i;
+                                            for (j; j < classSchedule.length; j++) {
+                                                if ((stuSchedules[i].monday == 1 && classSchedule[j].monday == 1 &&
+                                                        classSchedule[j].monday == stuSchedules[i].monday) ||
+                                                    (stuSchedules[i].tuesday == 1 && classSchedule[j].tuesday == 1 &&
+                                                        classSchedule[j].tuesday == stuSchedules[i].tuesday) ||
+                                                    (stuSchedules[i].wednesday == 1 && classSchedule[j].wednesday == 1 &&
+                                                        classSchedule[j].wednesday == stuSchedules[i].wednesday) ||
+                                                    (stuSchedules[i].thursday == 1 && classSchedule[j].thursday == 1 &&
+                                                        classSchedule[j].thursday == stuSchedules[i].thursday) ||
+                                                    (stuSchedules[i].friday == 1 && classSchedule[j].friday == 1 &&
+                                                        classSchedule[j].friday == stuSchedules[i].friday) ||
+                                                    (stuSchedules[i].saturday == 1 && classSchedule[j].saturday == 1 &&
+                                                        classSchedule[j].saturday == stuSchedules[i].saturday) ||
+                                                    (stuSchedules[i].sunday == 1 && classSchedule[j].sunday == 1 &&
+                                                        classSchedule[j].sunday == stuSchedules[i].sunday)) {
+                                                    let time2 = timeSegments(classSchedule[j].time);
+                                                    let time1 = timeSegments(stuSchedules[i].time);
+
+                                                    console.log(time1)
+
+                                                    if (((time2[0][0] == time1[0][0] && time2[0][1] >= time1[0][1]) && ((time2[0][0] < time1[1][0]) || ((time2[0][0] == time1[1][0]) && (time2[0][1] < time1[1][1])))
+                                                        ) || ((time2[0][0] < time1[0][0]) && ((time2[1][0] > time1[0][0]) || (time2[1][0] == time1[0][0] && time2[1][1] > time1[0][1])))) {
+                                                        canRegister = false
+                                                        break mainLoop;
+                                                    }
+
+                                                }
+                                            }
+                                        }
+                                }
+
+                                if (canRegister) {
+                                    models.ClassEnrollment.findOne({
+                                        where: {
+                                            student_id: req.user.id,
+                                            class_id: req.body.id,
+                                            status: "ongoing"
+                                        }
+                                    }).then(Class => {
+                                        if (Class) {
+                                            models.ClassEnrollment.update(
+                                                {deleted: false},
+                                                {where: {student_id: req.user.id, class_id: req.body.id}}
+                                            ).then(result => {
+                                                return res.status(200).send('Successfully Registered.');
+                                            }).catch(err => {
+                                                return res.status(501).send('Failed to Register.');
+                                            });
+                                        } else {
+                                            models.ClassEnrollment.build({
+                                                student_id: req.user.id,
+                                                class_id: req.body.id,
+                                            }).save().then(result => {
+                                                return res.status(200).send('Successfully Registered.');
+                                            }).catch(err => {
+                                                return res.status(501).send('Failed to register.');
+                                            });
+                                        }
+                                    });
+                                } else {
+                                    return res.status(501).send("Time conflict error!");
+                                }
+
+                            });
+                        });
+                    } else {
+                        if (!totalPres[0]) {
+                            return res.status(501).send("Prerequisite Issue: ");
+                        } else {
+                            let i = 0;
+                            let statusString = "Prerequisite Issue: ";
+                            for (i; i < totalPres.length; i++) {
+                                if (i == 0) {
+                                    statusString += totalPres[i].title;
+                                } else {
+                                    statusString += ", " + totalPres[i].title;
+                                }
+                            }
+                            return res.status(501).send(statusString);
+                        }
+                    }
+
+                });
+            });
+        } else {
+            return res.status(501).send("Not Enough Credit Hours: " + (max_credit_hours - parseInt(total_hours[0].tch)) + " Out of " + max_credit_hours);
+        }
+    });
+});
+
+router.delete('/term/:termId/search', (req, res, next) => {
+    models.ClassEnrollment.update(
+        {deleted: true},
+        {where: {student_id: req.user.id, class_id: req.body.id}}
+    ).then(result => {
+        return res.status(200).send('Successfully Dropped.');
+    }).catch(err => {
+        return res.status(501).send('Failed to Drop.');
+    });
 });
 
 function configureJson(classes) {
@@ -220,12 +337,23 @@ function configureJson(classes) {
                 schedule += ", Sunday"
         }
 
+        if (classes[i].rem_enrollment === null)
+            classes[i].rem_enrollment = classes[i].max_enrollment;
         classes[i].status = classes[i].rem_enrollment + " of " + classes[i].max_enrollment;
         classes[i].schedule = schedule;
         classes[i].title = classes[i].code + " " + classes[i].number + " - " + classes[i].name;
     }
 
     return classes;
+}
+
+function timeSegments(time) {
+    var timeArray = time.split(" - ");
+    let i = 0;
+    for (i; i < timeArray.length; i++) {
+        timeArray[i] = timeArray[i].split(":");
+    }
+    return timeArray;
 }
 
 module.exports = router;

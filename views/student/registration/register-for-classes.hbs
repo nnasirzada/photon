@@ -22,27 +22,23 @@
     </div>
 </div>
 
-<!-- Create / Edit Modal -->
-<div id="modal-create-edit" bg-close="false" uk-modal>
+<div id="modal-register-drop" bg-close="false" uk-modal>
     <div class="uk-modal-dialog uk-modal-body uk-margin-auto-vertical">
         <form id="form" method action class="uk-form-stacked uk-width-1-1">
-            <h2 class="uk-modal-title"></h2>
+            <div class="uk-modal-header"><p class="uk-modal-title uk-text-large"></p></div>
             <input name="id" type="hidden" value>
+            <input name="ch" type="hidden" value>
             <div class="uk-margin uk-width-1-1">
-                <label class="uk-form-label" for="code">Code</label>
-                <input class="uk-input" type="text" name="code" id="code" placeholder="Code" required>
-            </div>
-            <div class="uk-margin uk-width-1-1">
-                <label class="uk-form-label" for="name">Name</label>
-                <input class="uk-input" type="text" name="name" id="name" placeholder="Name" required>
+                <h5 class="uk-text"></h5>
             </div>
             <div class="uk-margin-top uk-text-right">
-                <button class="uk-button uk-button-default uk-modal-close" type="button">Close</button>
+                <input type="submit" class="uk-button uk-button-primary"
+                       value="Yes">
                 <div class="spinner" style="display: none;">
                     <span class="uk-label uk-margin-right">Processing...</span>
                     <div uk-spinner></div>
                 </div>
-                <input type="submit" class="uk-margin-left uk-button uk-button-primary" value="Save">
+                <button class="uk-button uk-button-default uk-modal-close" type="button">No</button>
             </div>
         </form>
     </div>
@@ -101,11 +97,11 @@
                     data: null,
                     responsivePriority: 6,
                     render: function (data, type, row) {
-                        if (row.student_id == {{current_student_id_r}}) {
-                            return "<a href='/student/drop' class=\"uk-button-link\">Drop</a>";
-                        } else if ((row.student_id != {{current_student_id_r}}) && row.rem_enrollment > 0) {
-                            return "<a href='#' class=\"btnShow uk-button-link\">Register</a>";
-                        } else if ((row.student_id != {{current_student_id_r}}) && row.rem_enrollment == 0) {
+                        if (row.enroll_status == 1) {
+                            return "<button class='uk-button-danger' onclick='call_drop_modal(\"" + row.title + "," + row.id + "," + row.hours + "," + row.section + "\"); return false;'>Drop</button>";
+                        } else if ((row.enroll_status === null) && row.rem_enrollment > 0) {
+                            return "<button class='uk-button-primary' onclick='call_reg_modal(\"" + row.title + "," + row.id + "," + row.hours + "," + row.section + "\"); return false;'>Register</button>";
+                        } else if ((row.enroll_status === null) && row.rem_enrollment == 0) {
                             return "Not Available Seat";
                         }
                     }
@@ -113,10 +109,73 @@
             ]
         });
 
+        $("#modal-register-drop form").submit(function (e) {
+            e.preventDefault();
+            $("#modal-register-drop .spinner").show();
+            $("#modal-register-drop .uk-modal-close").hide();
+            $("#modal-register-drop input[type='submit']").hide();
+            $.ajax({
+                type: $(this).attr('method'),
+                url: $(this).attr('action'),
+                dataType: 'json',
+                data: $(this).serialize(),
+                success: function (data) {
+                    UIkit.modal("#modal-register-drop").hide();
+                    UIkit.notification({
+                        message: data.responseText,
+                        pos: "top-right"
+                    });
+                    setTimeout(function () {// wait for 5 secs(2)
+                        window.location.reload();
+                    }, 2000);
+                },
+                error: function (data) {
+                    console.log(data);
+                    UIkit.modal("#modal-register-drop").hide();
+                    UIkit.notification({
+                        message: data.responseText,
+                        pos: "top-right"
+                    });
+                    setTimeout(function () {// wait for 5 secs(2)
+                        window.location.reload();
+                    }, 2000);
+                },
+                done: function (data) {
+
+                }
+            });
+        });
 
     });
-    $(".btnShow").click(function (e, dt) {
-        console.log("fuck you");
-        UIkit.modal("#modal-create-edit").show();
-    });
+
+    function call_reg_modal(row) {
+        let words = row.split(",");
+        $('#modal-register-drop form')[0].reset();
+        $("#modal-register-drop form").attr("action", "#");
+        $("#modal-register-drop form").attr("method", "post");
+        $("#modal-register-drop .uk-modal-title").html(words[0] + ", Section: " + words[3]);
+        $("#modal-register-drop .uk-text").html("Do you want to register for this class?");
+        $("#modal-register-drop input[type='submit']").show();
+        $("#modal-register-drop input[name='id']").attr("value", words[1]);
+        $("#modal-register-drop input[name='ch']").attr("value", words[2]);
+        $("#modal-register-drop .uk-modal-close").show();
+        $("#modal-register-drop .spinner").hide();
+        UIkit.modal("#modal-register-drop").show();
+    }
+
+    function call_drop_modal(row) {
+        let words = row.split(",");
+        $('#modal-register-drop form')[0].reset();
+        $("#modal-register-drop form").attr("action", "#");
+        $("#modal-register-drop form").attr("method", "delete");
+        $("#modal-register-drop .uk-modal-title").html(words[0] + ", Section: " + words[3]);
+        $("#modal-register-drop .uk-text").html("Do you want to drop this class?");
+        $("#modal-register-drop input[type='submit']").show();
+        $("#modal-register-drop input[name='id']").attr("value", words[1]);
+        $("#modal-register-drop input[name='ch']").attr("value", words[2]);
+        $("#modal-register-drop .uk-modal-close").show();
+        $("#modal-register-drop .spinner").hide();
+        UIkit.modal("#modal-register-drop").show();
+    }
+
 </script>
