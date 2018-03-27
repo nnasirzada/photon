@@ -4,7 +4,7 @@ const router = express.Router();
 
 router.all("/*", (req, res, next) => {
   if (!req.isAuthenticated() || req.user.type != "admin")
-    res.redirect("/auth/login/");
+    return res.redirect("/auth/login/");
   req.app.locals.layout = "admin/layout";
   next();
 });
