@@ -24,7 +24,9 @@
 <div id="attendance-details" class="uk-flex-top" uk-modal>
     <div id="attendance-modal" class="uk-modal-dialog uk-modal-body uk-margin-auto-vertical uk-width-auto">
         <button class="uk-modal-close-default" type="button" uk-close></button>
-        <div class="uk-modal-header"><h6 id="course_name" class="uk-modal-title">Course Name:</h6></div>
+        <div class="uk-modal-header">
+            <h6 id="course_name" class="uk-modal-title">Course Name:</h6>
+        </div>
         <div class="uk-modal-body">
             <p id="total_classes">Total classes: </p>
             <p id="present">Present: </p>
@@ -65,10 +67,10 @@
             var row = table.row($(this));
             $('#course_name').text(row.data().name);
             $('#total_classes').text('Total classes: ' + row.data().total_classes);
-            $('#present').text('Present: ' + (parseInt(row.data().total_classes)-parseInt(row.data().missed)).toString());
+            $('#present').text('Present: ' + (parseInt(row.data().total_classes) - parseInt(row.data().missed)).toString());
             $('#absent').text('Absent: ' + row.data().missed);
-            
-            
+
+
             UIkit.modal("#attendance-details").show();
         });
 
