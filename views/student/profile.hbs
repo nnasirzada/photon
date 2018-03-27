@@ -3,7 +3,7 @@
 		<div class="uk-card-header">
 			<div class="uk-grid-small uk-flex-middle" uk-grid>
 				<div class="uk-width-auto">
-					<img class="uk-border-circle" width="80" height="80" src="/assets/images/profile_default.png">
+					<img class="uk-border-circle" width="80" height="80" src="{{#if user.image_path}} /uploads/images/{{user.image_path}} {{else}} /assets/images/profile_default.png {{/if}}">
 				</div>
 				<div class="uk-width-expand">
 					<h3 class="uk-card-title uk-margin-remove-bottom">{{user.lastname}} {{user.firstname}} {{user.patronymic}}</h3>
