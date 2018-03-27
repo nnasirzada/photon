@@ -272,11 +272,16 @@
 						return row.Major.name + ' (' + row.Major.code + ')';
 					}
 				},
-				{ data: "AdmitTerm.name" },
 				{
 					data: null,
 					render: function (date, type, row) {
-						return row.GraduationTerm ? row.GraduationTerm.name : "Not specified.";
+						return row.AdmitTerm.name + ' (' + row.AdmitTerm.year + ')';
+					}
+				},
+				{
+					data: null,
+					render: function (date, type, row) {
+						return row.GraduationTerm ? row.GraduationTerm.name + ' (' + row.GraduationTerm.year + ')' : "Not specified.";
 					}
 				},
 				{ data: "status_academic" }
