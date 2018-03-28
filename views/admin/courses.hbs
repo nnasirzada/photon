@@ -168,6 +168,9 @@
 						var data = dt.rows({ selected: true }).data();
 						if (data.length != 1) return;
 						var row = data[0];
+						$('#modal-create-edit form')[0].reset();
+						$('#modal-create-edit form').find(':input').not(':submit, select').removeAttr('value');
+						$('#modal-create-edit form').find('textarea').html(null);
 						$("#modal-create-edit form").attr("action", row.id);
 						$("#modal-create-edit form").attr("method", "put");
 						$("#modal-create-edit input[name='id']").attr("value", row.id);
@@ -207,21 +210,21 @@
 			ajax: "all",
 			rowId: 'id',
 			columns: [
-				{ "data": "number" },
-				{ "data": "name" },
-				{ "data": "description" },
+				{ data: "number" },
+				{ data: "name" },
+				{ data: "description" },
 				{
-					"data": null,
+					data: null,
 					render: function (data, type, row) {
 						return row.credit_hours + " / " + row.gpa_hours;
 					}
 				},
-				{ "data": "School.name" },
-				{ "data": "Subject.name" },
-				{ "data": "Program.name" },
-				{ "data": "GradeMode.name" },
-				{ "data": "GradeScale.grade_letter" },
-				{ "data": "ScheduleType.name" },
+				{ data: "School.name" },
+				{ data: "Subject.name" },
+				{ data: "Program.name" },
+				{ data: "GradeMode.name" },
+				{ data: "GradeScale.grade_letter" },
+				{ data: "ScheduleType.name" },
 				{
 					data: "id",
 					className: "dt-right not-selectable",
@@ -252,7 +255,6 @@
 					UIkit.modal("#modal-create-edit").hide();
 				},
 				error: function (data) {
-					console.log(data);
 					UIkit.notification({
 						message: data.responseText,
 						status: 'danger',

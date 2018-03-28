@@ -79,9 +79,7 @@
 						$("#modal-create-edit form").attr("action", "#");
 						$("#modal-create-edit form").attr("method", "post");
 						$("#modal-create-edit .uk-modal-title").html("New prerequisite");
-						$("#modal-create-edit input[type='submit']").show();
-						$("#modal-create-edit .uk-modal-close").show();
-						$("#modal-create-edit .spinner").hide();
+						showSpinner($("#modal-create-edit"), false);
 						UIkit.modal("#modal-create-edit").show();
 					}
 				},
@@ -92,15 +90,16 @@
 						var data = dt.rows({ selected: true }).data();
 						if (data.length != 1) return;
 						var row = data[0];
+						$('#modal-create-edit form')[0].reset();
+						$('#modal-create-edit form').find(':input').not(':submit, select').removeAttr('value');
+						$('#modal-create-edit form').find('textarea').html(null);
 						$("#modal-create-edit form").attr("action", row.id);
 						$("#modal-create-edit form").attr("method", "put");
 						$("#modal-create-edit input[name='id']").attr("value", row.id);
 						$("#modal-create-edit input[name='prerequisite_id']").attr("value", row.prerequisite_id);
 						$("#prerequisite_search").attr("value", row.Course.Subject.code + ' ' + row.Course.number + ' ' + row.Course.name);
 						$("#modal-create-edit .uk-modal-title").html("Edit prerequisite");
-						$("#modal-create-edit input[type='submit']").show();
-						$("#modal-create-edit .uk-modal-close").show();
-						$("#modal-create-edit .spinner").hide();
+						showSpinner($("#modal-create-edit"), false);
 						UIkit.modal("#modal-create-edit").show();
 					}
 				},
@@ -114,9 +113,7 @@
 						$('#modal-delete form')[0].reset();
 						$("#modal-delete form").attr("action", row.id);
 						$("#modal-delete input[name='id']").attr("value", row.id);
-						$("#modal-delete input[type='submit']").show();
-						$("#modal-delete .uk-modal-close").show();
-						$("#modal-delete .spinner").hide();
+						showSpinner($("#modal-delete"), false);
 						UIkit.modal("#modal-delete").show();
 					}
 				},
@@ -126,10 +123,10 @@
 			ajax: "all",
 			rowId: 'id',
 			columns: [
-				{ "data": "Course.number" },
-				{ "data": "Course.name" },
-				{ "data": "Course.School.name" },
-				{ "data": "Course.Subject.name" }
+				{ data: "Course.number" },
+				{ data: "Course.name" },
+				{ data: "Course.School.name" },
+				{ data: "Course.Subject.name" }
 			]
 		});
 		$("#modal-create-edit form").submit(function (e) {

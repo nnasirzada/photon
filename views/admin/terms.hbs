@@ -92,28 +92,28 @@
 
 <!-- Scripts -->
 <script>
+	for (year = (new Date()).getFullYear() + 1; year >= 2010; year--) {
+		$("#year").append($("<option />").val(year).text(year));
+	}
+	$("#start_date").datepicker({
+		container: '#form',
+		dateFormat: 'yy-mm-dd',
+		onClose: function (selectedDate) {
+			if (selectedDate) $("#end_date").datepicker("option", "minDate", selectedDate);
+		}
+	});
+	$("#end_date").datepicker({
+		dateFormat: 'yy-mm-dd',
+		onClose: function (selectedDate) {
+			if (selectedDate) $("#start_date").datepicker("option", "maxDate", selectedDate);
+		}
+	});
 	function showSpinner(modal, show) {
 		modal.find(".spinner").toggle(!!show);
 		modal.find(".uk-modal-close").toggle(!show);
 		modal.find("input[type='submit']").toggle(!show);
 	}
 	$(document).ready(function () {
-		for (year = (new Date()).getFullYear() + 1; year >= 2010; year--) {
-			$("#year").append($("<option />").val(year).text(year));
-		}
-		$("#start_date").datepicker({
-			container: '#form',
-			dateFormat: 'yy-mm-dd',
-			onClose: function (selectedDate) {
-				if (selectedDate) $("#end_date").datepicker("option", "minDate", selectedDate);
-			}
-		});
-		$("#end_date").datepicker({
-			dateFormat: 'yy-mm-dd',
-			onClose: function (selectedDate) {
-				if (selectedDate) $("#start_date").datepicker("option", "maxDate", selectedDate);
-			}
-		});
 		var table = $('#table').DataTable({
 			dom: 'Bfrtip',
 			responsive: {
@@ -128,13 +128,11 @@
 						$('#modal-create-edit form')[0].reset();
 						$('#modal-create-edit form').find(':input').not(':submit, select').removeAttr('value');
 						$('#modal-create-edit form').find('textarea').html(null);
-						$("#year").val((new Date()).getFullYear()).change();
 						$("#modal-create-edit form").attr("action", "#");
 						$("#modal-create-edit form").attr("method", "post");
+						$("#year").val((new Date()).getFullYear()).change();
 						$("#modal-create-edit .uk-modal-title").html("New term");
-						$("#modal-create-edit input[type='submit']").show();
-						$("#modal-create-edit .uk-modal-close").show();
-						$("#modal-create-edit .spinner").hide();
+						showSpinner($("#modal-create-edit"), false);
 						UIkit.modal("#modal-create-edit").show();
 					}
 				},
@@ -145,6 +143,9 @@
 						var data = dt.rows({ selected: true }).data();
 						if (data.length != 1) return;
 						var row = data[0];
+						$('#modal-create-edit form')[0].reset();
+						$('#modal-create-edit form').find(':input').not(':submit, select').removeAttr('value');
+						$('#modal-create-edit form').find('textarea').html(null);
 						$("#modal-create-edit form").attr("action", row.id);
 						$("#modal-create-edit form").attr("method", "put");
 						$("#modal-create-edit input[name='id']").attr("value", row.id);
@@ -155,9 +156,7 @@
 						$("#modal-create-edit input[name='name']").attr("value", row.name);
 						$("#modal-create-edit select[name='status']").val(row.status).change();
 						$("#modal-create-edit .uk-modal-title").html("Edit term");
-						$("#modal-create-edit input[type='submit']").show();
-						$("#modal-create-edit .uk-modal-close").show();
-						$("#modal-create-edit .spinner").hide();
+						showSpinner($("#modal-create-edit"), false);
 						UIkit.modal("#modal-create-edit").show();
 					}
 				},
@@ -171,9 +170,7 @@
 						$('#modal-delete form')[0].reset();
 						$("#modal-delete form").attr("action", row.id);
 						$("#modal-delete input[name='id']").attr("value", row.id);
-						$("#modal-delete input[type='submit']").show();
-						$("#modal-delete .uk-modal-close").show();
-						$("#modal-delete .spinner").hide();
+						showSpinner($("#modal-delete"), false);
 						UIkit.modal("#modal-delete").show();
 					}
 				},
@@ -183,12 +180,12 @@
 			ajax: "all",
 			rowId: 'id',
 			columns: [
-				{ "data": "year" },
-				{ "data": "season" },
-				{ "data": "start_date" },
-				{ "data": "end_date" },
-				{ "data": "name" },
-				{ "data": "status" },
+				{ data: "year" },
+				{ data: "season" },
+				{ data: "start_date" },
+				{ data: "end_date" },
+				{ data: "name" },
+				{ data: "status" },
 				{
 					data: "id",
 					className: "dt-right not-selectable",
@@ -217,7 +214,6 @@
 					UIkit.modal("#modal-create-edit").hide();
 				},
 				error: function (data) {
-					console.log(data);
 					UIkit.notification({
 						message: data.responseText,
 						status: 'danger',

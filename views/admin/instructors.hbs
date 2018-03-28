@@ -207,28 +207,28 @@
 			rowId: 'id',
 			columns: [
 				{
-					"data": null,
+					data: null,
 					render: function (data, type, row) {
 						return "<img class='user-thumb' src='/uploads/images/" + row.image_path + "'>";
 					}
 				},
 				{
-					"data": null,
+					data: null,
 					render: function (data, type, row) {
 						return ('000000000' + row.id).substr(-8);
 					}
 				},
 				{
-					"data": null,
+					data: null,
 					render: function (data, type, row) {
 						return row.firstname + " " + row.lastname + " " + row.patronymic;
 					}
 				},
-				{ "data": "sex" },
-				{ "data": "date_of_birth" },
-				{ "data": "address" },
-				{ "data": "email" },
-				{ "data": "status_login" }
+				{ data: "sex" },
+				{ data: "date_of_birth" },
+				{ data: "address" },
+				{ data: "email" },
+				{ data: "status_login" }
 			]
 		});
 		$("#modal-create-edit form").submit(function (e) {
