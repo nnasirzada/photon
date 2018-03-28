@@ -10,15 +10,7 @@ router.all('/*', (req, res, next) => {
 });
 
 router.get('/', (req, res, next) => {
-    res.render('student/index', {
-        title: 'Home',
-        active: {
-            home: true
-        },
-        imports: {
-            uikit: true
-        }
-    });
+    res.redirect('./schedule');
 });
 
 router.use('/registration', require('./registration'));
