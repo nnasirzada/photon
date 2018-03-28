@@ -7,14 +7,15 @@
     <div class="uk-width-1-1">
         <table id="table" class="uk-table uk-table-hover uk-table-striped" style="width: 100%;">
             <thead>
-                <tr>
-                    <th>Title</th>
-                    <th>Section</th>
-                    <th>Schedule</th>
-                    <th>Time</th>
-                    <th>Missed</th>
-                    <th>Percentage</th>
-                </tr>
+            <tr>
+                <th>Title</th>
+                <th>Section</th>
+                <th>Schedule</th>
+                <th>Time</th>
+                <th>Missed</th>
+                <th>Total</th>
+                <th>Percentage</th>
+            </tr>
             </thead>
         </table>
     </div>
@@ -23,18 +24,17 @@
 
 <div id="attendance-details" class="uk-flex-top" uk-modal>
     <div id="attendance-modal" class="uk-modal-dialog uk-modal-body uk-margin-auto-vertical uk-width-auto">
-        <button class="uk-modal-close-default" type="button" uk-close></button>
         <div class="uk-modal-header">
-            <h6 id="course_name" class="uk-modal-title">Course Name:</h6>
+            <h5 id="course_name" class="uk-modal-title"></h5>
         </div>
         <div class="uk-modal-body">
-            <p id="total_classes">Total classes: </p>
-            <p id="present">Present: </p>
-            <p id="absent">Absent: </p>
+            <h3>Attendance Details</h3>
+            <p id="mr"></p>
+            <p id="mp"></p>
+            <p id="ma"></p>
+            <p id="ad"></p>
         </div>
-        <div class="uk-modal-footer">
-
-        </div>
+        <button class="uk-modal-close-default" type="button" uk-close></button>
     </div>
 </div>
 
@@ -52,12 +52,13 @@
             ajax: "/student/attendance/term/{{term_id_ajax}}/all",
             rowId: 'id',
             columns: [
-                { "data": "title", responsivePriority: 1 },
-                { "data": "section", responsivePriority: 4 },
-                { "data": "schedule", responsivePriority: 5 },
-                { "data": "time", responsivePriority: 6 },
-                { "data": "missed", responsivePriority: 2 },
-                { "data": "percentage", responsivePriority: 3 }
+                {"data": "title", responsivePriority: 1},
+                {"data": "section", responsivePriority: 5},
+                {"data": "schedule", responsivePriority: 6},
+                {"data": "time", responsivePriority: 7},
+                {"data": "missed", responsivePriority: 2},
+                {"data": "total_classes", responsivePriority: 3},
+                {"data": "percentage", responsivePriority: 4}
             ]
         });
 
@@ -65,12 +66,11 @@
         $('#table tbody').css("cursor", "pointer");
         $('#table tbody').on('click', 'tr', function () {
             var row = table.row($(this));
-            $('#course_name').text(row.data().name);
-            $('#total_classes').text('Total classes: ' + row.data().total_classes);
-            $('#present').text('Present: ' + (parseInt(row.data().total_classes) - parseInt(row.data().missed)).toString());
-            $('#absent').text('Absent: ' + row.data().missed);
-
-
+            $('#course_name').text(row.data().title);
+            $('#mr').html('<span class="uk-text-bold">Total Classes:</span> ' + row.data().total_classes);
+            $('#mp').html('<span class="uk-text-bold">Presents:</span> ' + (parseInt(row.data().total_classes) - parseInt(row.data().missed)).toString());
+            $('#ma').html('<span class="uk-text-bold">Absents:</span> ' + row.data().missed);
+            $('#ad').html('<span class="uk-text-bold">Absent Dates:</span> ' + row.data().dates);
             UIkit.modal("#attendance-details").show();
         });
 
