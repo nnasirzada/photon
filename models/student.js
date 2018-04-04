@@ -37,7 +37,14 @@ module.exports = (sequelize, DataTypes) => {
         return sequelize.query('select (ce.total * FORMAT(co.credit_hours, 0)) as tch from (select count(class_id) as total from class_enrollment where deleted = false and status = "ongoing" and student_id = ? group by student_id) ce join (select credit_hours from course where deleted = false and id in (select course_id from class where deleted = false and status = "open" and id = ? and part_of_term_id in (select id from part_of_term where deleted = false and term_id = ?))) co', {
             replacements: [student_id, class_id, term_id],
             type: sequelize.QueryTypes.SELECT
-        })
+        });
+    };
+
+    Student.getProfileData = student_id => {
+        return sequelize.query('Select us.firstname as firstname, us.lastname as lastname, us.patronymic as patronymic, us.sex as sex, us.address as address, us.email as email, us.date_of_birth as date_of_birth, us.image_path as image_path, us.type as type, us.status_login as status_login, st.status_academic as status_academic, ma.name as major_name, sc.name as school_name, pr.name as program_name, te1.name as admit_term_name, te2.name as graduation_term_name from user us join student st on us.id = ? and us.id = st.user_id and us.deleted = false and st.deleted = false join major ma on ma.deleted = false and st.major_id = ma.id join school sc on sc.deleted = false and ma.school_id = sc.id join program pr on pr.deleted = false and ma.program_id = pr.id join (select st.user_id as user_id, te.name as name from student st join term te on st.deleted = false and te.deleted = false and st.user_id = ? and st.admit_term_id = te.id) te1 join (select st.user_id as user_id, te.name as name from student st join term te on st.deleted = false and te.deleted = false and st.user_id = ? and st.graduation_term_id = te.id) te2 on te1.user_id = te2.user_id\n', {
+            replacements: [student_id, student_id, student_id],
+            type: sequelize.QueryTypes.SELECT
+        });
     };
 
     return Student;

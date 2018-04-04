@@ -1,64 +1,95 @@
 <div class="uk-width-5-6 uk-align-center">
-	<div class="uk-card uk-card-default uk-box-shadow-medium">
-		<div class="uk-card-header">
-			<div class="uk-grid-small uk-flex-middle" uk-grid>
-				<div class="uk-width-auto">
-					<img class="uk-border-circle" width="80" height="80" src="{{#if user.image_path}} /uploads/images/{{user.image_path}} {{else}} /assets/images/profile_default.png {{/if}}">
-				</div>
-				<div class="uk-width-expand">
-					<h3 class="uk-card-title uk-margin-remove-bottom">{{user.lastname}} {{user.firstname}} {{user.patronymic}}</h3>
-					<p class="uk-text-meta uk-margin-remove-top">{{user.type}}</p>
-				</div>
-			</div>
-		</div>
-		<div class="uk-card-body">
-			<h3 class="uk-heading-bullet">About</h3>
-			<p>
-				<span class="uk-text-bold">Email: </span>{{user.email}}
-			</p>
-			<p>
-				<span class="uk-text-bold">Address: </span>{{user.address}}
-			</p>
-			<p>
-				<span class="uk-text-bold">Date of birth: </span>{{user.date_of_birth}}
-			</p>
-		</div>
-		<div class="uk-card-footer">
-			<h3 class="uk-heading-bullet">Change Password</h3>
-			{{#if success}}
-				<div class="uk-alert-success" uk-alert>
-					<a class="uk-alert-close" uk-close></a>
-					<p>{{success}}</p>
-				</div>
-				{{else if error}}
-				<div class="uk-alert-danger" uk-alert>
-					<a class="uk-alert-close" uk-close></a>
-					<p>{{error}}</p>
-				</div>
-			{{/if}}
-			<form class="uk-form-stacked" action="" method="post">
-				<div class="uk-margin">
-					<label class="uk-form-label uk-text-bold" for="oldpassword">Old password</label>
-					<div class="uk-form-controls">
-						<input class="uk-input" id="oldpassword" name="oldpassword" type="password" placeholder="Old Password...">
-					</div>
-				</div>
-				<div class="uk-margin">
-					<label class="uk-form-label uk-text-bold" for="newpassword">New password</label>
-					<div class="uk-form-controls">
-						<input class="uk-input" id="newpassword" name="newpassword" type="password" placeholder="New Password...">
-					</div>
-				</div>
-				<div class="uk-margin">
-					<label class="uk-form-label uk-text-bold" for="confirmpassword">Confirm new password</label>
-					<div class="uk-form-controls">
-						<input class="uk-input" id="confirmpassword" name="confirmpassword" type="password" placeholder="Retype new password...">
-					</div>
-				</div>
-				<div class="uk-margin uk-text-right">
-					<input type="submit" class="uk-button uk-button-primary" value="Save">
-				</div>
-			</form>
-		</div>
-	</div>
+    <div class="uk-card uk-card-default uk-box-shadow-medium">
+        <div class="uk-card-header">
+            <div class="uk-grid-small uk-flex-middle" uk-grid>
+                <div class="uk-width-auto">
+                    <img class="uk-border-circle" width="80" height="80" src="{{#if
+                            student.image_path}} /uploads/images/{{student.image_path}} {{else}} /assets/images/profile_default.png {{/if}}">
+                </div>
+                <div class="uk-width-expand">
+                    <h3 class="uk-card-title uk-margin-remove-bottom">{{student.lastname}} {{student.firstname}} {{student.patronymic}}</h3>
+                    <p class="uk-text-meta uk-margin-remove-top">{{student.type}}</p>
+                </div>
+            </div>
+        </div>
+        <div class="uk-card-body">
+            <h3 class="uk-heading-bullet">Bio Information</h3>
+            <p>
+                <span class="uk-text-bold">Email: </span>{{student.email}}
+            </p>
+            <p>
+                <span class="uk-text-bold">Gender: </span>{{student.sex}}
+            </p>
+            <p>
+                <span class="uk-text-bold">Date of Birth: </span>{{student.date_of_birth}}
+            </p>
+            <p>
+                <span class="uk-text-bold">Address: </span>{{student.address}}
+            </p>
+        </div>
+        <div class="uk-card-body">
+            <h3 class="uk-heading-bullet">General Information</h3>
+            <p>
+                <span class="uk-text-bold">Status: </span>{{student.status_login}}
+            </p>
+            <p>
+                <span class="uk-text-bold">Student Type: </span>{{student.status_academic}}
+            </p>
+            <p>
+                <span class="uk-text-bold">Level: </span>{{student.program_name}}
+            </p>
+            <p>
+                <span class="uk-text-bold">School: </span>{{student.school_name}}
+            </p>
+            <p>
+                <span class="uk-text-bold">Major: </span>{{student.major_name}}
+            </p>
+            <p>
+                <span class="uk-text-bold">Admit Term: </span>{{student.admit_term_name}}
+            </p>
+            <p>
+                <span class="uk-text-bold">Graduation Term: </span>{{student.graduation_term_name}}
+            </p>
+        </div>
+        <div class="uk-card-footer">
+            <h3 class="uk-heading-bullet">Change Password</h3>
+            {{#if success}}
+                <div class="uk-alert-success" uk-alert>
+                    <a class="uk-alert-close" uk-close></a>
+                    <p>{{success}}</p>
+                </div>
+            {{else if error}}
+                <div class="uk-alert-danger" uk-alert>
+                    <a class="uk-alert-close" uk-close></a>
+                    <p>{{error}}</p>
+                </div>
+            {{/if}}
+            <form class="uk-form-stacked" action="" method="post">
+                <div class="uk-margin">
+                    <label class="uk-form-label uk-text-bold" for="oldpassword">Old password</label>
+                    <div class="uk-form-controls">
+                        <input class="uk-input" id="oldpassword" name="oldpassword" type="password"
+                               placeholder="Old Password...">
+                    </div>
+                </div>
+                <div class="uk-margin">
+                    <label class="uk-form-label uk-text-bold" for="newpassword">New password</label>
+                    <div class="uk-form-controls">
+                        <input class="uk-input" id="newpassword" name="newpassword" type="password"
+                               placeholder="New Password...">
+                    </div>
+                </div>
+                <div class="uk-margin">
+                    <label class="uk-form-label uk-text-bold" for="confirmpassword">Confirm new password</label>
+                    <div class="uk-form-controls">
+                        <input class="uk-input" id="confirmpassword" name="confirmpassword" type="password"
+                               placeholder="Retype new password...">
+                    </div>
+                </div>
+                <div class="uk-margin uk-text-right">
+                    <input type="submit" class="uk-button uk-button-primary" value="Save">
+                </div>
+            </form>
+        </div>
+    </div>
 </div>
