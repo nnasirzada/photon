@@ -29,24 +29,28 @@ router.post('/', (req, res, next) => {
     if (req.validationErrors()) {
         req.flash('error', 'Form inputs are not valid!');
         res.redirect('/student/profile');
+    } else {
+        models.User.findOne({
+            where: {
+                id: req.user.id
+            }
+        }).then(User => {
+            if (!bcrypt.compareSync(req.body.oldpassword, User.password)) {
+                throw new Error('Old password is wrong!');
+            } else {
+                return models.User.update({password: req.body.newpassword}, {
+                    where: {id: req.user.id},
+                    individualHooks: true
+                });
+            }
+        }).then(result => {
+            req.flash('success', 'Password updated');
+            res.redirect('/student/profile');
+        }).catch(err => {
+            req.flash('error', err.message);
+            res.redirect('/student/profile');
+        });
     }
-
-    models.User.findOne({
-        where: {
-            id: req.user.id
-        }
-    }).then(User => {
-        if (!bcrypt.compareSync(req.body.oldpassword, User.password)) {
-            throw new Error('Old password is wrong!');
-        }
-        return models.User.update({password: req.body.newpassword}, {where: {id: req.user.id}, individualHooks: true});
-    }).then(result => {
-        req.flash('success', 'Password updated');
-        res.redirect('/student/profile');
-    }).catch(err => {
-        req.flash('error', err.message);
-        res.redirect('/student/profile');
-    });
 });
 
 module.exports = router;
