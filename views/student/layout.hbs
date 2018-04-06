@@ -51,6 +51,10 @@
                     <a href="/student/attendance">Attendance</a>
                 </li>
                 <li class="uk-nav-divider"></li>
+                <li {{#if active.unofficial-transcript}} class="uk-active" {{/if}}>
+                    <a href="/student/unofficial-transcript">Unofficial Transcript</a>
+                </li>
+                <li class="uk-nav-divider"></li>
                 <li {{#if active.registration}} class="uk-active" {{/if}}>
                     <a href="/student/registration">Registration</a>
                 </li>
@@ -95,6 +99,10 @@
             <li class="uk-nav-divider"></li>
             <li {{#if active.attendance}} class="uk-active" {{/if}}>
                 <a href="/student/attendance">Attendance</a>
+            </li>
+            <li class="uk-nav-divider"></li>
+            <li {{#if active.unofficial-transcript}} class="uk-active" {{/if}}>
+                <a href="/student/unofficial-transcript">Unofficial Transcript</a>
             </li>
             <li class="uk-nav-divider"></li>
             <li {{#if active.registration}} class="uk-active" {{/if}}>

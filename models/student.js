@@ -24,7 +24,7 @@ module.exports = (sequelize, DataTypes) => {
             type: DataTypes.BOOLEAN(),
             defaultValue: false
         }
-    }, {tableName: 'student'});
+    }, { tableName: 'student' });
 
     Student.getAttendanceByTerm = (student_id, term_id) => {
         return sequelize.query('Select distinct cm.id, group_concat(n.date separator ", ") as dates, cm.id, co.number as crn, s.code as subject, co.name as name, c.section, cm.monday, cm.tuesday, cm.wednesday, cm.thursday, cm.friday, cm.saturday, cm.sunday, time_format(cm.start_time, "%H:%i") as start_time, time_format(cm.end_time, "%H:%i") as end_time, n.missed, m.total_classes from (select distinct a.class_id as class_id, a.class_meeting_id as class_meeting_id, (case when b.missed is null then 0 else b.missed end) as missed, date from class_attendance a join (select class_id, class_meeting_id, count(class_id) as total_classes, count(status) as missed from class_attendance where deleted = false and student_id = ? and status = \'absent\' group by class_meeting_id) b on a.status = "absent" and a.student_id = ? and a.deleted = false and a.class_meeting_id = b.class_meeting_id) n join (select class_meeting_id, count(class_meeting_id) as total_classes from class_attendance where deleted = false group by class_meeting_id) m on n.class_meeting_id = m.class_meeting_id join (select id, course_id, section from class where deleted = false and part_of_term_id in (select id from part_of_term where deleted = false and term_id = ?)) c on n.class_id = c.id join course co on co.deleted = false and c.course_id = co.id join subject s on s.deleted = false and co.subject_id = s.id join class_meeting cm on cm.deleted = false and cm.id = n.class_meeting_id group by cm.id', {
@@ -46,6 +46,15 @@ module.exports = (sequelize, DataTypes) => {
             type: sequelize.QueryTypes.SELECT
         });
     };
+
+    Student.getUnofficialTranscript = student_id => {
+        return sequelize.query('select cl.id, co.name course_name, t.name term_name from class_enrollment ce left join class cl on ce.class_id = cl.id and student_id = ? join course co on cl.course_id = co.id left join part_of_term pot on cl.part_of_term_id = pot.id left join term t on pot.id = t.id order by t.start_date', {
+            replacements: [student_id],
+            type: sequelize.QueryTypes.SELECT
+        });
+    };
+    //get registered terms 
+    //select distinct t.id, t.name from class_enrollment ce left join class cl on ce.class_id = cl.id and student_id = 9 join course co on cl.course_id = co.id left join part_of_term pot on cl.part_of_term_id = pot.id left join term t on pot.id = t.id order by t.start_date
 
     return Student;
 };
