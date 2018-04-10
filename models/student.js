@@ -77,5 +77,12 @@ module.exports = (sequelize, DataTypes) => {
         });
     };
 
+    Student.getFinalGradeByClassId = (student_id, class_id) => {
+        return sequelize.query("Select gs.grade_letter as final_grade, ce.grade_percents as final_percent from class_enrollment ce join grade_scale gs on ce.deleted = false and gs.deleted = false and ce.student_id = ? and ce.class_id = ? and ce.grade_id = gs.id", {
+            replacements: [student_id, class_id],
+            type: sequelize.QueryTypes.SELECT
+        });
+    };
+
     return Student;
 };
