@@ -156,20 +156,24 @@ router.get('/term/:termId/class/:classId/view_grades', (req, res, next) => {
                     models.Course.getCourseDetailsByClassId(req.params.classId).then(courses => {
                         if (courses[0]) {
                             let courseDetails = courses[0].code + " " + courses[0].number + " - " + courses[0].name + " (Section: " + courses[0].section + ")";
-                            res.render("student/grades/view-grades", {
-                                title: "Grade components for " + courseDetails,
-                                term_id_ajax: req.params.termId,
-                                class_id_ajax: req.params.classId,
-                                active: {
-                                    grades: true
-                                },
-                                imports: {
-                                    jquery: true,
-                                    jquery_ui: true,
-                                    uikit: true,
-                                    data_tables: true
-                                }
-                            });
+                            models.Student.getFinalGradeByClassId(req.user.id, req.params.classId).then(final_grades => {
+                                res.render("student/grades/view-grades", {
+                                    title: "Grade components for " + courseDetails,
+                                    final_grade: (final_grades[0]) ? (final_grades[0].final_grade) : "",
+                                    final_percent: (final_grades[0]) ? (final_grades[0].final_percent) : "",
+                                    term_id_ajax: req.params.termId,
+                                    class_id_ajax: req.params.classId,
+                                    active: {
+                                        grades: true
+                                    },
+                                    imports: {
+                                        jquery: true,
+                                        jquery_ui: true,
+                                        uikit: true,
+                                        data_tables: true
+                                    }
+                                });
+                            }).catch(console.error);
                         } else {
                             let err = new Error('Not Found');
                             err.status = 404;
