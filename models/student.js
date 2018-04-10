@@ -24,7 +24,7 @@ module.exports = (sequelize, DataTypes) => {
             type: DataTypes.BOOLEAN(),
             defaultValue: false
         }
-    }, { tableName: 'student' });
+    }, {tableName: 'student'});
 
     Student.getAttendanceByTerm = (student_id, term_id) => {
         return sequelize.query('Select distinct cm.id, group_concat(n.date separator ", ") as dates, cm.id, co.number as crn, s.code as subject, co.name as name, c.section, cm.monday, cm.tuesday, cm.wednesday, cm.thursday, cm.friday, cm.saturday, cm.sunday, time_format(cm.start_time, "%H:%i") as start_time, time_format(cm.end_time, "%H:%i") as end_time, n.missed, m.total_classes from (select distinct a.class_id as class_id, a.class_meeting_id as class_meeting_id, (case when b.missed is null then 0 else b.missed end) as missed, date from class_attendance a join (select class_id, class_meeting_id, count(class_id) as total_classes, count(status) as missed from class_attendance where deleted = false and student_id = ? and status = \'absent\' group by class_meeting_id) b on a.status = "absent" and a.student_id = ? and a.deleted = false and a.class_meeting_id = b.class_meeting_id) n join (select class_meeting_id, count(class_meeting_id) as total_classes from class_attendance where deleted = false group by class_meeting_id) m on n.class_meeting_id = m.class_meeting_id join (select id, course_id, section from class where deleted = false and part_of_term_id in (select id from part_of_term where deleted = false and term_id = ?)) c on n.class_id = c.id join course co on co.deleted = false and c.course_id = co.id join subject s on s.deleted = false and co.subject_id = s.id join class_meeting cm on cm.deleted = false and cm.id = n.class_meeting_id group by cm.id', {
@@ -55,6 +55,27 @@ module.exports = (sequelize, DataTypes) => {
     };
     //get registered terms 
     //select distinct t.id, t.name from class_enrollment ce left join class cl on ce.class_id = cl.id and student_id = 9 join course co on cl.course_id = co.id left join part_of_term pot on cl.part_of_term_id = pot.id left join term t on pot.id = t.id order by t.start_date
+
+    Student.getEnrolledClassesByTerm = (student_id, term_id) => {
+        return sequelize.query('Select pt.term_id as term_id, cl.id as class_id, su.code as subject_code, co.number as course_number, co.name as course_name,  cl.section as course_section, sc.code as school_code, co.credit_hours as credit_hours, pr.name as level from class_enrollment ce join class cl on ce.deleted = false and ce.student_id = ? and cl.deleted = false and ce.class_id = cl.id join course co on co.deleted = false and cl.course_id = co.id join part_of_term pt on pt.deleted = false and cl.part_of_term_id = pt.id and pt.term_id = ? join subject su on su.deleted = false and co.subject_id = su.id join program pr on pr.deleted = false and co.program_id = pr.id join school sc on sc.deleted = false and co.school_id = sc.id', {
+            replacements: [student_id, term_id],
+            type: sequelize.QueryTypes.SELECT
+        });
+    };
+
+    Student.getEnrolClassIds = (student_id, term_id) => {
+        return sequelize.query('Select distinct ce.class_id as class_id from class_enrollment ce join class cl on ce.deleted = false and cl.deleted = false and ce.student_id = ? and ce.class_id = cl.id join part_of_term pt on pt.deleted = false and cl.part_of_term_id = pt.id and pt.term_id = ?', {
+            replacements: [student_id, term_id],
+            type: sequelize.QueryTypes.SELECT
+        });
+    };
+
+    Student.getGradeComponentsByClassId = (class_id, student_id) => {
+        return sequelize.query('Select gc.name as title, concat(ge.percentage, \'/100.00\') as score_outof, ge.percentage as percentage, gs.grade_letter as letter_grade, gc.weight as weight from grade_component gc join grade_entry ge on gc.deleted = false and gc.class_id = ? and gc.id = ge.component_id and ge.student_id = ? join grade_scale gs on gs.deleted = false and (ge.percentage between gs.min_percents and gs.max_percents)', {
+            replacements: [class_id, student_id],
+            type: sequelize.QueryTypes.SELECT
+        });
+    };
 
     return Student;
 };

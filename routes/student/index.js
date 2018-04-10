@@ -18,5 +18,6 @@ router.use('/attendance', require('./attendance'));
 router.use('/profile', require('./profile'));
 router.use('/schedule', require('./schedule'));
 router.use('/unofficial-transcript', require('./unofficial-transcript'));
+router.use('/grades', require('./grades'));
 
 module.exports = router;
