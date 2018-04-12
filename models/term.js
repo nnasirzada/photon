@@ -7,7 +7,6 @@ module.exports = (sequelize, DataTypes) => {
             autoIncrement: true
         },
         year: {
-            // Actual type is YEAR in MySQL
             type: DataTypes.SMALLINT(4)
         },
         season: {
@@ -29,7 +28,7 @@ module.exports = (sequelize, DataTypes) => {
             type: DataTypes.BOOLEAN(),
             defaultValue: false
         }
-    }, {tableName: 'term'});
+    }, { tableName: 'term' });
 
     Term.getStudentTerms = student_id => {
         return sequelize.query('Select * from term where deleted = false and id in (select term_id from part_of_term where deleted = false and id in (select part_of_term_id from class where deleted = false and id in (select class_id from class_enrollment where deleted = false and student_id = ?))) order by id desc', {

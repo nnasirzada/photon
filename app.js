@@ -48,13 +48,15 @@ app.use('/parent', parent);
 
 app.get('/uploads/images/:id', (req, res) => {
   res.sendFile(req.params.id, { root: './uploads/images/' }, err => {
-    if (err) {
-      let error = new Error('Not Found');
-      error.status = 404;
-      res.locals.error = error;
-      res.status(error.status || 500);
-      return res.render('error', { layout: false });
-    }
+    res.sendFile('profile_default.png', { root: './public/assets/images/' }, err => {
+      if (err) {
+        let error = new Error('Not Found');
+        error.status = 404;
+        res.locals.error = error;
+        res.status(error.status || 500);
+        return res.render('error', { layout: false });
+      }
+    });
   });
 });
 

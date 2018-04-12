@@ -12,6 +12,9 @@ module.exports = (sequelize, DataTypes) => {
         class_id: {
             type: DataTypes.MEDIUMINT(8).UNSIGNED
         },
+        class_meeting_id: {
+            type: DataTypes.BIGINT(20).UNSIGNED
+        },
         student_id: {
             type: DataTypes.INTEGER(10).UNSIGNED
         },
@@ -19,7 +22,7 @@ module.exports = (sequelize, DataTypes) => {
             type: DataTypes.ENUM('present', 'absent', 'excused')
         },
         note: {
-            type: DataTypes.STRING,
+            type: DataTypes.STRING(255),
             allowNull: true,
             defaultValue: null
         },
@@ -27,7 +30,7 @@ module.exports = (sequelize, DataTypes) => {
             type: DataTypes.BOOLEAN,
             defaultValue: false
         }
-    }, {tableName: 'class_attendance'});
+    }, { tableName: 'class_attendance' });
 
     return ClassAttendance;
 };

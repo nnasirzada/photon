@@ -11,8 +11,9 @@ router.get('/', (req, res, next) => {
 		}
 	}).then(User => {
 
-		let data = User.dataValues;
-		data.type = data.type.charAt(0).toUpperCase() + data.type.slice(1);
+		let values = User.dataValues;
+		values.type = values.type.charAt(0).toUpperCase() + values.type.slice(1);
+		values.sex = values.sex.charAt(0).toUpperCase() + values.sex.slice(1);
 
 		res.render('admin/profile', {
 			title: 'Profile',
@@ -23,7 +24,7 @@ router.get('/', (req, res, next) => {
 				uikit: true,
 				uikit_icons: true
 			},
-			user: data,
+			user: values,
 			error: req.flash('error'),
 			success: req.flash('success')
 		});
@@ -34,11 +35,11 @@ router.post('/', (req, res, next) => {
 
 	req.checkBody('old_password', 'Old password is empty.').notEmpty();
 	req.checkBody('new_password', 'New password length should be between 8 and 24').notEmpty().isLength({ min: 8, max: 24 });
-	req.checkBody('confirm_new_password', 'Passwords do not match.').notEmpty().equals(req.body.new_password);
+	req.checkBody('confirm_password', 'Passwords do not match.').notEmpty().equals(req.body.new_password);
 
 	if (req.validationErrors()) {
 		req.flash('error', req.validationErrors()[0].msg);
-		res.redirect('/admin/profile/');
+		return res.redirect('/admin/profile/');
 	}
 
 	models.User.findOne({
@@ -53,10 +54,10 @@ router.post('/', (req, res, next) => {
 			{ where: { id: req.user.id }, individualHooks: true });
 	}).then(result => {
 		req.flash('success', 'Password successfully updated.');
-		res.redirect('/admin/profile/');
+		return res.redirect('/admin/profile/');
 	}).catch(err => {
 		req.flash('error', err.message);
-		res.redirect('/admin/profile/');
+		return res.redirect('/admin/profile/');
 	});
 });
 
