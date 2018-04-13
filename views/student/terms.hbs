@@ -1,13 +1,11 @@
-<h3 class="uk-heading-bullet">
-    {{title}}
-</h3>
+<h3 class="uk-heading-bullet">Terms</h3>
 
-{{#if resultFound}}
+{{#if result_found}}
     <div class="uk-child-width-1-3@l uk-child-width-1-2@m uk-child-width-1-1@s" uk-grid>
         {{#each result}}
-            <div class="">
+            <div>
                 <div class="uk-card uk-card-small uk-card-default uk-card-hover">
-                    <div class="uk-card-header">
+                    <div class="uk-card-body">
                         <div class="uk-grid-small uk-flex-middle" uk-grid>
                             <div class="uk-card-badge uk-label">{{this.status}}</div>
                             <div class="uk-width-expand">
@@ -21,7 +19,9 @@
                         </div>
                     </div>
                     <div class="uk-card-footer">
-                        <a href="./attendance/term/{{this.id}}" class="uk-button uk-button-text">Show Attendance</a>
+                        <a href="./terms/{{this.id}}/classes/" class="uk-button uk-button-text">View Classes</a>
+                        <br>
+                        <a href="./terms/{{this.id}}/attendance/" class="uk-button uk-button-text uk-margin-small-top">View Attendance</a>
                     </div>
                 </div>
             </div>

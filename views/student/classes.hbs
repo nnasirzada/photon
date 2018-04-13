@@ -7,14 +7,14 @@
     <div class="uk-width-1-1">
         <table id="table" class="uk-table uk-table-hover uk-table-striped" style="width: 100%;">
             <thead>
-            <tr>
-                <th>Title</th>
-                <th>Section</th>
-                <th>School</th>
-                <th>Credits</th>
-                <th>Level</th>
-                <th>Option</th>
-            </tr>
+                <tr>
+                    <th>Title</th>
+                    <th>Section</th>
+                    <th>School</th>
+                    <th>Credits</th>
+                    <th>Level</th>
+                    <th>Option</th>
+                </tr>
             </thead>
         </table>
     </div>
@@ -31,14 +31,14 @@
             },
             buttons: [],
             select: {},
-            ajax: "/student/grades/term/{{term_id_ajax}}/enrolled_classes",
+            ajax: "/student/terms/{{term_id}}/classes/all",
             rowId: 'id',
             columns: [
-                {"data": "title", responsivePriority: 1},
-                {"data": "course_section", responsivePriority: 3},
-                {"data": "school_code", responsivePriority: 6},
-                {"data": "credit_hours", responsivePriority: 4},
-                {"data": "level", responsivePriority: 5},
+                { "data": "title", responsivePriority: 1 },
+                { "data": "course_section", responsivePriority: 3 },
+                { "data": "school_code", responsivePriority: 6 },
+                { "data": "credit_hours", responsivePriority: 4 },
+                { "data": "level", responsivePriority: 5 },
                 {
                     data: null,
                     responsivePriority: 2,

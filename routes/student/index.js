@@ -2,9 +2,8 @@ const express = require('express');
 const router = express.Router();
 
 router.all('/*', (req, res, next) => {
-    if (!req.isAuthenticated() || req.user.type != 'student') {
+    if (!req.isAuthenticated() || req.user.type != 'student')
         res.status(403).redirect('/auth/login/');
-    }
     req.app.locals.layout = 'student/layout';
     next();
 });
@@ -18,6 +17,6 @@ router.use('/attendance', require('./attendance'));
 router.use('/profile', require('./profile'));
 router.use('/schedule', require('./schedule'));
 router.use('/unofficial-transcript', require('./unofficial-transcript'));
-router.use('/grades', require('./grades'));
+router.use('/terms', require('./terms'));
 
 module.exports = router;

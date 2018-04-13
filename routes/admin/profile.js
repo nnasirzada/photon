@@ -16,7 +16,7 @@ router.get('/', (req, res, next) => {
 		values.sex = values.sex.charAt(0).toUpperCase() + values.sex.slice(1);
 
 		res.render('admin/profile', {
-			title: 'Profile',
+			title: 'Profile - Photon',
 			active: {
 				profile: true
 			},

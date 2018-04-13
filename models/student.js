@@ -53,31 +53,29 @@ module.exports = (sequelize, DataTypes) => {
             type: sequelize.QueryTypes.SELECT
         });
     };
-    //get registered terms 
-    //select distinct t.id, t.name from class_enrollment ce left join class cl on ce.class_id = cl.id and student_id = 9 join course co on cl.course_id = co.id left join part_of_term pot on cl.part_of_term_id = pot.id left join term t on pot.id = t.id order by t.start_date
 
-    Student.getEnrolledClassesByTerm = (student_id, term_id) => {
-        return sequelize.query('Select pt.term_id as term_id, cl.id as class_id, su.code as subject_code, co.number as course_number, co.name as course_name,  cl.section as course_section, sc.code as school_code, co.credit_hours as credit_hours, pr.name as level from class_enrollment ce join class cl on ce.deleted = false and ce.student_id = ? and cl.deleted = false and ce.class_id = cl.id join course co on co.deleted = false and cl.course_id = co.id join part_of_term pt on pt.deleted = false and cl.part_of_term_id = pt.id and pt.term_id = ? join subject su on su.deleted = false and co.subject_id = su.id join program pr on pr.deleted = false and co.program_id = pr.id join school sc on sc.deleted = false and co.school_id = sc.id', {
+    Student.getEnrolledClasses = (student_id, term_id) => {
+        return sequelize.query('SELECT pt.term_id AS term_id, cl.id AS class_id, su.code AS subject_code, co.number AS course_number, co.name AS course_name, cl.section AS course_section, sc.code AS school_code, co.credit_hours AS credit_hours, pr.name AS level FROM class_enrollment ce INNER JOIN class cl ON ce.deleted = false AND ce.student_id = ? AND cl.deleted = 0 AND ce.class_id = cl.id INNER JOIN course co ON co.deleted = false AND cl.course_id = co.id INNER JOIN part_of_term pt ON cl.part_of_term_id = pt.id AND pt.term_id = ? INNER JOIN subject su ON co.subject_id = su.id INNER JOIN program pr ON co.program_id = pr.id INNER JOIN school sc ON co.school_id = sc.id', {
             replacements: [student_id, term_id],
             type: sequelize.QueryTypes.SELECT
         });
     };
 
-    Student.getEnrolClassIds = (student_id, term_id) => {
+    Student.getClasses = (student_id, term_id) => {
         return sequelize.query('Select distinct ce.class_id as class_id from class_enrollment ce join class cl on ce.deleted = false and cl.deleted = false and ce.student_id = ? and ce.class_id = cl.id join part_of_term pt on pt.deleted = false and cl.part_of_term_id = pt.id and pt.term_id = ?', {
             replacements: [student_id, term_id],
             type: sequelize.QueryTypes.SELECT
         });
     };
 
-    Student.getGradeComponentsByClassId = (class_id, student_id) => {
-        return sequelize.query('Select gc.name as title, concat(ge.percentage, \'/100.00\') as score_outof, ge.percentage as percentage, gs.grade_letter as letter_grade, gc.weight as weight from grade_component gc join grade_entry ge on gc.deleted = false and gc.class_id = ? and gc.id = ge.component_id and ge.student_id = ? join grade_scale gs on gs.deleted = false and (ge.percentage between gs.min_percents and gs.max_percents)', {
+    Student.getGrades = (student_id, class_id) => {
+        return sequelize.query('Select ge.id as geid, gc.name as title, concat(ge.percentage, \' / 100.00\') as score_outof, ge.percentage as percentage, gc.weight as weight, (select gs.grade_letter from grade_scale gs where gs.deleted = 0 and ge.percentage > gs.min_percents order by gs.min_percents desc limit 1) as letter_grade from grade_component gc INNER JOIN grade_entry ge on gc.deleted = 0 and gc.class_id = ? and gc.id = ge.component_id and ge.student_id = ?', {
             replacements: [class_id, student_id],
             type: sequelize.QueryTypes.SELECT
         });
     };
 
-    Student.getFinalGradeByClassId = (student_id, class_id) => {
+    Student.getFinalGrades = (student_id, class_id) => {
         return sequelize.query("Select gs.grade_letter as final_grade, ce.grade_percents as final_percent from class_enrollment ce join grade_scale gs on ce.deleted = false and gs.deleted = false and ce.student_id = ? and ce.class_id = ? and ce.grade_id = gs.id", {
             replacements: [student_id, class_id],
             type: sequelize.QueryTypes.SELECT

@@ -45,7 +45,7 @@ module.exports = (sequelize, DataTypes) => {
         }
     }, { tableName: 'course' });
 
-    Course.getCourseDetailsByClassId = class_id => {
+    Course.getCourse = class_id => {
         return sequelize.query('select su.code as code, co.number as number, co.name as name, cl.section as section from class cl join course co on cl.deleted = false and cl.id = ? and co.deleted = false and cl.course_id = co.id join subject su on su.deleted = false and co.subject_id = su.id', {
             replacements: [class_id],
             type: sequelize.QueryTypes.SELECT

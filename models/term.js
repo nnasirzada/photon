@@ -31,7 +31,7 @@ module.exports = (sequelize, DataTypes) => {
     }, { tableName: 'term' });
 
     Term.getStudentTerms = student_id => {
-        return sequelize.query('Select * from term where deleted = false and id in (select term_id from part_of_term where deleted = false and id in (select part_of_term_id from class where deleted = false and id in (select class_id from class_enrollment where deleted = false and student_id = ?))) order by id desc', {
+        return sequelize.query('SELECT * FROM term WHERE deleted = 0 AND id IN (SELECT term_id FROM part_of_term WHERE deleted = 0 AND id IN (SELECT part_of_term_id FROM class WHERE deleted = 0 AND id IN (SELECT class_id FROM class_enrollment WHERE deleted = 0 AND student_id = ?))) ORDER BY id DESC', {
             replacements: [student_id],
             type: sequelize.QueryTypes.SELECT
         });

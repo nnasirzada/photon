@@ -5,8 +5,12 @@ const bcrypt = require('bcrypt');
 
 router.get('/', (req, res, next) => {
     models.Student.getProfileData(req.user.id).then(Student => {
+
+        let values = Student.dataValues;
+        values.sex = values.sex.charAt(0).toUpperCase() + values.sex.slice(1);
+
         res.render('student/profile', {
-            title: 'Profile',
+            title: 'Profile - Photon',
             active: {
                 profile: true
             },
@@ -22,35 +26,33 @@ router.get('/', (req, res, next) => {
 });
 
 router.post('/', (req, res, next) => {
-    req.checkBody('oldpassword', null).notEmpty();
-    req.checkBody('newpassword', null).notEmpty().isLength({min: 8, max: 24});
-    req.checkBody('confirmpassword', null).notEmpty().equals(req.body.newpassword);
+
+    req.checkBody('old_password', 'Old password is empty.').notEmpty();
+    req.checkBody('new_password', 'New password length should be between 8 and 24').notEmpty().isLength({ min: 8, max: 24 });
+    req.checkBody('confirm_password', 'Passwords do not match.').notEmpty().equals(req.body.new_password);
 
     if (req.validationErrors()) {
-        req.flash('error', 'Form inputs are not valid!');
-        res.redirect('/student/profile');
-    } else {
-        models.User.findOne({
-            where: {
-                id: req.user.id
-            }
-        }).then(User => {
-            if (!bcrypt.compareSync(req.body.oldpassword, User.password)) {
-                throw new Error('Old password is wrong!');
-            } else {
-                return models.User.update({password: req.body.newpassword}, {
-                    where: {id: req.user.id},
-                    individualHooks: true
-                });
-            }
-        }).then(result => {
-            req.flash('success', 'Password updated');
-            res.redirect('/student/profile');
-        }).catch(err => {
-            req.flash('error', err.message);
-            res.redirect('/student/profile');
-        });
+        req.flash('error', req.validationErrors()[0].msg);
+        return res.redirect('/student/profile/');
     }
+
+    models.User.findOne({
+        where: {
+            id: req.user.id
+        }
+    }).then(User => {
+        if (!bcrypt.compareSync(req.body.old_password, User.password))
+            throw new Error('Old password is wrong.');
+        return models.User.update(
+            { password: req.body.new_password },
+            { where: { id: req.user.id }, individualHooks: true });
+    }).then(result => {
+        req.flash('success', 'Password successfully updated.');
+        return res.redirect('/student/profile/');
+    }).catch(err => {
+        req.flash('error', err.message);
+        return res.redirect('/student/profile/');
+    });
 });
 
 module.exports = router;

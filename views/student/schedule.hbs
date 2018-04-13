@@ -1,11 +1,6 @@
-<h3 class="uk-heading-bullet uk-margin-remove-bottom">
-    Class Schedule
-</h3>
 <div id='calendar'>
-
 </div>
 <script>
-
     let calendarPrev = function () {
         $('#calendar').fullCalendar('prev');
         return false;
@@ -14,25 +9,36 @@
         $('#calendar').fullCalendar('next');
         return false;
     };
-
-
     $(function () {
-        // page is now ready, initialize the calendar...
         let calendar = $('#calendar').fullCalendar({
             header: {
-                left: '',
-                center: 'title',
-                right: ''
+                left: 'title',
+                center: null,
+                right: null
             },
+            firstDay: 1,
+            titleFormat: 'DD MMMM / YYYY',
             defaultView: 'listWeek',
             events: {
                 url: './schedule/events/'
             },
+            loading: function (isLoading, view) {
+                if (isLoading) {
+                    $('#calendar').hide();
+                } else {
+                    $('#calendar').show();
+                }
+            },
             eventAfterAllRender: (view) => {
                 $('table').addClass('uk-table uk-table-small uk-margin-remove');
-                $('td.fc-widget-header').attr('style', 'background-color: #F8F8F8!important');
-                $('div.fc-right').html("<a href='#' onclick='return calendarPrev();' uk-slidenav-previous></a> <a href='#' onclick='return calendarNext();' uk-slidenav-next></a>");
-
+                $('td.fc-widget-header').attr('style', 'background-color: #eee!important; color: #333!important;');
+                $('td.fc-list-item-title.fc-widget-content a').attr('style', 'text-decoration: none!important;');
+                $('div.fc-left h2').attr('style', 'color: #333!important; font-size: 1.5rem!important;');
+                $('div.fc-left h2').addClass('uk-heading-bullet');
+                $('div.fc-right').html("<a href='#' onclick='return calendarPrev();' uk-slidenav-previous></a><a href='#' onclick='return calendarNext();' uk-slidenav-next></a>");
+                $('.fc-list-empty').attr('style', 'background: #00000000; font-size: 23px; padding: 24px 0; color: #333;');
+                $('.fc-view').attr('style', 'border-width: 1px!important;');
+                $('.fc-list-empty-wrap2').parent('.fc-scroller').parent('div').attr('style', 'border-width: 0px!important;');
             }
         });
     });
