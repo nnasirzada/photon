@@ -2,26 +2,26 @@
     {{title}}
 </h3>
 
-<div class="uk-card-header">
-    <p>
-        <span class="uk-text-bold">Name: </span>{{student.firstname}} {{student.lastname}}
-    </p>
-    <p>
-        <span class="uk-text-bold">Student Type: </span>{{student.status_academic}}
-    </p>
-    <p>
-        <span class="uk-text-bold">School: </span>{{student.school_name}}
-    </p>
-    <p>
-        <span class="uk-text-bold">Major: </span>{{student.major_name}}
-    </p>
-</div>
+    <div class="uk-card uk-card-default uk-box-shadow-medium">
+        <div class="uk-card-header">
+            <p>
+                <span class="uk-text-bold">Name: </span>{{student.firstname}} {{student.lastname}}
+            </p>
+            <p>
+                <span class="uk-text-bold">Student Type: </span>{{student.status_academic}}
+            </p>
+            <p>
+                <span class="uk-text-bold">School: </span>{{student.school_name}}
+            </p>
+            <p>
+                <span class="uk-text-bold">Major: </span>{{student.major_name}}
+            </p>
+        </div>
 
 
 {{#each groupedByTerm as |item|}}
     {{!-- <div uk-grid> --}}
 
-    <div class="uk-card uk-card-default uk-box-shadow-medium">
         <div class="uk-width-1-1">
 
             <div class="uk-card-body">
@@ -79,8 +79,10 @@
                 </table>
                 <hr>
             </div>
+            
         </div>
 {{/each}}
 
+        </div>
 </div>
 </div>
