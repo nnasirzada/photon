@@ -1,0 +1,87 @@
+<h3 class="uk-heading-bullet uk-margin-top uk-margin-remove-bottom">{{title}}</h3>
+
+<div uk-grid>
+    <div class="uk-width-1-1">
+        <table id="table" class="uk-table uk-table-hover uk-table-striped" style="width: 100%;">
+            <thead>
+                <tr>
+                    <th>Title</th>
+                    <th>Section</th>
+                    <th>Schedule</th>
+                    <th>Time</th>
+                    <th>Missed</th>
+                    <th>Total</th>
+                    <th>Percentage</th>
+                </tr>
+            </thead>
+        </table>
+    </div>
+</div>
+
+<div id="attendance-details" class="uk-flex-top" uk-modal>
+    <div class="uk-modal-dialog uk-modal-body uk-modal-small uk-margin-auto-vertical uk-width-1-1 uk-width-2-3@m uk-width-1-2@l">
+        <div class="uk-modal-body uk-padding-remove">
+            <h3>Attendance Details</h3>
+            <table class="uk-table uk-table-striped uk-table-small">
+                <tbody>
+                    <tr>
+                        <td>Total Classes</td>
+                        <td id="details_total"></td>
+                    </tr>
+                    <tr>
+                        <td>Presents</td>
+                        <td id="details_present"></td>
+                    </tr>
+                    <tr>
+                        <td>Absents</td>
+                        <td id="details_absent"></td>
+                    </tr>
+                    <tr>
+                        <td>Absent Dates</td>
+                        <td id="details_absent_dates"></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <button class="uk-modal-close-default" type="button" uk-close></button>
+    </div>
+</div>
+
+<script>
+    $(document).ready(function () {
+        var table = $('#table').DataTable({
+            dom: 'Bfrtip',
+            responsive: {
+                details: {
+                    display: $.fn.dataTable.Responsive.display.childRowImmediate
+                }
+            },
+            buttons: [],
+            searching: false,
+            select: {},
+            ajax: "/student/terms/{{term_id}}/attendance/all/",
+            rowId: 'id',
+            columns: [
+                { "data": "title", responsivePriority: 1 },
+                { "data": "section", responsivePriority: 5 },
+                { "data": "schedule", responsivePriority: 6 },
+                { "data": "time", responsivePriority: 7 },
+                { "data": "missed", responsivePriority: 2 },
+                { "data": "total_classes", responsivePriority: 3 },
+                { "data": "percentage", responsivePriority: 4 }
+            ]
+        });
+
+        // table row onclick
+        $('#table tbody').css("cursor", "pointer");
+        $('#table tbody').on('click', 'tr', function () {
+            var row = table.row($(this));
+            $('#course_name').text(row.data().title);
+            $('#details_total').html(row.data().total_classes);
+            $('#details_present').html((parseInt(row.data().total_classes) - parseInt(row.data().missed)).toString());
+            $('#details_absent').html(row.data().missed);
+            $('#details_absent_dates').html(row.data().dates);
+            UIkit.modal("#attendance-details").show();
+        });
+    });
+</script>

@@ -1,117 +1,65 @@
 const express = require('express');
 const models = require('../../models');
-const router = express.Router();
+const router = express.Router({ mergeParams: true });
 
 router.get('/', (req, res, next) => {
     models.Term.getStudentTerms(req.user.id).then(terms => {
-        res.render('student/attendance', {
-            title: 'Select a Term',
-            active: {
-                attendance: true
-            },
-            imports: {
-                uikit: true
-            },
-            resultFound: terms.length > 0,
-            result: terms
-        });
-    }).catch(console.error);
-});
 
-router.get('/term/:termId', (req, res, next) => {
-    models.Term.getStudentTerms(req.user.id).then(terms => {
-
-        let termName = '';
-        let isCorrect = false;
+        let termName = null;
+        let termFound = false;
 
         let i = 0;
-        for (i; i < terms.length; i++) {
-            if (terms[i].id == req.params.termId) {
+        for (i; i < terms.length; i++)
+            if (terms[i].id == req.params.term_id) {
                 termName = terms[i].name;
-                isCorrect = true;
+                termFound = true;
                 break;
             }
-        }
 
-        if (isCorrect) {
-            res.render("student/attendance/attendance-by-term", {
-                title: "Attendance in " + termName,
-                term_id_ajax: req.params.termId,
+        if (termFound) {
+            res.render("student/attendance", {
+                title: "Attendance - " + termName,
+                term_id: req.params.term_id,
                 active: {
                     attendance: true
                 },
                 imports: {
+                    uikit: true,
                     jquery: true,
                     jquery_ui: true,
-                    uikit: true,
                     data_tables: true
                 }
             });
+
         } else {
-            let err = new Error('Not Found');
+            let err = new Error('Term Not Found');
             err.status = 404;
             res.locals.error = err;
             res.status(err.status);
-            return res.render('error', {layout: false});
+            return res.render('error', { layout: false });
         }
-
     }).catch(console.error);
 });
 
-router.get('/term/:termId/all', (req, res, next) => {
+router.get('/all', (req, res, next) => {
     let json = {};
     json['data'] = [];
-    models.Student.getAttendanceByTerm(req.user.id, req.params.termId).then(attendances => {
+    models.Student.getAttendance(req.user.id, req.params.term_id).then(attendances => {
 
         let i = 0;
         for (i; i < attendances.length; i++) {
-            let schedule = "";
 
-            if (attendances[i].monday) {
-                if (!schedule)
-                    schedule += "Monday";
-                else
-                    schedule += ", Monday"
-            }
-            if (attendances[i].tuesday) {
-                if (!schedule)
-                    schedule += "Tuesday";
-                else
-                    schedule += ", Tuesday"
-            }
-            if (attendances[i].wednesday) {
-                if (!schedule)
-                    schedule += "Wednesday";
-                else
-                    schedule += ", Wednesday"
-            }
-            if (attendances[i].thursday) {
-                if (!schedule)
-                    schedule += "Thursday";
-                else
-                    schedule += ", Thursday"
-            }
-            if (attendances[i].friday) {
-                if (!schedule)
-                    schedule += "Friday";
-                else
-                    schedule += ", Friday"
-            }
-            if (attendances[i].saturday) {
-                if (!schedule)
-                    schedule += "Saturday";
-                else
-                    schedule += ", Saturday"
-            }
-            if (attendances[i].sunday) {
-                if (!schedule)
-                    schedule += "Sunday";
-                else
-                    schedule += ", Sunday"
-            }
+            let schedule = [];
+            if (attendances[i].monday) schedule.push("Mon");
+            if (attendances[i].tuesday) schedule.push("Tue");
+            if (attendances[i].wednesday) schedule.push("Wed");
+            if (attendances[i].thursday) schedule.push("Thu");
+            if (attendances[i].friday) schedule.push("Fri");
+            if (attendances[i].saturday) schedule.push("Sat");
+            if (attendances[i].sunday) schedule.push("Sun");
 
             attendances[i].percentage = ((attendances[i].total_classes - attendances[i].missed) * 100 / attendances[i].total_classes).toFixed(2) + "%";
-            attendances[i].schedule = schedule;
+            attendances[i].schedule = schedule.join(', ');;
             attendances[i].time = attendances[i].start_time + " - " + attendances[i].end_time;
             attendances[i].title = attendances[i].subject + " " + attendances[i].crn + " - " + attendances[i].name;
         }

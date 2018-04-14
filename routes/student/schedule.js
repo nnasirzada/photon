@@ -76,7 +76,7 @@ router.get('/events', (req, res, next) => {
                         start: date,
                         end: moment(date).add('75', 'minutes').toDate(),
                         overlap: true,
-                        url: '/student/terms/' + values[i].term_id + '/classes/' + values[i].class_id,
+                        url: '/student/terms/' + values[i].term_id + '/classes/' + values[i].class_id + '/',
                         color: eventColor
                     });
                 });

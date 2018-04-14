@@ -6,9 +6,6 @@ const bcrypt = require('bcrypt');
 router.get('/', (req, res, next) => {
     models.Student.getProfileData(req.user.id).then(Student => {
 
-        let values = Student.dataValues;
-        values.sex = values.sex.charAt(0).toUpperCase() + values.sex.slice(1);
-
         res.render('student/profile', {
             title: 'Profile - Photon',
             active: {

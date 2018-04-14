@@ -56,8 +56,12 @@
             <div>{{student.admit_term_name}}</div>
         </div>
         <div class="uk-grid-small" uk-grid>
-            <div class="uk-width-expand" uk-leader>Graduation Term</div>
-            <div>{{student.graduation_term_name}}</div>
+            <div class="uk-width-expand" uk-leader>
+                Graduation Term
+            </div>
+            <div>
+                {{#if graduation_term_name}}{{student.graduation_term_name}}{{else}}Not Assigned{{/if}}
+            </div>
         </div>
     </div>
     <div>
