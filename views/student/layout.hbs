@@ -6,7 +6,6 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="/assets/styles/style.css" />
-    <link rel="stylesheet" href="/assets/styles/student/style.css" />
     {{#if imports.jquery}}
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     {{/if}}
@@ -54,7 +53,11 @@
                 </li>
                 <li class="uk-nav-divider"></li>
                 <li {{#if active.registration}} class="uk-active" {{/if}}>
-                    <a href="/student/registration">Registration</a>
+                    <a href="/student/registration/">Registration</a>
+                </li>
+                <li class="uk-nav-divider"></li>
+                <li {{#if active.unofficial_transcript}} class="uk-active" {{/if}}>
+                    <a href="/student/unofficial-transcript/">Unofficial Transcript</a>
                 </li>
                 <li class="uk-nav-divider"></li>
                 <li>
@@ -96,7 +99,11 @@
             </li>
             <li class="uk-nav-divider"></li>
             <li {{#if active.registration}} class="uk-active" {{/if}}>
-                <a href="/student/registration">Registration</a>
+                <a href="/student/registration/">Registration</a>
+            </li>
+            <li class="uk-nav-divider"></li>
+            <li {{#if active.unofficial_transcript}} class="uk-active" {{/if}}>
+                <a href="/student/unofficial-transcript/">Unofficial Transcript</a>
             </li>
         </ul>
     </div>

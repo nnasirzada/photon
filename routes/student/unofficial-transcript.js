@@ -87,7 +87,7 @@ router.get('/', (req, res, next) => {
                 res.render('student/unofficial-transcript', {
                     title: 'Unofficial Transcript',
                     active: {
-                        transcript: true
+                        unofficial_transcript: true
                     },
                     imports: {
                         jquery: true,
@@ -107,7 +107,6 @@ router.get('/', (req, res, next) => {
 
     })
 });
-
 
 var groupBy = function (xs, key) {
     return xs.reduce(function (rv, x) {
