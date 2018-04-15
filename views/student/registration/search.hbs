@@ -1,28 +1,25 @@
-<h3 class="uk-heading-bullet">
-    Enter Your Search Criteria - {{term_name_search}}
-</h3>
+<h3 class="uk-heading-bullet">Search - {{term.name}}</h3>
 
 <div class="uk-margin-auto-vertical uk-width-1-1">
-    <form class="uk-form-stacked uk-grid-small uk-width-1-1"
-          action="/student/registration/term/{{term_id_search}}/search">
-        <input id="subject_id" name="subject_id" type="hidden" value required>
+    <form class="uk-form-stacked uk-grid-small uk-width-1-1" action="/student/registration/term/{{term.id}}/search/">
         <div class="uk-margin uk-width-1-1">
+            <input id="subject_id" name="subject_id" type="hidden" value required>
             <label class="uk-form-label" for="subject_search">Subject</label>
-            <input class="uk-input" id="subject_search" placeholder="Search by Subject...">
+            <input class="uk-input" id="subject_search" placeholder="Search subject code or name">
         </div>
-        <input id="course_number" name="course_number" type="hidden" value required>
         <div class="uk-margin uk-width-1-1">
+            <input id="course_number" name="course_number" type="hidden" value required>
             <label class="uk-form-label" for="course_number_search">Course Number</label>
-            <input class="uk-input" id="course_number_search" type="number" placeholder="Search by Course Number...">
+            <input class="uk-input" id="course_number_search" type="number" placeholder="Course number">
         </div>
-        <input id="keyword" name="keyword" type="hidden" value required>
         <div class="uk-margin uk-width-1-1">
+            <input id="keyword" name="keyword" type="hidden" value required>
             <label class="uk-form-label" for="keyword_search">Keyword</label>
-            <input class="uk-input" id="keyword_search" type="text" placeholder="Search by Keyword...">
+            <input class="uk-input" id="keyword_search" type="text" placeholder="Keyword">
         </div>
         <div class="uk-width-1-1 uk-margin-top uk-text-right">
             <button class="uk-button uk-button-primary" type="submit">Search</button>
-            <button class="uk-button uk-button-default" type="reset">Clear</button>
+            <button class="uk-button uk-button-default uk-margin-left" type="reset">Clear</button>
         </div>
     </form>
 </div>
@@ -33,7 +30,7 @@
         $("#subject_search").autocomplete({
             source: function (request, response) {
                 $.ajax({
-                    url: "/student/registration/search_subjects/" + request.term,
+                    url: "/student/registration/search_subjects/" + request.term + "/",
                     dataType: "json",
                     success: function (result) {
                         response($.map(result.data, function (item, ignore) {
@@ -48,16 +45,14 @@
             },
             minLength: 1,
             select: function (event, ui) {
-                $("#subject_id").val(ui.item.id);
-            },
-            change: function (event, ui) {
-                if (ui.item == null)
-                    $("#subject_id").val('');
+                $('#subject_id').val(ui.item.id);
             }
         });
+        $('#subject_search').on('input', function (e) {
+            $('#subject_id').val(null);
+        });
         $("#course_number_search").on('keypress', function (e) {
-            if (e.which == 32)
-                return false;
+            if (e.which == 32) return false;
         }).keyup(function () {
             let value = $(this).val();
             $('#course_number').val(value);

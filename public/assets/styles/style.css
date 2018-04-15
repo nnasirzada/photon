@@ -208,3 +208,19 @@ table.dataTable.dtr-inline.collapsed>tbody>tr[role="row"]>td:first-child:before,
   width: 70px !important;
   height: 70px !important;
 }
+
+.schedule-day-on, .schedule-day-off {
+  width: 20px;
+  text-align: center;
+  display: inline-block;
+}
+
+.schedule-day-on {
+  background: #007a41;
+  color: #ffffff;
+}
+
+.schedule-day-off {
+  background: #f1f1f1;
+  color: #bcbcbc;
+}

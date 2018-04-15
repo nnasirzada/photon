@@ -65,7 +65,7 @@ router.get('/events', (req, res, next) => {
                 let rule = new RRule({
                     freq: RRule.WEEKLY,
                     byweekday: byweekday,
-                    dtstart: new Date(req.query.start + ' ' + values[i].start_time),
+                    dtstart: new Date(req.query.start),
                     until: new Date(req.query.end)
                 });
 
@@ -73,8 +73,8 @@ router.get('/events', (req, res, next) => {
                     return events.push({
                         id: values[i].class_id,
                         title: values[i].course_name,
-                        start: date,
-                        end: moment(date).add('75', 'minutes').toDate(),
+                        start: new Date(date.getTime() + getSeconds(values[index].start_time) * 1000),
+                        end: new Date(date.getTime() + getSeconds(values[index].end_time) * 1000),
                         overlap: true,
                         url: '/student/terms/' + values[i].term_id + '/classes/' + values[i].class_id + '/',
                         color: eventColor
@@ -84,8 +84,13 @@ router.get('/events', (req, res, next) => {
             res.status(200).json(events);
         }).catch(console.error);
     } else {
-        throw new Error('Missing query params: start or end.');
+        throw new Error('Something went wrong.');
     }
 });
+
+function getSeconds(timeString) {
+    var arr = timeString.split(':');
+    return (+arr[0]) * 60 * 60 + (+arr[1]) * 60 + (+arr[2]);
+}
 
 module.exports = router;

@@ -1,4 +1,4 @@
-<h3 class="uk-heading-bullet uk-margin-top">{{title}}</h3>
+<h3 class="uk-heading-bullet uk-margin-top uk-margin-remove-bottom">{{title}}</h3>
 
 <div uk-grid>
     {{!-- Class Navigation --}}
@@ -40,6 +40,7 @@
             },
             buttons: [],
             select: {},
+            searching: false,
             ajax: "/student/terms/{{term_id}}/classes/{{class_id}}/grades/all",
             rowId: 'id',
             columns: [

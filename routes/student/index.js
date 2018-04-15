@@ -12,12 +12,11 @@ router.get('/', (req, res, next) => {
     res.redirect('./schedule');
 });
 
+router.use('/registration/', require('./registration'));
 router.use('/schedule/', require('./schedule'));
 router.use('/profile', require('./profile'));
 router.use('/terms/', require('./terms'));
 router.use('/terms/:term_id/attendance/', require('./attendance'));
-
-router.use('/registration', require('./registration'));
-router.use('/unofficial-transcript', require('./unofficial-transcript'));
+router.use('/unofficial-transcript/', require('./unofficial-transcript'));
 
 module.exports = router;

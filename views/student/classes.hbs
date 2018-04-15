@@ -1,9 +1,6 @@
-<h3 class="uk-heading-bullet uk-margin-top">
-    {{title}}
-</h3>
+<h3 class="uk-heading-bullet uk-margin-top uk-margin-remove-bottom">{{title}}</h3>
 
 <div uk-grid>
-    {{!-- Class Navigation --}}
     <div class="uk-width-1-1">
         <table id="table" class="uk-table uk-table-hover uk-table-striped" style="width: 100%;">
             <thead>
@@ -30,6 +27,7 @@
                 }
             },
             buttons: [],
+            searching: false,
             select: {},
             ajax: "/student/terms/{{term_id}}/classes/all",
             rowId: 'id',
@@ -44,7 +42,7 @@
                     responsivePriority: 2,
                     sortable: false,
                     render: function (data, type, row) {
-                        return "<a href=/student/grades/term/" + row.term_id + "/class/" + row.class_id + "/view_grades>View grades</a>";
+                        return "<a href=/student/terms/" + row.term_id + "/classes/" + row.class_id + "/grades/>View grades</a>";
                     }
                 }
             ]
@@ -54,7 +52,7 @@
         $('#table tbody').css("cursor", "pointer");
         $('#table tbody').on('click', 'tr', function () {
             var row = table.row($(this));
-            window.location.href = "/student/grades/term/" + row.data().term_id + "/class/" + row.data().class_id;
+            window.location.href = "/student/terms/" + row.data().term_id + "/classes/" + row.data().class_id + "/";
         });
 
     });
