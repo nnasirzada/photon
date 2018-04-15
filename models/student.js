@@ -82,5 +82,22 @@ module.exports = (sequelize, DataTypes) => {
         });
     };
 
+
+    //unofficial transcript
+    Student.getRegisteredTerms = student_id => {
+        return sequelize.query('SELECT distinct t.id, t.name as term_name FROM class_enrollment ce inner join grade_scale gs on ce.grade_id = gs.id and ce.student_id = ? inner join class cl on ce.class_id = cl.id inner join course co on cl.course_id = co.id inner join subject s on co.subject_id = s.id inner join part_of_term pot on cl.part_of_term_id = pot.id inner join term t on pot.term_id = t.id order by t.start_date', {
+            replacements: [student_id],
+            type: sequelize.QueryTypes.SELECT
+        });
+    };
+
+    Student.getUnofficialTranscriptData = student_id => {
+        return sequelize.query('SELECT s.code, co.number, co.name as course_name, co.credit_hours, co.gpa_hours, gs.grade_letter, gs.grade_point, round(gs.grade_point*co.gpa_hours, 2) as quality_points, ce.status, t.name as term_name, t.id as term_id FROM class_enrollment ce left join grade_scale gs on ce.grade_id = gs.id and ce.student_id = ? inner join class cl on ce.class_id = cl.id inner join course co on cl.course_id = co.id inner join subject s on co.subject_id = s.id inner join part_of_term pot on cl.part_of_term_id = pot.id inner join term t on pot.term_id = t.id', {
+            replacements: [student_id],
+            type: sequelize.QueryTypes.SELECT
+        });
+    };
+
+
     return Student;
 };
