@@ -82,12 +82,10 @@ router.get('/', (req, res, next) => {
 
                 }
 
-                console.log(Student[0]);
-
                 res.render('student/unofficial-transcript', {
                     title: 'Unofficial Transcript',
                     active: {
-                        transcript: true
+                        unofficial_transcript: true
                     },
                     imports: {
                         jquery: true,
