@@ -47,13 +47,6 @@ module.exports = (sequelize, DataTypes) => {
         });
     };
 
-    Student.getUnofficialTranscript = student_id => {
-        return sequelize.query('select cl.id, co.name course_name, t.name term_name from class_enrollment ce left join class cl on ce.class_id = cl.id and student_id = ? join course co on cl.course_id = co.id left join part_of_term pot on cl.part_of_term_id = pot.id left join term t on pot.id = t.id order by t.start_date', {
-            replacements: [student_id],
-            type: sequelize.QueryTypes.SELECT
-        });
-    };
-
     Student.getEnrolledClasses = (student_id, term_id) => {
         return sequelize.query('SELECT pt.term_id AS term_id, cl.id AS class_id, su.code AS subject_code, co.number AS course_number, co.name AS course_name, cl.section AS course_section, sc.code AS school_code, co.credit_hours AS credit_hours, pr.name AS level FROM class_enrollment ce INNER JOIN class cl ON ce.deleted = false AND ce.student_id = ? AND cl.deleted = 0 AND ce.class_id = cl.id INNER JOIN course co ON co.deleted = false AND cl.course_id = co.id INNER JOIN part_of_term pt ON cl.part_of_term_id = pt.id AND pt.term_id = ? INNER JOIN subject su ON co.subject_id = su.id INNER JOIN program pr ON co.program_id = pr.id INNER JOIN school sc ON co.school_id = sc.id', {
             replacements: [student_id, term_id],
@@ -92,12 +85,18 @@ module.exports = (sequelize, DataTypes) => {
     };
 
     Student.getUnofficialTranscriptData = student_id => {
-        return sequelize.query('SELECT s.code, co.number, co.name as course_name, co.credit_hours, co.gpa_hours, gs.grade_letter, gs.grade_point, round(gs.grade_point*co.gpa_hours, 2) as quality_points, ce.status, t.name as term_name, t.id as term_id FROM class_enrollment ce left join grade_scale gs on ce.grade_id = gs.id and ce.student_id = ? inner join class cl on ce.class_id = cl.id inner join course co on cl.course_id = co.id inner join subject s on co.subject_id = s.id inner join part_of_term pot on cl.part_of_term_id = pot.id inner join term t on pot.term_id = t.id', {
+        return sequelize.query('SELECT ce.student_id, s.code, co.number, co.name as course_name, co.credit_hours, co.gpa_hours, gs.grade_letter, gs.grade_point, round(gs.grade_point*co.gpa_hours, 2) as quality_points, ce.status, t.name as term_name, t.id as term_id FROM class_enrollment ce left join grade_scale gs on ce.grade_id = gs.id inner join class cl on ce.class_id = cl.id inner join course co on cl.course_id = co.id inner join subject s on co.subject_id = s.id inner join part_of_term pot on cl.part_of_term_id = pot.id inner join term t on pot.term_id = t.id having ce.student_id = ?', {
             replacements: [student_id],
             type: sequelize.QueryTypes.SELECT
         });
     };
 
+    Student.getFinalGradesList = (student_id, term_id) => {
+        return sequelize.query('Select cl.id as class_id, pt.term_id as term_id, su.code as subject_code, co.number as course_number, co.name as course_name, cl.section as section, sc.code as school_code, (case when (gs.grade_letter is null) THEN \'N/A\' ELSE gs.grade_letter END) as grade_letter, ce.status as status, co.credit_hours as credit_hours, co.gpa_hours as gpa_hours, (case when (gs.grade_point is null) THEN \'N/A\' ELSE gs.grade_point END) as grade_point, (case when (ce.status = \'passed\') THEN co.credit_hours ELSE 0.00 END) as earned_hours, (case when (gs.grade_point is null) THEN \'N/A\' ELSE (round(co.gpa_hours * gs.grade_point, 2)) END) as quality_points from class_enrollment ce join class cl on ce.deleted = false and cl.deleted = false and ce.student_id = ? and ce.class_id = cl.id join part_of_term pt on pt.deleted = false and cl.part_of_term_id = pt.id and pt.term_id = ? join course co on co.deleted = false and cl.course_id = co.id join subject su on su.deleted = false and co.subject_id = su.id join school sc on sc.deleted = false and co.school_id = sc.id left join grade_scale gs on gs.deleted = false and ce.grade_id = gs.id', {
+            replacements: [student_id, term_id],
+            type: sequelize.QueryTypes.SELECT
+        });
+    };
 
     return Student;
 };
