@@ -73,8 +73,8 @@ router.get('/events', (req, res, next) => {
                     return events.push({
                         id: values[i].class_id,
                         title: values[i].course_name,
-                        start: new Date(date.getTime() + getSeconds(values[index].start_time) * 1000),
-                        end: new Date(date.getTime() + getSeconds(values[index].end_time) * 1000),
+                        start: new Date(date.getTime() + getSeconds(values[i].start_time) * 1000),
+                        end: new Date(date.getTime() + getSeconds(values[i].end_time) * 1000),
                         overlap: true,
                         url: '/student/terms/' + values[i].term_id + '/classes/' + values[i].class_id + '/',
                         color: eventColor

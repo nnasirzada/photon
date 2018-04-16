@@ -72,6 +72,7 @@ router.get('/term/:term_id/search', (req, res, next) => {
     models.Term.findOne({ where: { deleted: false, id: req.params.term_id } }).then(Term => {
         if (Term.status === 'open') {
             models.Class.findAll({
+                where: { deleted: false },
                 include: [{
                     model: models.Course,
                     attributes: ['id', 'name', 'number', 'credit_hours'],
@@ -164,6 +165,10 @@ router.post('/term/:term_id/search', (req, res, next) => {
                 required: true,
                 include: [
                     {
+                        model: models.PartOfTerm,
+                        required: true
+                    },
+                    {
                         model: models.Course,
                         required: true
                     },
@@ -179,7 +184,7 @@ router.post('/term/:term_id/search', (req, res, next) => {
         // check credit hours
         var credits = 0;
         enrollments.forEach(enrollment => {
-            if (enrollment.term_id = req.params.term_id)
+            if (enrollment.Class.PartOfTerm.term_id == req.params.term_id)
                 credits += parseInt(enrollment.Class.Course.credit_hours, 10);
         });
         if (credits + parseInt(req.body.credit_hours, 10) > 38) {
@@ -209,12 +214,13 @@ router.post('/term/:term_id/search', (req, res, next) => {
         prerequisites.forEach(prerequisite => {
             var yup = false;
             enrolls.forEach(enroll => {
-                if (prerequisite.course_id == enroll.Class.course_id && (enroll.status == 'ongoing' || enroll.status == 'passed'))
+                if (prerequisite.prerequisite_id == enroll.Class.course_id && (enroll.status == 'ongoing' || enroll.status == 'passed')) {
                     yup = true;
+                }
             });
             if (!yup) prerequisiteIssue = prerequisite;
         });
-        if (prerequisiteIssue) {
+        if (prerequisiteIssue != null) {
             finished = true;
             return res.status(501).send('Prerequisite issue: ' + prerequisiteIssue.Course.name);
         }
@@ -225,9 +231,14 @@ router.post('/term/:term_id/search', (req, res, next) => {
             },
             include: [
                 {
+                    model: models.PartOfTerm,
+                    required: true
+                },
+                {
                     model: models.ClassMeeting,
                     required: false
-                }, {
+                },
+                {
                     model: models.ClassEnrollment,
                     attributes: ['id'],
                     required: false
@@ -242,7 +253,9 @@ router.post('/term/:term_id/search', (req, res, next) => {
         enrolls.forEach(enroll => {
             enroll.Class.ClassMeetings.forEach(meeting => {
                 the_class.ClassMeetings.forEach(the_meeting => {
-                    if (meeting.start_time <= the_meeting.end_time && meeting.end_time >= the_meeting.start_time
+                    if (enroll.Class.PartOfTerm.start_date <= the_class.PartOfTerm.end_date
+                        && enroll.Class.PartOfTerm.end_date >= the_class.PartOfTerm.start_date
+                        && meeting.start_time <= the_meeting.end_time && meeting.end_time >= the_meeting.start_time
                         && ((meeting.monday == true && the_meeting.monday == true)
                             || (meeting.tuesday == true && the_meeting.tuesday == true)
                             || (meeting.wednesday == true && the_meeting.wednesday == true)
