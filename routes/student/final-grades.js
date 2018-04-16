@@ -1,92 +1,87 @@
 const express = require('express');
 const models = require('../../models');
-const router = express.Router({mergeParams: true});
+const router = express.Router({ mergeParams: true });
 
 router.get('/', (req, res, next) => {
     models.Term.getStudentTerms(req.user.id).then(terms => {
 
-        let termName = '';
-        let isCorrect = false;
+        let termName = null;
+        let termFound = false;
 
         let i = 0;
         for (i; i < terms.length; i++) {
             if (terms[i].id == req.params.term_id) {
                 termName = terms[i].name;
-                isCorrect = true;
+                termFound = true;
                 break;
             }
         }
 
-        if (isCorrect) {
-            models.Student.getFinalGradesList(req.user.id, req.params.term_id).then(finalGrades => {
+        if (termFound) {
+            models.Student.getFinalGrades(req.user.id, req.params.term_id).then(grades => {
 
-                let sum_attempted_hours = 0;
-                let sum_earned_hours = 0;
-                let sum_gpa_hours = 0;
-                let sum_quality_points = 0;
+                let quality_points = 0;
+                let attempted_hours = 0;
+                let earned_hours = 0;
+                let gpa_hours = 0;
 
                 let i = 0;
-                for (i; i < finalGrades.length; i++) {
-
-                    if (finalGrades[i].grade_letter != "N/A" || finalGrades[i].quality_points != "N/A") {
-                        sum_attempted_hours += parseFloat(finalGrades[i].credit_hours);
-                        sum_earned_hours += parseFloat(finalGrades[i].earned_hours);
-                        sum_gpa_hours += parseFloat(finalGrades[i].gpa_hours);
-                        sum_quality_points += parseFloat(finalGrades[i].quality_points);
+                for (i; i < grades.length; i++) {
+                    if (grades[i].grade_letter != "N/A" || grades[i].quality_points != "N/A") {
+                        quality_points += parseFloat(grades[i].quality_points);
+                        attempted_hours += parseFloat(grades[i].credit_hours);
+                        earned_hours += parseFloat(grades[i].earned_hours);
+                        gpa_hours += parseFloat(grades[i].gpa_hours);
                     } else {
-                        sum_attempted_hours = null;
-                        sum_earned_hours = null;
-                        sum_gpa_hours = null;
-                        sum_quality_points = null;
-
+                        quality_points = null;
+                        attempted_hours = null;
+                        earned_hours = null;
+                        gpa_hours = null;
                         break;
                     }
                 }
 
-                let sum_gpa = (sum_quality_points == null || sum_gpa_hours == null) ? "N/A" : (sum_quality_points / sum_gpa_hours).toFixed(2);
+                let gpa = (quality_points == null || gpa_hours == null) ? "N/A" : (quality_points / gpa_hours).toFixed(2);
 
                 res.render("student/final-grades", {
                     title: "Final Grades - " + termName,
-                    term_id_ajax: req.params.term_id,
-                    current_attempted_hours: (sum_attempted_hours == null) ? "N/A" : sum_attempted_hours.toFixed(2),
-                    current_earned_hours: (sum_earned_hours == null) ? "N/A" : sum_earned_hours.toFixed(2),
-                    current_gpa_hours: (sum_gpa_hours == null) ? "N/A" : sum_gpa_hours.toFixed(2),
-                    current_quality_points: (sum_quality_points == null) ? "N/A" : sum_quality_points.toFixed(2),
-                    current_gpa: sum_gpa,
+                    term_id: req.params.term_id,
+                    quality_points: (quality_points == null) ? "N/A" : quality_points.toFixed(2),
+                    attempted_hours: (attempted_hours == null) ? "N/A" : attempted_hours.toFixed(2),
+                    earned_hours: (earned_hours == null) ? "N/A" : earned_hours.toFixed(2),
+                    gpa_hours: (gpa_hours == null) ? "N/A" : gpa_hours.toFixed(2),
+                    gpa: gpa,
                     active: {
-                        final_grades: true
+                        terms: true
                     },
                     imports: {
+                        uikit: true,
                         jquery: true,
                         jquery_ui: true,
-                        uikit: true,
                         data_tables: true
                     }
                 });
-
             }).catch(console.log);
         } else {
-            let err = new Error('Not Found');
+            let err = new Error('Term Not Found');
             err.status = 404;
             res.locals.error = err;
             res.status(err.status);
-            return res.render('error', {layout: false});
+            return res.render('error', { layout: false });
         }
-
     }).catch(console.error);
 });
 
 router.get('/all', (req, res, next) => {
     let json = {};
     json['data'] = [];
-    models.Student.getFinalGradesList(req.user.id, req.params.term_id).then(finalGrades => {
-
+    models.Student.getFinalGrades(req.user.id, req.params.term_id).then(grades => {
         let i = 0;
-        for (i; i < finalGrades.length; i++) {
-            finalGrades[i].title = finalGrades[i].subject_code + " " + finalGrades[i].course_number + " - " + finalGrades[i].course_name;
-        }
-
-        json['data'] = finalGrades;
+        for (i; i < grades.length; i++)
+            grades[i].title = grades[i].subject_code
+                + " " + grades[i].course_number
+                + " - " + grades[i].course_name;
+        json['data'] = grades;
         res.status(200).json(json);
     }).catch(console.log);
 });

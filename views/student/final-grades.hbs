@@ -1,45 +1,43 @@
-<h3 class="uk-heading-bullet uk-margin-top">
-    {{title}}
-</h3>
+<h3 class="uk-heading-bullet uk-margin-remove">{{title}}</h3>
 
 <div uk-grid>
     {{!-- Class Navigation --}}
     <div class="uk-width-1-1">
         <table id="table" class="uk-table uk-table-hover uk-table-striped" style="width: 100%;">
             <thead>
-            <tr>
-                <th>Title</th>
-                <th>Section</th>
-                <th>School</th>
-                <th>Final Grade</th>
-                <th>Attempted Hours</th>
-                <th>Earned Hours</th>
-                <th>GPA Hours</th>
-                <th>Quality Points</th>
-            </tr>
-            </thead>
-        </table>
-        <div class="uk-overflow-auto">
-            <table class="uk-table uk-table-striped">
-                <thead>
                 <tr>
-                    <th></th>
+                    <th>Title</th>
+                    <th>Section</th>
+                    <th>School</th>
+                    <th>Final Grade</th>
                     <th>Attempted Hours</th>
                     <th>Earned Hours</th>
                     <th>GPA Hours</th>
                     <th>Quality Points</th>
-                    <th>GPA</th>
                 </tr>
+            </thead>
+        </table>
+        <div class="uk-overflow-auto uk-margin-top">
+            <table class="uk-table uk-table-striped">
+                <thead>
+                    <tr>
+                        <th></th>
+                        <th>Attempted Hours</th>
+                        <th>Earned Hours</th>
+                        <th>GPA Hours</th>
+                        <th>Quality Points</th>
+                        <th>GPA</th>
+                    </tr>
                 </thead>
                 <tbody>
-                <tr>
-                    <td>Current Term:</td>
-                    <td>{{current_attempted_hours}}</td>
-                    <td>{{current_earned_hours}}</td>
-                    <td>{{current_gpa_hours}}</td>
-                    <td>{{current_quality_points}}</td>
-                    <td>{{current_gpa}}</td>
-                </tr>
+                    <tr>
+                        <td>Term:</td>
+                        <td>{{attempted_hours}}</td>
+                        <td>{{earned_hours}}</td>
+                        <td>{{gpa_hours}}</td>
+                        <td>{{quality_points}}</td>
+                        <td>{{gpa}}</td>
+                    </tr>
                 </tbody>
             </table>
         </div>
@@ -58,17 +56,17 @@
             buttons: [],
             searching: false,
             select: {},
-            ajax: "/student/terms/{{term_id_ajax}}/final-grades/all/",
+            ajax: "/student/terms/{{term_id}}/final-grades/all/",
             rowId: 'id',
             columns: [
-                {"data": "title", responsivePriority: 1},
-                {"data": "section", responsivePriority: 2},
-                {"data": "school_code", responsivePriority: 4},
-                {"data": "grade_letter", responsivePriority: 3},
-                {"data": "credit_hours", responsivePriority: 5},
-                {"data": "earned_hours", responsivePriority: 6},
-                {"data": "gpa_hours", responsivePriority: 7},
-                {"data": "quality_points", responsivePriority: 8}
+                { "data": "title", responsivePriority: 1 },
+                { "data": "section", responsivePriority: 2 },
+                { "data": "school_code", responsivePriority: 4 },
+                { "data": "grade_letter", responsivePriority: 3 },
+                { "data": "credit_hours", responsivePriority: 5 },
+                { "data": "earned_hours", responsivePriority: 6 },
+                { "data": "gpa_hours", responsivePriority: 7 },
+                { "data": "quality_points", responsivePriority: 8 }
             ]
         });
 
