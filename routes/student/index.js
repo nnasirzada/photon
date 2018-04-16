@@ -18,5 +18,6 @@ router.use('/profile', require('./profile'));
 router.use('/terms/', require('./terms'));
 router.use('/terms/:term_id/attendance/', require('./attendance'));
 router.use('/unofficial-transcript/', require('./unofficial-transcript'));
+router.use('/terms/:term_id/final-grades/', require('./final-grades'));
 
 module.exports = router;
