@@ -53,7 +53,7 @@ router.get('/', (req, res, next) => {
                         var quality_points = parseFloat(course['quality_points']);
                         curr_quality_points = curr_quality_points + quality_points;
 
-                        var curr_gpa = (curr_attempt_hours == 0) ? 0 : curr_quality_points / curr_attempt_hours;
+                        var curr_gpa = (curr_gpa_hours == 0) ? 0 : curr_quality_points / curr_gpa_hours;
 
 
                     }
@@ -63,7 +63,7 @@ router.get('/', (req, res, next) => {
                     cumul_earned_hours = cumul_earned_hours + curr_earned_hours;
                     cumul_gpa_hours = cumul_gpa_hours + curr_gpa_hours;
                     cumul_quality_points = cumul_quality_points + curr_quality_points;
-                    cumul_gpa = (cumul_attempt_hours == 0) ? 0 : cumul_quality_points / cumul_attempt_hours;
+                    cumul_gpa = (cumul_gpa_hours == 0) ? 0 : cumul_quality_points / cumul_gpa_hours;
 
                     // push collected data to each course
                     for (let j = 0; j < Object.keys(groupedByTerm[Terms[i].id]).length; j++) {
