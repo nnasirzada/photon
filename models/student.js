@@ -91,6 +91,12 @@ module.exports = (sequelize, DataTypes) => {
         });
     };
 
+    Student.getFinalGradesList = (student_id, term_id) => {
+        return sequelize.query('Select cl.id as class_id, pt.term_id as term_id, su.code as subject_code, co.number as course_number, co.name as course_name, cl.section as section, sc.code as school_code, (case when (gs.grade_letter is null) THEN \'N/A\' ELSE gs.grade_letter END) as grade_letter, ce.status as status, co.credit_hours as credit_hours, co.gpa_hours as gpa_hours, (case when (gs.grade_point is null) THEN \'N/A\' ELSE gs.grade_point END) as grade_point, (case when (ce.status = \'passed\') THEN co.credit_hours ELSE 0.00 END) as earned_hours, (case when (gs.grade_point is null) THEN \'N/A\' ELSE (round(co.gpa_hours * gs.grade_point, 2)) END) as quality_points from class_enrollment ce join class cl on ce.deleted = false and cl.deleted = false and ce.student_id = ? and ce.class_id = cl.id join part_of_term pt on pt.deleted = false and cl.part_of_term_id = pt.id and pt.term_id = ? join course co on co.deleted = false and cl.course_id = co.id join subject su on su.deleted = false and co.subject_id = su.id join school sc on sc.deleted = false and co.school_id = sc.id left join grade_scale gs on gs.deleted = false and ce.grade_id = gs.id', {
+            replacements: [student_id, term_id],
+            type: sequelize.QueryTypes.SELECT
+        });
+    };
 
     return Student;
 };
