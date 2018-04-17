@@ -276,11 +276,13 @@ router.post('/term/:term_id/search', (req, res, next) => {
             return res.status(501).send('No seat available.');
         }
 
-        // enroll
-        return models.ClassEnrollment.build({
-            student_id: req.user.id,
-            class_id: req.body.class_id,
-        }).save();
+        if (!finished) {
+            // enroll
+            return models.ClassEnrollment.build({
+                student_id: req.user.id,
+                class_id: req.body.class_id,
+            }).save();
+        }
 
     }).then(result => {
         if (finished) return;
