@@ -83,7 +83,7 @@ module.exports = (sequelize, DataTypes) => {
     };
 
     Student.getUnofficialTranscriptData = student_id => {
-        return sequelize.query('SELECT ce.student_id, s.code, co.number, co.name as course_name, co.credit_hours, co.gpa_hours, gs.grade_letter, gs.grade_point, round(gs.grade_point*co.gpa_hours, 2) as quality_points, ce.status, t.name as term_name, t.id as term_id FROM class_enrollment ce left join grade_scale gs on ce.grade_id = gs.id inner join class cl on ce.class_id = cl.id inner join course co on cl.course_id = co.id inner join subject s on co.subject_id = s.id inner join part_of_term pot on cl.part_of_term_id = pot.id inner join term t on pot.term_id = t.id having ce.student_id = ?', {
+        return sequelize.query('SELECT ce.student_id, s.code, co.number, co.name as course_name, co.credit_hours, co.gpa_hours, gs.grade_letter, gs.grade_point, round(gs.grade_point*co.gpa_hours, 2) as quality_points, ce.status, t.name as term_name, t.id as term_id FROM class_enrollment ce left join grade_scale gs on (ce.grade_id = gs.id and gs.deleted = 0) inner join class cl on (ce.class_id = cl.id and cl.deleted = 0) inner join course co on (cl.course_id = co.id and co.deleted = 0) inner join subject s on (co.subject_id = s.id and s.deleted = 0) inner join part_of_term pot on (cl.part_of_term_id = pot.id and pot.deleted = 0) inner join term t on (pot.term_id = t.id and t.deleted = 0) where ce.student_id = ? and ce.deleted = 0', {
             replacements: [student_id],
             type: sequelize.QueryTypes.SELECT
         });
