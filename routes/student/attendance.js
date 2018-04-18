@@ -38,7 +38,11 @@ router.get('/', (req, res, next) => {
             res.status(err.status);
             return res.render('error', { layout: false });
         }
-    }).catch(console.error);
+    }).catch(err => {
+        res.locals.error = err;
+        res.status(err.status || 500);
+        return res.render('error', { layout: false });
+    });
 });
 
 router.get('/all', (req, res, next) => {

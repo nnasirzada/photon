@@ -2,7 +2,7 @@
 <html>
 
 <head>
-	<title>{{error.message}}</title>
+	<title>{{error.message}} - Photon</title>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/uikit/3.0.0-beta.40/css/uikit.min.css" />
@@ -15,14 +15,13 @@
 </head>
 
 <body>
-	<div class="uk-width-1-1 uk-margin-bottom">
-		<h1>{{error.message}}</h1>
-	</div>
-	<div class="uk-width-1-1 uk-margin">
-		<h2>{{error.status}}</h2>
-	</div>
-	<div class="uk-width-1-1 uk-margin-top">
-		<pre>{{error.stack}}</pre>
+	<div uk-alert>
+		{{#if error.status}}
+			<h3>{{error.status}}</h3>
+		{{/if}}
+		{{#if error.message}}
+			<p>{{error.message}}</p>
+		{{/if}}
 	</div>
 </body>
 

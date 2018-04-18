@@ -139,7 +139,7 @@
 					text: 'New',
 					action: function (e, dt) {
 						$('#modal-create-edit form')[0].reset();
-						$('#modal-create-edit form').find(':input').not(':submit, select').removeAttr('value');
+						$('#modal-create-edit form').find(':input').not(':submit, :checkbox, select').removeAttr('value');
 						$('#modal-create-edit form').find('textarea').html(null);
 						$("#modal-create-edit form").attr("action", "#");
 						$("#modal-create-edit form").attr("method", "post");
@@ -163,7 +163,7 @@
 						if (data.length != 1) return;
 						var row = data[0];
 						$('#modal-create-edit form')[0].reset();
-						$('#modal-create-edit form').find(':input').not(':submit, select').removeAttr('value');
+						$('#modal-create-edit form').find(':input').not(':submit, :checkbox, select').removeAttr('value');
 						$('#modal-create-edit form').find('textarea').html(null);
 						$("#modal-create-edit form").attr("action", row.id);
 						$("#modal-create-edit form").attr("method", "put");

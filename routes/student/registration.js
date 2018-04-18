@@ -15,7 +15,11 @@ router.get('/', (req, res, next) => {
             resultFound: terms.length > 0,
             result: terms
         });
-    }).catch(console.error);
+    }).catch(err => {
+        res.locals.error = err;
+        res.status(err.status || 500);
+        return res.render('error', { layout: false });
+    });
 });
 
 router.get('/term/:term_id', (req, res, next) => {
@@ -40,7 +44,11 @@ router.get('/term/:term_id', (req, res, next) => {
             res.status(err.status);
             return res.render('error', { layout: false });
         }
-    }).catch(console.error);
+    }).catch(err => {
+        res.locals.error = err;
+        res.status(err.status || 500);
+        return res.render('error', { layout: false });
+    });
 });
 
 router.get('/search_subjects/:keyword', (req, res, next) => {
@@ -146,7 +154,11 @@ router.get('/term/:term_id/search', (req, res, next) => {
             res.status(err.status);
             return res.render('error', { layout: false });
         }
-    }).catch(console.error);
+    }).catch(err => {
+        res.locals.error = err;
+        res.status(err.status || 500);
+        return res.render('error', { layout: false });
+    });
 });
 
 router.post('/term/:term_id/search', (req, res, next) => {

@@ -27,7 +27,11 @@ router.get("/", (req, res, next) => {
       schools: results[0],
       programs: results[1]
     });
-  }).catch(console.error);
+  }).catch(err => {
+    res.locals.error = err;
+    res.status(err.status || 500);
+    return res.render('error', { layout: false });
+  });
 });
 
 router.get('/all', (req, res, next) => {

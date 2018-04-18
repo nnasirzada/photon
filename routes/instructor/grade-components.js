@@ -26,7 +26,11 @@ router.get('/all', (req, res, next) => {
 		let json = {};
 		json['data'] = values;
 		res.status(200).json(json);
-	}).catch(console.error);
+	}).catch(err => {
+		res.locals.error = err;
+		res.status(err.status || 500);
+		return res.render('error', { layout: false });
+	});
 });
 
 // Create a new grade component

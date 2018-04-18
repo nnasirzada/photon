@@ -15,7 +15,11 @@ router.get('/', (req, res, next) => {
 			resultFound: terms.length > 0,
 			result: terms
 		});
-	}).catch(console.error);
+	}).catch(err => {
+		res.locals.error = err;
+		res.status(err.status || 500);
+		return res.render('error', { layout: false });
+	});
 });
 
 // Select a term page
@@ -33,7 +37,11 @@ router.get('/term/:termId', (req, res, next) => {
 			result: classes,
 			termId: req.params.termId
 		});
-	}).catch(console.error);
+	}).catch(err => {
+		res.locals.error = err;
+		res.status(err.status || 500);
+		return res.render('error', { layout: false });
+	});
 });
 
 // Select a class page
@@ -61,7 +69,11 @@ router.get('/class/:classId', (req, res, next) => {
 			classMeetingsFound: values[1].length > 0,
 			classMeetings: values[1]
 		});
-	}).catch(console.error);
+	}).catch(err => {
+		res.locals.error = err;
+		res.status(err.status || 500);
+		return res.render('error', { layout: false });
+	});
 });
 
 // Students List

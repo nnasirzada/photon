@@ -82,7 +82,11 @@ router.get('/events', (req, res, next) => {
                 });
             }
             res.status(200).json(events);
-        }).catch(console.error);
+        }).catch(err => {
+            res.locals.error = err;
+            res.status(err.status || 500);
+            return res.render('error', { layout: false });
+        });
     } else {
         throw new Error('Something went wrong.');
     }

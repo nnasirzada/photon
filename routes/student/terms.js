@@ -15,7 +15,11 @@ router.get('/', (req, res, next) => {
             result_found: terms.length > 0,
             result: terms
         });
-    }).catch(console.error);
+    }).catch(err => {
+        res.locals.error = err;
+        res.status(err.status || 500);
+        return res.render('error', { layout: false });
+    });
 });
 
 router.get('/:term_id/classes/', (req, res, next) => {
@@ -53,7 +57,11 @@ router.get('/:term_id/classes/', (req, res, next) => {
             res.status(err.status);
             return res.render('error', { layout: false });
         }
-    }).catch(console.error);
+    }).catch(err => {
+        res.locals.error = err;
+        res.status(err.status || 500);
+        return res.render('error', { layout: false });
+    });
 });
 
 router.get('/:term_id/classes/all', (req, res, next) => {
@@ -107,7 +115,11 @@ router.get('/:term_id/classes/:class_id', (req, res, next) => {
                     classMeetingsFound: values[1].length > 0,
                     classMeetings: values[1]
                 });
-            }).catch(console.error);
+            }).catch(err => {
+                res.locals.error = err;
+                res.status(err.status || 500);
+                return res.render('error', { layout: false });
+            });
         } else {
             let err = new Error('Term Not Found');
             err.status = 404;
@@ -115,7 +127,11 @@ router.get('/:term_id/classes/:class_id', (req, res, next) => {
             res.status(err.status);
             return res.render('error', { layout: false });
         }
-    }).catch(console.error);
+    }).catch(err => {
+        res.locals.error = err;
+        res.status(err.status || 500);
+        return res.render('error', { layout: false });
+    });
 });
 
 router.get('/:term_id/classes/:class_id/grades', (req, res, next) => {
@@ -165,9 +181,17 @@ router.get('/:term_id/classes/:class_id/grades', (req, res, next) => {
                                         data_tables: true
                                     }
                                 });
-                            }).catch(console.error);
+                            }).catch(err => {
+                                res.locals.error = err;
+                                res.status(err.status || 500);
+                                return res.render('error', { layout: false });
+                            });
                         } else throw new Error('Class Not Found');
-                    }).catch(console.error);
+                    }).catch(err => {
+                        res.locals.error = err;
+                        res.status(err.status || 500);
+                        return res.render('error', { layout: false });
+                    });
                 } else throw new Error('Class Not Found');
             });
         } else throw new Error('Term Not Found');

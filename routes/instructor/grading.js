@@ -24,7 +24,11 @@ router.get('/', (req, res, next) => {
 			},
 			gradeComponents: values
 		});
-	}).catch(console.error);
+	}).catch(err => {
+		res.locals.error = err;
+		res.status(err.status || 500);
+		return res.render('error', { layout: false });
+	});
 });
 
 router.get('/entry/', (req, res, next) => {
@@ -55,7 +59,11 @@ router.get('/entry/', (req, res, next) => {
 			result: values,
 			componentName: componentName
 		})
-	}).catch(console.error);
+	}).catch(err => {
+		res.locals.error = err;
+		res.status(err.status || 500);
+		return res.render('error', { layout: false });
+	});
 });
 
 router.post('/entry', (req, res, next) => {
